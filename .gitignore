@@ -1,0 +1,5 @@
+vendor
+vimfilelist
+.gitignore
+.phpactor.json
+.phpunit.cache
