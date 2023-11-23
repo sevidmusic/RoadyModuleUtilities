@@ -2,7 +2,90 @@
 
 Provides classes for working with Roady modules.
 
+TODO:
+
+Class responsible for dynamically creating Routes based on Module
+files in Module's `output/`, `css/`, and `js/` directories.
+
 # Draft/Design Notes
+
+Sudo code for how this library will be used by Roady in conjunction with the RoadyRoutingUtilities library:
+
+```
+<?php
+
+/**
+ * index.php
+ */
+
+/**
+ * ^ Note:
+ *
+ * // A Request instantiated without any parameters will be based on
+ * the current request:
+ *
+ * For example
+ *
+ * ```
+ * (
+ *     isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'
+ *     ? 'https'
+ *     : 'http'
+ * ) .
+ * '://' .
+ * ($_SERVER['HTTP_HOST'] ?? '') .
+ * ($_SERVER['REQUEST_URI'] ?? '');
+ *
+ * ```
+ *
+ *
+ */
+$ui = new RoadyUI(
+    new PathToDirectoryOfRoadyTemplates(
+        new PathToExisitingDirectory(
+            new SafeTextCollection(
+                new SafeText('path'),
+                new SafeText('to'),
+                new SafeText('roady'),
+                new SafeText('templates'),
+                new SafeText('directory')
+            )
+        )
+    ),
+    new Router(
+        new Request(), /** @see comment ^ */
+        new AuthorityJsonConfigurationReader(
+            new PathToDirectoryOfRoadyModules(
+                new PathToExisitingDirectory(
+                    new SafeTextCollection(
+                        new SafeText('path'),
+                        new SafeText('to'),
+                        new SafeText('roady'),
+                        new SafeText('modules'),
+                        new SafeText('directory')
+                    )
+                )
+            ),
+        ),
+        new RouteJsonConfigurationReader(
+            new PathToDirectoryOfRoadyModules(
+                new PathToExisitingDirectory(
+                    new SafeTextCollection(
+                        new SafeText('path'),
+                        new SafeText('to'),
+                        new SafeText('roady'),
+                        new SafeText('modules'),
+                        new SafeText('directory')
+                    )
+                )
+            ),
+        )
+    ),
+);
+
+
+
+```
 
 ### \Darling\RoadyModuleUtilities\interfaces\utilities\AuthorityJsonConfigurationReader
 
