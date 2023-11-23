@@ -26,8 +26,7 @@ Sudo code for how this library will be used by Roady in conjunction with the Roa
  *
  * For example
  *
- * ```
- * (
+ * $url = (
  *     isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'
  *     ? 'https'
  *     : 'http'
@@ -35,9 +34,6 @@ Sudo code for how this library will be used by Roady in conjunction with the Roa
  * '://' .
  * ($_SERVER['HTTP_HOST'] ?? '') .
  * ($_SERVER['REQUEST_URI'] ?? '');
- *
- * ```
- *
  *
  */
 $ui = new RoadyUI(
@@ -53,37 +49,84 @@ $ui = new RoadyUI(
         )
     ),
     new Router(
-        new Request(), /** @see comment ^ */
-        new AuthoritiesJsonConfigurationReader(
-            new PathToDirectoryOfRoadyModules(
-                new PathToExisitingDirectory(
-                    new SafeTextCollection(
-                        new SafeText('path'),
-                        new SafeText('to'),
-                        new SafeText('roady'),
-                        new SafeText('modules'),
-                        new SafeText('directory')
-                    )
+        /** @see comment ^ */
+        new Request(),
+        new PathToDirectoryOfRoadyModules(
+            new PathToExisitingDirectory(
+                new SafeTextCollection(
+                    new SafeText('path'),
+                    new SafeText('to'),
+                    new SafeText('roady'),
+                    new SafeText('modules'),
+                    new SafeText('directory')
                 )
-            ),
+            )
         ),
-        new RoutesJsonConfigurationReader(
-            new PathToDirectoryOfRoadyModules(
-                new PathToExisitingDirectory(
-                    new SafeTextCollection(
-                        new SafeText('path'),
-                        new SafeText('to'),
-                        new SafeText('roady'),
-                        new SafeText('modules'),
-                        new SafeText('directory')
-                    )
-                )
-            ),
-        )
     ),
 );
 
+```
 
+## Pseudo Router Definition
+
+```
+class Router
+{
+    private AuthoritiesJsonConfigurationReader $authoritiesJsonConfigurationReader;
+    private RoutesJsonConfigurationReader $routesJsonConfigurationReader;
+    private ModuleOutputRouteDeterminator $moduleOutputRouteDeterminator;
+    private ModuleCSSRouteDeterminator $moduleCSSRouteDeterminator;
+    private ModuleJSRouteDeterminator $moduleJSRouteDeterminator;
+
+    public function __construct(
+        private Request $request,
+        private PathToDirectoryOfRoadyModules $pathToDirectoryOfRoadyModules,
+    )
+    {
+
+            $this->authoritiesJsonConfigurationReader = new AuthoritiesJsonConfigurationReader(
+                $this->pathToDirectoryOfRoadyModules(),
+            );
+            $this->routesJsonConfigurationReader = new RoutesJsonConfigurationReader(
+                $this->pathToDirectoryOfRoadyModules(),
+            );
+            $this->moduleOutputRouteDeterminator = new ModuleOutputRouteDeterminator(
+                $this->pathToDirectoryOfRoadyModules(),
+            );
+            $this->moduleCSSRouteDeterminator = new ModuleCSSRouteDeterminator(
+                $this->pathToDirectoryOfRoadyModules(),
+            );
+            $this->moduleJSRouteDeterminator = new ModuleJSRouteDeterminator(
+                $this->pathToDirectoryOfRoadyModules(),
+            );
+
+    }
+
+    public function response(): RouteCollection
+    {
+        $listingOfDirectoryOfRoadyModules = new ListingOfDirectoryOfRoadyModules($this->pathToDirectoryOfRoadyModules());
+        $routes = [];
+        foreach($listingOfDirectoryOfRoadyModules->pathsToRoadyModuleDirectories() as $pathToRoadyModuleDirectory) {
+            $authoritiesJsonConfigurationReader = new AuthoritiesJsonConfigurationReader($pathToRoadyModuleDirectory);
+            if(in_array($this->request()->url()->domain()->authority(), $authoritiesJsonConfigurationReader->authorityCollection()->collection())) {
+                foreach($this->moduleCSSRouteDeterminator->cssRoutes()->collection() as $cssRoute) {
+                    $routes[] = $cssRoute;
+                }
+                foreach($this->moduleJSRouteDeterminator->cssRoutes()->collection() as $jsRoute) {
+                    $routes[] = $jsRoute;
+                }
+                foreach($this->moduleOutputRouteDeterminator->outputRoutes()->collection() as $outputRoute) {
+                    $routes[] = $outputRoute;
+                }
+                foreach($this->routesJsonConfigurationReader->configuredRoutes()->collection() as $configureRoute) {
+                    $routes[] = $configureRoute;
+                }
+            }
+        }
+        return new RouteCollection(...$routes);
+    }
+
+}
 
 ```
 
