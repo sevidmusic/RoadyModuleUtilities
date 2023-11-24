@@ -2,14 +2,9 @@
 
 Provides classes for working with Roady modules.
 
-TODO:
-
-Class responsible for dynamically creating Routes based on Module
-files in Module's `output/`, `css/`, and `js/` directories.
-
 # Draft/Design Notes
 
-Sudo code for how this library will be used by Roady in conjunction with the RoadyRoutingUtilities library:
+Pseudo code for how this library will be used by Roady in conjunction with the RoadyRoutingUtilities library:
 
 ```
 <?php
@@ -18,6 +13,7 @@ Sudo code for how this library will be used by Roady in conjunction with the Roa
  * index.php
  */
 
+/*
  * ^ Note:
  *
  * // A Request instantiated without any parameters will be based on
@@ -71,11 +67,6 @@ $ui = new RoadyUI(
 ```
 class Router
 {
-    private AuthoritiesJsonConfigurationReader $authoritiesJsonConfigurationReader;
-    private RoutesJsonConfigurationReader $routesJsonConfigurationReader;
-    private ModuleOutputRouteDeterminator $moduleOutputRouteDeterminator;
-    private ModuleCSSRouteDeterminator $moduleCSSRouteDeterminator;
-    private ModuleJSRouteDeterminator $moduleJSRouteDeterminator;
 
     public function __construct(
         private Request $request,
@@ -87,22 +78,22 @@ class Router
         $listingOfDirectoryOfRoadyModules = new ListingOfDirectoryOfRoadyModules($this->pathToDirectoryOfRoadyModules());
         $routes = [];
         foreach($listingOfDirectoryOfRoadyModules->pathsToRoadyModuleDirectories() as $pathToRoadyModuleDirectory) {
-            $authoritiesJsonConfigurationReader = new AuthoritiesJsonConfigurationReader($pathToRoadyModuleDirectory);
-            if(in_array($this->request()->url()->domain()->authority(), $authoritiesJsonConfigurationReader->authorityCollection()->collection())) {
+            $moduleAuthoritiesJsonConfigurationReader = new ModuleAuthoritiesJsonConfigurationReader($pathToRoadyModuleDirectory);
+            if(in_array($this->request()->url()->domain()->authority(), $moduleAuthoritiesJsonConfigurationReader->authorityCollection()->collection())) {
                 $moduleCSSRouteDeterminator = new ModuleCSSRouteDeterminator($pathToRoadyModuleDirectory);
-                $moduleJSRouteDeterminator = new ModuleJSRouteDeterminator($pathToRoadyModuleDirectory);
-                $moduleOutputRouteDeterminator = new ModuleOutputRouteDeterminator($pathToRoadyModuleDirectory);
-                $routesJsonConfigurationReader = new RoutesJsonConfigurationReader($pathToRoadyModuleDirectory);
                 foreach($moduleCSSRouteDeterminator->cssRoutes()->collection() as $cssRoute) {
                     $routes[] = $cssRoute;
                 }
+                $moduleJSRouteDeterminator = new ModuleJSRouteDeterminator($pathToRoadyModuleDirectory);
                 foreach($moduleJSRouteDeterminator->cssRoutes()->collection() as $jsRoute) {
                     $routes[] = $jsRoute;
                 }
+                $moduleOutputRouteDeterminator = new ModuleOutputRouteDeterminator($pathToRoadyModuleDirectory);
                 foreach($moduleOutputRouteDeterminator->outputRoutes()->collection() as $outputRoute) {
                     $routes[] = $outputRoute;
                 }
-                foreach($routesJsonConfigurationReader->configuredRoutes()->collection() as $configuredRoute) {
+                $moduleRoutesJsonConfigurationReader = new ModuleRoutesJsonConfigurationReader($pathToRoadyModuleDirectory);
+                foreach($moduleRoutesJsonConfigurationReader->configuredRoutes()->collection() as $configuredRoute) {
                     $routes[] = $configuredRoute;
                 }
             }
@@ -114,9 +105,9 @@ class Router
 
 ```
 
-### \Darling\RoadyModuleUtilities\interfaces\utilities\AuthoritiesJsonConfigurationReader
+### \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationReader
 
-A AuthoritiesJsonConfigurationReader can return an AuthorityCollection
+A ModuleAuthoritiesJsonConfigurationReader can return an AuthorityCollection
 constructed from the authorities defined in a specified Module's
 `authorities.json` configuration file.
 
@@ -128,7 +119,7 @@ namespace \Darling\RoadyModuleUtilities\interfaces\utilities;
 use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
 use \Darling\PHPWebPaths\interfaces\collections\AuthorityCollection;
 
-interface AuthoritiesJsonConfigurationReader
+interface ModuleAuthoritiesJsonConfigurationReader
 {
     public function read(
         PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
@@ -147,9 +138,9 @@ Example `authorities.json`:
 
 ```
 
-### \Darling\RoadyModuleUtilities\interfaces\utilities\AuthoritiesJsonConfigurationWriter
+### \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationWriter
 
-A AuthoritiesJsonConfigurationWriter can write a specified AuthorityCollection
+A ModuleAuthoritiesJsonConfigurationWriter can write a specified AuthorityCollection
 to a specified Module's `authorities.json` configuration file.
 
 Warning: The write() method will overwrite an existing
@@ -163,7 +154,7 @@ namespace \Darling\RoadyModuleUtilities\interfaces\utilities;
 use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
 use \Darling\PHPWebPaths\interfaces\collections\AuthorityCollection;
 
-interface AuthoritiesJsonConfigurationWriter
+interface ModuleAuthoritiesJsonConfigurationWriter
 {
     public function write(
         AuthorityCollection $authorityCollection,
@@ -184,9 +175,9 @@ Example `authorities.json`:
 
 ```
 
-### \Darling\RoadyModuleUtilities\interfaces\utilities\AuthoritiesJsonConfigurationEditor
+### \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationEditor
 
-A AuthoritiesJsonConfigurationEditor can add or remove Authorities
+A ModuleAuthoritiesJsonConfigurationEditor can add or remove Authorities
 from a specified Modules `authorities.json` configuration file.
 
 ```
@@ -198,7 +189,7 @@ use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
 use \Darling\PHPWebPaths\interfaces\paths\parts\url\Authority;
 use \Darling\PHPWebPaths\interfaces\collections\AuthorityCollection;
 
-interface AuthoritiesJsonConfigurationEditor
+interface ModuleAuthoritiesJsonConfigurationEditor
 {
 
     public function add(
@@ -236,9 +227,9 @@ Example `authorities.json`:
 
 ```
 
-### \Darling\RoadyModuleUtilities\interfaces\utilities\RoutesJsonConfigurationReader
+### \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationReader
 
-A RoutesJsonConfigurationReader can return an RouteCollection
+A ModuleRoutesJsonConfigurationReader can return an RouteCollection
 constructed from the Routes defined in a specified Module's
 `routes.json` configuration file.
 
@@ -250,7 +241,7 @@ namespace \Darling\RoadyModuleUtilities\interfaces\utilities;
 use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
 use \Darling\RoadyRoutes\interfaces\collections\RouteCollection;
 
-interface RoutesJsonConfigurationReader
+interface ModuleRoutesJsonConfigurationReader
 {
 
     public function read(
@@ -271,9 +262,9 @@ Example `routes.json`:
 
 ```
 
-### \Darling\RoadyModuleUtilities\interfaces\utilities\RoutesJsonConfigurationWriter
+### \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationWriter
 
-A RoutesJsonConfigurationWriter can write a specified RouteCollection
+A ModuleRoutesJsonConfigurationWriter can write a specified RouteCollection
 to a specified Module's `routes.json` configuration file.
 
 Warning: The write() method will overwrite an existing
@@ -287,7 +278,7 @@ namespace \Darling\RoadyModuleUtilities\interfaces\utilities;
 use \Darling\PHPWebPaths\interfaces\collections\RouteCollection;
 use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
 
-interface RoutesJsonConfigurationWriter
+interface ModuleRoutesJsonConfigurationWriter
 {
     public function write(
         RouteCollection $routeCollection,
@@ -308,9 +299,9 @@ Example `routes.json`:
 
 ```
 
-### \Darling\RoadyModuleUtilities\interfaces\utilities\RoutesJsonConfigurationEditor
+### \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationEditor
 
-A RoutesJsonConfigurationEditor can add or remove Routes
+A ModuleRoutesJsonConfigurationEditor can add or remove Routes
 from a specified Modules `routes.json` configuration file.
 
 ```
@@ -322,7 +313,7 @@ use \Darling\PHPWebPaths\interfaces\collections\RouteCollection;
 use \Darling\PHPWebPaths\interfaces\paths\parts\url\Route;
 use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
 
-interface RoutesJsonConfigurationEditor
+interface ModuleRoutesJsonConfigurationEditor
 {
 
     public function add(
