@@ -276,14 +276,14 @@ class RoadyUI
                 $this->getRouteOutput($route);
             }
         }
-        foreach($roadyTemplate->namedPositions() as $templatePositionName) {
+        foreach($roadyTemplate->namedPositions() as $namedPosition) {
             $templateString = str_replace(
-                '<' . $templatePositionName . '></' . $templatePositionName . '>',
-                implode(PHP_EOL, $routeOutputStrings[$templatePositionName]),
+                '<' . $namedPosition . '></' . $namedPosition . '>',
+                implode(PHP_EOL, $routeOutputStrings[$namedPosition]),
                 $templateString,
             );
         }
-
+        return $templateString;
 
     }
 
