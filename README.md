@@ -9,37 +9,30 @@ Pseudo code for how this library will be used by Roady in conjunction with the R
 ```
 <?php
 
+use \Darling\PHPTextTypes\classes\strings\SafeTextCollection;
+use \Darling\PHPTextTypes\classes\strings\SafeText;
+use \Darling\PHPTextTypes\classes\strings\Text;
+use \Darling\RoadyModuleUtilities\classes\paths\PathToDirectoryOfRoadyTemplates;
+use \Darling\RoadyModuleUtilities\classes\paths\PathToExisitingDirectory;
+use \Darling\RoadyRoutingUtilities\classes\request\Request;
+use \Darling\RoadyRoutingUtilities\classes\routing\Router;
 /**
- * index.php
+ * The following is a rough draft/approximation of the actual
+ * implementation of this file.
+ *
+ * The code in this file is likely to change.
  */
 
-/*
- * ^ Note:
- *
- * // A Request instantiated without any parameters will be based on
- * the current request:
- *
- * For example
- *
- * $url = (
- *     isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on'
- *     ? 'https'
- *     : 'http'
- * ) .
- * '://' .
- * ($_SERVER['HTTP_HOST'] ?? '') .
- * ($_SERVER['REQUEST_URI'] ?? '');
- *
- */
+
 $ui = new RoadyUI(
     new PathToDirectoryOfRoadyTemplates(
         new PathToExisitingDirectory(
             new SafeTextCollection(
-                new SafeText('path'),
-                new SafeText('to'),
-                new SafeText('roady'),
-                new SafeText('templates'),
-                new SafeText('directory')
+                new SafeText(new Text('path')),
+                new SafeText(new Text('to')),
+                new SafeText(new Text('roady')),
+                new SafeText(new Text('templates')),
+                new SafeText(new Text('directory'))
             )
         )
     ),
@@ -49,16 +42,20 @@ $ui = new RoadyUI(
         new PathToDirectoryOfRoadyModules(
             new PathToExisitingDirectory(
                 new SafeTextCollection(
-                    new SafeText('path'),
-                    new SafeText('to'),
-                    new SafeText('roady'),
-                    new SafeText('modules'),
-                    new SafeText('directory')
+                    new SafeText(new Text('path')),
+                    new SafeText(new Text('to')),
+                    new SafeText(new Text('roady')),
+                    new SafeText(new Text('modules')),
+                    new SafeText(new Text('directory'))
                 )
             )
         ),
     ),
 );
+
+echo $ui->__toString();
+
+echo '<!-- Powered by [Roady](https://github.com/sevidmusic/Roady) -->
 
 ```
 
