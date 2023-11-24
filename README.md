@@ -27,6 +27,7 @@ use \Darling\RoadyModuleUtilities\classes\paths\PathToExisitingDirectory;
 use \Darling\RoadyRoutingUtilities\classes\request\Request;
 use \Darling\RoadyRoutingUtilities\classes\routing\Router;
 use \Darling\RoadyTemplateUtilities\classes\paths\PathToDirectoryOfRoadyTemplates;
+use \Darling\RoadyModuleUtilities\classes\directory\listings\ListingOfDirectoryOfRoadyModules;
 
 /**
  * The following is a rough draft/approximation of the actual
