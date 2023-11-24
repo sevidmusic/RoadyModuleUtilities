@@ -279,7 +279,7 @@ class RoadyUI
         foreach($roadyTemplate->namedPositions() as $namedPosition) {
             $templateString = str_replace(
                 '<' . $namedPosition . '></' . $namedPosition . '>',
-                implode(PHP_EOL, $routeOutputStrings[$namedPosition]),
+                implode(PHP_EOL, ($routeOutputStrings[$namedPosition] ?? [])),
                 $templateString,
             );
         }
