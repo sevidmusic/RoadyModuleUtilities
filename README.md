@@ -101,29 +101,39 @@ class Router
 
     public function response(): RouteCollection
     {
-        $routes = [];
+        $definedRoutes = [];
         foreach($this->listingOfDirectoryOfRoadyModules->pathsToRoadyModuleDirectories() as $pathToRoadyModuleDirectory) {
             $moduleAuthoritiesJsonConfigurationReader = new ModuleAuthoritiesJsonConfigurationReader($pathToRoadyModuleDirectory);
             if(in_array($this->request()->url()->domain()->authority(), $moduleAuthoritiesJsonConfigurationReader->authorityCollection()->collection())) {
                 $moduleCSSRouteDeterminator = new ModuleCSSRouteDeterminator($pathToRoadyModuleDirectory);
                 foreach($moduleCSSRouteDeterminator->cssRoutes()->collection() as $cssRoute) {
-                    $routes[] = $cssRoute;
+                    $definedRoutes[] = $cssRoute;
                 }
                 $moduleJSRouteDeterminator = new ModuleJSRouteDeterminator($pathToRoadyModuleDirectory);
                 foreach($moduleJSRouteDeterminator->cssRoutes()->collection() as $jsRoute) {
-                    $routes[] = $jsRoute;
+                    $definedRoutes[] = $jsRoute;
                 }
                 $moduleOutputRouteDeterminator = new ModuleOutputRouteDeterminator($pathToRoadyModuleDirectory);
                 foreach($moduleOutputRouteDeterminator->outputRoutes()->collection() as $outputRoute) {
-                    $routes[] = $outputRoute;
+                    $definedRoutes[] = $outputRoute;
                 }
                 $moduleRoutesJsonConfigurationReader = new ModuleRoutesJsonConfigurationReader($pathToRoadyModuleDirectory);
                 foreach($moduleRoutesJsonConfigurationReader->configuredRoutes()->collection() as $configuredRoute) {
-                    $routes[] = $configuredRoute;
+                    $definedRoutes[] = $configuredRoute;
                 }
             }
         }
-        return new RouteCollection(...$routes);
+        $responseRoutes = [];
+        foreach($routes as $routeIndex => $route) {
+            if(
+                in_array($request->name(), $route->nameCollection()->collection()
+                ||
+                in_array(new Name(new Text('global')), $route->nameCollection()->collection()
+            ) {
+                $responseRoutes[] = $route;
+            }
+        }
+        return new RouteCollection(...$responseRoutes);
     }
 
 }
