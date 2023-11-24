@@ -19,15 +19,15 @@ and RoadyTemplateUtilities libraries:
 ```
 <?php
 
-use \Darling\PHPTextTypes\interfaces\strings\SafeText;
-use \Darling\PHPTextTypes\interfaces\strings\SafeTextCollection;
-use \Darling\PHPTextTypes\interfaces\strings\Text;
-use \Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules;
-use \Darling\PHPFilesystemPaths\interfaces\paths\PathToExistingDirectory;
-use \Darling\RoadyRoutingUtilities\interfaces\request\Request;
-use \Darling\RoadyRoutingUtilities\interfaces\routing\Router;
-use \Darling\RoadyTemplateUtilities\interfaces\paths\PathToDirectoryOfRoadyTemplates;
-use \Darling\RoadyModuleUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyModules;
+use \Darling\PHPFilesystemPaths\classes\paths\PathToExistingDirectory;
+use \Darling\PHPTextTypes\classes\strings\SafeText;
+use \Darling\PHPTextTypes\classes\strings\SafeTextCollection;
+use \Darling\PHPTextTypes\classes\strings\Text;
+use \Darling\RoadyModuleUtilities\classes\directory\listings\ListingOfDirectoryOfRoadyModules;
+use \Darling\RoadyModuleUtilities\classes\paths\PathToDirectoryOfRoadyModules;
+use \Darling\RoadyRoutingUtilities\classes\request\Request;
+use \Darling\RoadyRoutingUtilities\classes\routing\Router;
+use \Darling\RoadyTemplateUtilities\classes\paths\PathToDirectoryOfRoadyTemplates;
 
 /**
  * The following is a rough draft/approximation of the actual
