@@ -19,15 +19,15 @@ and RoadyTemplateUtilities libraries:
 ```
 <?php
 
-use \Darling\PHPTextTypes\classes\strings\SafeText;
-use \Darling\PHPTextTypes\classes\strings\SafeTextCollection;
-use \Darling\PHPTextTypes\classes\strings\Text;
-use \Darling\RoadyModuleUtilities\classes\paths\PathToDirectoryOfRoadyModules;
-use \Darling\RoadyModuleUtilities\classes\paths\PathToExisitingDirectory;
-use \Darling\RoadyRoutingUtilities\classes\request\Request;
-use \Darling\RoadyRoutingUtilities\classes\routing\Router;
-use \Darling\RoadyTemplateUtilities\classes\paths\PathToDirectoryOfRoadyTemplates;
-use \Darling\RoadyModuleUtilities\classes\directory\listings\ListingOfDirectoryOfRoadyModules;
+use \Darling\PHPTextTypes\interfaces\strings\SafeText;
+use \Darling\PHPTextTypes\interfaces\strings\SafeTextCollection;
+use \Darling\PHPTextTypes\interfaces\strings\Text;
+use \Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules;
+use \Darling\PHPFilesystemPaths\interfaces\paths\PathToExistingDirectory;
+use \Darling\RoadyRoutingUtilities\interfaces\request\Request;
+use \Darling\RoadyRoutingUtilities\interfaces\routing\Router;
+use \Darling\RoadyTemplateUtilities\interfaces\paths\PathToDirectoryOfRoadyTemplates;
+use \Darling\RoadyModuleUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyModules;
 
 /**
  * The following is a rough draft/approximation of the actual
@@ -79,12 +79,11 @@ echo '<!-- Powered by [Roady](https://github.com/sevidmusic/Roady) -->
 ```
 <?php
 
-namespace \Darling\RoadyRoutingUtilities\classes\routing;
+namespace \Darling\RoadyRoutingUtilities\interfaces\routing;
 
-use \Darling\RoadyModuleUtilities\classes\paths\PathToDirectoryOfRoadyModules;
-use \Darling\RoadyRoutingUtilities\classes\request\Request;
-use \Darling\RoadyRoutes\classes\collections\RouteCollection;
-use \Darling\RoadyModuleUtilities\classes\directory\listings\ListingOfDirectoryOfRoadyModules;
+use \Darling\RoadyRoutingUtilities\interfaces\request\Request;
+use \Darling\RoadyRoutes\interfaces\collections\RouteCollection;
+use \Darling\RoadyModuleUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyModules;
 /**
  * The following is a rough draft/approximation of the actual
  * implementation of this file.
@@ -136,11 +135,11 @@ class Router
 ```
 <?php
 
-namespace \Darling\RoadyRoutingUtilities\classes\routing;
+namespace \Darling\RoadyRoutingUtilities\interfaces\routing;
 
-use \Darling\RoadyRoutingUtilities\classes\routing\Router;
-use \Darling\RoadyModuleUtilities\classes\directory\listings\ListingOfDirectoryOfRoadyModules;
+use \Darling\RoadyRoutingUtilities\interfaces\routing\Router;
 use \Darling\RoadyTemplateUtilities\interfaces\paths\PathToDirectoryOfRoadyTemplates;
+use \Darling\RoadyTemplateUtilities\interfaces\paths\PathToRoadyTemplateFile;
 
 /**
  * The following is a rough draft/approximation of the actual
@@ -485,7 +484,7 @@ where Roady Modules are expected to be located.
 
 namespace \Darling\RoadyModuleUtilities\interfaces\paths;
 
-use \Darling\RoadyModuleUtilities\interfaces\paths\PathToExistingDirectory;
+use \Darling\PHPFilesystemPaths\interfaces\paths\PathToExistingDirectory;
 use \Stringable;
 
 interface PathToDirectoryOfRoadyModules extends Stringable
@@ -526,7 +525,7 @@ interface ListingOfDirectoryOfRoadyModules
 ```
 
 
-### \Darling\RoadyModuleUtilities\interfaces\paths\PathToExistingDirectory
+### \Darling\PHPFilesystemPaths\interfaces\paths\PathToExistingDirectory
 
 A PathToExistingDirectory defines a path to an existing directory.
 
@@ -536,7 +535,7 @@ the default path may be `/tmp`.
 ```
 <?php
 
-namespace \Darling\RoadyModuleUtilities\interfaces\paths;
+namespace \Darling\PHPFilesystemPaths\interfaces\paths;
 
 use \Darling\PHPTextTypes\interfaces\collections\SafeTextCollection;
 use \Stringable;
@@ -561,7 +560,7 @@ where Roady Templates are expected to be located.
 
 namespace \Darling\RoadyTemplateUtilities\interfaces\paths;
 
-use \Darling\RoadyTemplateUtilities\interfaces\paths\PathToExistingDirectory;
+use \Darling\PHPFilesystemPaths\interfaces\paths\PathToExistingDirectory;
 use \Stringable;
 
 interface PathToDirectoryOfRoadyTemplates extends Stringable
