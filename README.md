@@ -37,21 +37,8 @@ use \Darling\RoadyTemplateUtilities\classes\paths\PathToDirectoryOfRoadyTemplate
 
 
 $ui = new RoadyUI(
-    new PathToDirectoryOfRoadyTemplates(
-        new PathToExisitingDirectory(
-            new SafeTextCollection(
-                new SafeText(new Text('path')),
-                new SafeText(new Text('to')),
-                new SafeText(new Text('roady')),
-                new SafeText(new Text('templates')),
-                new SafeText(new Text('directory'))
-            )
-        )
-    ),
-    new Router(
-        /** @see comment ^ */
-        new Request(),
-        new PathToDirectoryOfRoadyModules(
+    new ListingOfDirectoryOfRoadyTemplates(
+        new PathToDirectoryOfRoadyTemplates(
             new PathToExisitingDirectory(
                 new SafeTextCollection(
                     new SafeText(new Text('path')),
@@ -59,6 +46,23 @@ $ui = new RoadyUI(
                     new SafeText(new Text('roady')),
                     new SafeText(new Text('modules')),
                     new SafeText(new Text('directory'))
+                )
+            )
+        )
+    ),
+    new Router(
+        /** @see comment ^ */
+        new Request(),
+        new ListingOfDirectoryOfRoadyModules(
+            new PathToDirectoryOfRoadyModules(
+                new PathToExisitingDirectory(
+                    new SafeTextCollection(
+                        new SafeText(new Text('path')),
+                        new SafeText(new Text('to')),
+                        new SafeText(new Text('roady')),
+                        new SafeText(new Text('modules')),
+                        new SafeText(new Text('directory'))
+                    )
                 )
             )
         ),
@@ -94,14 +98,13 @@ class Router
 
     public function __construct(
         private Request $request,
-        private PathToDirectoryOfRoadyModules $pathToDirectoryOfRoadyModules,
+        private ListingOfDirectoryOfRoadyModules $listingOfDirectoryOfRoadyModules,
     ) {}
 
     public function response(): RouteCollection
     {
-        $listingOfDirectoryOfRoadyModules = new ListingOfDirectoryOfRoadyModules($this->pathToDirectoryOfRoadyModules());
         $routes = [];
-        foreach($listingOfDirectoryOfRoadyModules->pathsToRoadyModuleDirectories() as $pathToRoadyModuleDirectory) {
+        foreach($this->listingOfDirectoryOfRoadyModules->pathsToRoadyModuleDirectories() as $pathToRoadyModuleDirectory) {
             $moduleAuthoritiesJsonConfigurationReader = new ModuleAuthoritiesJsonConfigurationReader($pathToRoadyModuleDirectory);
             if(in_array($this->request()->url()->domain()->authority(), $moduleAuthoritiesJsonConfigurationReader->authorityCollection()->collection())) {
                 $moduleCSSRouteDeterminator = new ModuleCSSRouteDeterminator($pathToRoadyModuleDirectory);
@@ -566,6 +569,86 @@ interface PathToDirectoryOfRoadyTemplates extends Stringable
    public function pathToExistingDirectory(): PathToExistingDirectory;
 
    public function __toString(): string;
+
+}
+
+```
+
+### \Darling\RoadyTemplateUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyTemplates;
+
+A ListingOfDirectoryOfRoadyTemplates defines a
+PathToRoadyTemplateFileCollection of PathToRoadyTemplateFile
+instances for the template files in the assigned
+PathToDirectoryOfRoadyTemplates.
+
+```
+<?php
+
+namespace \Darling\RoadyTemplateUtilities\interfaces\directory\listings;
+
+use \Darling\RoadyTemplateUtilities\interfaces\collections\PathToRoadyTemplateFileCollection;
+use \Darling\RoadyTemplateUtilities\interfaces\paths\PathToDirectoryOfRoadyTemplates;
+
+interface ListingOfDirectoryOfRoadyTemplates
+{
+
+   public function pathToDirectoryOfRoadyTemplates(): PathToDirectoryOfRoadyTemplates;
+   public function pathToRoadyTemplateFileCollection(): PathToRoadyTemplateFileCollection;
+
+}
+
+
+```
+
+### \Darling\RoadyTemplateUtilities\interfaces\paths\PathToRoadyTemplateFile
+
+A PathToRoadyTemplateFile defines a path to an existing
+Roady Template file.
+
+```
+<?php
+
+namespace \Darling\RoadyTemplateUtilities\interfaces\paths;
+
+use \Darling\PHPTextTypes\interfaces\strings\Name;
+use \Darling\RoadyTemplateUtilities\interfaces\paths\PathToDirectoryOfRoadyTemplates;
+use \Stringable;
+
+interface PathToRoadyTemplateFile extends Stringable
+{
+
+   public function templateName(): Name;
+   public function pathToDirectoryOfRoadyTemplates(): PathToDirectoryOfRoadyTemplates;
+   public function __toString(): string;
+
+}
+
+```
+
+### \Darling\RoadyTemplateUtilities\interfaces\collections\PathToRoadyTemplateFileCollection
+
+A PathToRoadyTemplateFileCollection defines a collection of
+PathToRoadyTemplateFile instances.
+
+```
+<?php
+
+namespace \Darling\RoadyTemplateUtilities\interfaces\collections;
+
+use \Darling\RoadyTemplateUtilities\interfaces\paths\PathToRoadyTemplateFile;
+
+interface PathToRoadyTemplateFileCollection
+{
+
+   /**
+    * Return an array of PathToRoadyTemplateFile instances.
+    *
+    * @return array<int, PathToRoadyTemplateFile>
+    *                                       An array of
+    *                                       PathToRoadyTemplateFile
+    *                                       instances.
+    */
+   public function collection(): array;
 
 }
 
