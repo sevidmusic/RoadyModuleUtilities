@@ -302,6 +302,24 @@ class RoadyUI
          * extension `.php` will be executed as `php` and their
          * output will be captured via an `object buffer`.
          */
+         $targetFilePath = $router->pathToDirectoryOfRoadyModules()->__toString() .
+                           DIRECTORY_SEPARATOR .
+                           $route->moduleName() .
+                           DIRECTORY_SEPARATOR .
+                           $route->relaitvePath()->__toString();
+        if($this->fileIsAPhpFile($targetFilePath)) {
+            ob_start();
+            include($targetFilePath);
+            return ob_get_clean();
+        }
+        if($this->fileIsACssFile($targetFilePath) {
+            return '<link rel="stylesheet" type="text/css" href="' . $this->determineRouteWebPath($this->router()->request()->domain(), $route) . '" />';
+        }
+        if($this->fileIsAJsFile($targetFilePath) {
+            return '<script type="text/javascript" src="' . $this->determineRouteWebPath($this->router()->request()->domain(), $route) . '"></script>';
+        }
+        return strval(file_get_contents($targetFilePath));
+
     }
 
     public function __toString(): string
