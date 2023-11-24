@@ -1,3 +1,50 @@
+# TODO
+
+### RoadyModuleUtilities:
+
+- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationReader
+
+- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationWriter
+
+- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationEditor
+
+- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationReader
+
+- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationWriter
+
+- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationEditor
+
+- \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory
+
+- \Darling\RoadyModuleUtilities\interfaces\collections\PathToRoadyModuleDirectoryCollection
+
+- \Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules
+
+- \Darling\RoadyModuleUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyModules;
+
+### PHPFilesystemPaths:
+
+- \Darling\PHPFilesystemPaths\interfaces\paths\PathToExistingDirectory
+
+### RoadyTemplateUtilities:
+
+- \Darling\RoadyTemplateUtilities\interfaces\paths\PathToDirectoryOfRoadyTemplates
+
+- \Darling\RoadyTemplateUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyTemplates;
+
+- \Darling\RoadyTemplateUtilities\interfaces\paths\PathToRoadyTemplateFile
+
+- \Darling\RoadyTemplateUtilities\interfaces\collections\PathToRoadyTemplateFileCollection
+
+### RoadyRoutingUtilities:
+
+- \Darling\RoadyRoutingUtilities\interfaces\routing\Router;
+- \Darling\RoadyRoutingUtilities\interfaces\routing\Response;
+
+### RoadyUIUtilities:
+
+- \Darling\ROadyUIUtilities\interfaces\ui\RoadyUI;
+
 # RoadyModuleUtilities
 
 NOTE: At the moment I am using this file to plan the rest of
@@ -126,9 +173,9 @@ class Router
         $responseRoutes = [];
         foreach($routes as $routeIndex => $route) {
             if(
-                in_array($request->name(), $route->nameCollection()->collection()
+                in_array($request->name(), $route->nameCollection()->collection())
                 ||
-                in_array(new Name(new Text('global')), $route->nameCollection()->collection()
+                in_array(new Name(new Text('global')), $route->nameCollection()->collection())
             ) {
                 $responseRoutes[] = $route;
             }
@@ -145,7 +192,7 @@ class Router
 ```
 <?php
 
-namespace \Darling\RoadyRoutingUtilities\interfaces\routing;
+namespace \Darling\ROadyUIUtilities\interfaces\ui;
 
 use \Darling\RoadyRoutingUtilities\interfaces\routing\Router;
 use \Darling\RoadyTemplateUtilities\interfaces\paths\PathToDirectoryOfRoadyTemplates;
