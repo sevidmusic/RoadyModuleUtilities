@@ -18,7 +18,6 @@ Sudo code for how this library will be used by Roady in conjunction with the Roa
  * index.php
  */
 
-/**
  * ^ Note:
  *
  * // A Request instantiated without any parameters will be based on
@@ -81,26 +80,7 @@ class Router
     public function __construct(
         private Request $request,
         private PathToDirectoryOfRoadyModules $pathToDirectoryOfRoadyModules,
-    )
-    {
-
-            $this->authoritiesJsonConfigurationReader = new AuthoritiesJsonConfigurationReader(
-                $this->pathToDirectoryOfRoadyModules(),
-            );
-            $this->routesJsonConfigurationReader = new RoutesJsonConfigurationReader(
-                $this->pathToDirectoryOfRoadyModules(),
-            );
-            $this->moduleOutputRouteDeterminator = new ModuleOutputRouteDeterminator(
-                $this->pathToDirectoryOfRoadyModules(),
-            );
-            $this->moduleCSSRouteDeterminator = new ModuleCSSRouteDeterminator(
-                $this->pathToDirectoryOfRoadyModules(),
-            );
-            $this->moduleJSRouteDeterminator = new ModuleJSRouteDeterminator(
-                $this->pathToDirectoryOfRoadyModules(),
-            );
-
-    }
+    ) {}
 
     public function response(): RouteCollection
     {
@@ -109,17 +89,21 @@ class Router
         foreach($listingOfDirectoryOfRoadyModules->pathsToRoadyModuleDirectories() as $pathToRoadyModuleDirectory) {
             $authoritiesJsonConfigurationReader = new AuthoritiesJsonConfigurationReader($pathToRoadyModuleDirectory);
             if(in_array($this->request()->url()->domain()->authority(), $authoritiesJsonConfigurationReader->authorityCollection()->collection())) {
-                foreach($this->moduleCSSRouteDeterminator->cssRoutes()->collection() as $cssRoute) {
+                $moduleCSSRouteDeterminator = new ModuleCSSRouteDeterminator($pathToRoadyModuleDirectory);
+                $moduleJSRouteDeterminator = new ModuleJSRouteDeterminator($pathToRoadyModuleDirectory);
+                $moduleOutputRouteDeterminator = new ModuleOutputRouteDeterminator($pathToRoadyModuleDirectory);
+                $routesJsonConfigurationReader = new RoutesJsonConfigurationReader($pathToRoadyModuleDirectory);
+                foreach($moduleCSSRouteDeterminator->cssRoutes()->collection() as $cssRoute) {
                     $routes[] = $cssRoute;
                 }
-                foreach($this->moduleJSRouteDeterminator->cssRoutes()->collection() as $jsRoute) {
+                foreach($moduleJSRouteDeterminator->cssRoutes()->collection() as $jsRoute) {
                     $routes[] = $jsRoute;
                 }
-                foreach($this->moduleOutputRouteDeterminator->outputRoutes()->collection() as $outputRoute) {
+                foreach($moduleOutputRouteDeterminator->outputRoutes()->collection() as $outputRoute) {
                     $routes[] = $outputRoute;
                 }
-                foreach($this->routesJsonConfigurationReader->configuredRoutes()->collection() as $configureRoute) {
-                    $routes[] = $configureRoute;
+                foreach($routesJsonConfigurationReader->configuredRoutes()->collection() as $configuredRoute) {
+                    $routes[] = $configuredRoute;
                 }
             }
         }
