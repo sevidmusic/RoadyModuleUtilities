@@ -1,5 +1,13 @@
 # RoadyModuleUtilities
 
+NOTE: At the moment I am using this file to plan the rest of
+the re-write of Roady2.0, which will start with the implementation
+of the RoadyModuleUtilities library. However, for the moment this
+file may contain references to classes that are/or will be defined
+by other libraries so I can organize my thoughts.
+
+This file will change alot before the first release of this library.
+
 Provides classes for working with Roady modules.
 
 # Draft/Design Notes
@@ -73,7 +81,7 @@ namespace \Darling\RoadyRoutingUtilities\classes\routing;
 use \Darling\RoadyModuleUtilities\classes\paths\PathToDirectoryOfRoadyModules;
 use \Darling\RoadyRoutingUtilities\classes\request\Request;
 use \Darling\RoadyRoutes\classes\collections\RouteCollection;
-
+use \Darling\RoadyModuleUtilities\classes\directory\listings\ListingOfDirectoryOfRoadyModules;
 /**
  * The following is a rough draft/approximation of the actual
  * implementation of this file.
@@ -115,6 +123,48 @@ class Router
             }
         }
         return new RouteCollection(...$routes);
+    }
+
+}
+
+```
+
+## Pseudo RoadyUI Definition
+
+```
+<?php
+
+namespace \Darling\RoadyRoutingUtilities\classes\routing;
+
+use \Darling\RoadyRoutingUtilities\classes\paths\PathToDirectoryOfRoadyModules;
+use \Darling\RoadyRoutingUtilities\classes\routing\Router;
+use \Darling\RoadyTemplateUtilities\classes\paths\PathToDirectoryOfRoadyTemplates;
+
+/**
+ * The following is a rough draft/approximation of the actual
+ * implementation of this file.
+ *
+ * The code in this file is likely to change.
+ */
+
+class RoadyUI
+{
+
+    public function __construct(
+        private Route $router,
+        private PathToDirectoryOfRoadyTemplates $pathToDirectoryOfRoadyTemplates,
+        private PathToDirectoryOfRoadyModules $pathToDirectoryOfRoadyModules,
+    ) {}
+
+    public function render(): string
+    {
+
+    }
+
+
+    public function __toString(): string
+    {
+        return $this->render();
     }
 
 }
@@ -392,6 +442,35 @@ interface PathToRoadyModuleDirectory extends Stringable
 
 ```
 
+### \Darling\RoadyModuleUtilities\interfaces\collections\PathToRoadyModuleDirectoryCollection
+
+A PathToRoadyModuleDirectoryCollection defines a collection of
+PathToRoadyModuleDirectory instances.
+
+```
+<?php
+
+namespace \Darling\RoadyModuleUtilities\interfaces\collections;
+
+use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
+
+interface PathToRoadyModuleDirectoryCollection
+{
+
+   /**
+    * Return an array of PathToRoadyModuleDirectory instances.
+    *
+    * @return array<int, PathToRoadyModuleDirectory>
+    *                                       An array of
+    *                                       PathToRoadyModuleDirectory
+    *                                       instances.
+    */
+   public function collection(): array;
+
+}
+
+```
+
 ### \Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules
 
 A PathToDirectoryOfRoadyModules defines a path to an existing directory
@@ -416,6 +495,33 @@ interface PathToDirectoryOfRoadyModules extends Stringable
 
 ```
 
+### \Darling\RoadyModuleUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyModules;
+
+A ListingOfDirectoryOfRoadyModules defines a
+PathToRoadyModuleDirectoryCollection of PathToRoadyModuleDirectory
+instances for the module directories in the assigned
+PathToDirectoryOfRoadyModules.
+
+```
+<?php
+
+namespace \Darling\RoadyModuleUtilities\interfaces\directory\listings;
+
+use \Darling\RoadyModuleUtilities\interfaces\collections\PathToRoadyModuleDirectoryCollection;
+use \Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules;
+
+interface ListingOfDirectoryOfRoadyModules
+{
+
+   public function pathToDirectoryOfRoadyModules(): PathToDirectoryOfRoadyModules;
+   public function pathToRoadyModuleDirectoryCollection(): PathToRoadyModuleDirectoryCollection;
+
+}
+
+
+```
+
+
 ### \Darling\RoadyModuleUtilities\interfaces\paths\PathToExistingDirectory
 
 A PathToExistingDirectory defines a path to an existing directory.
@@ -435,6 +541,30 @@ interface PathToExistingDirectory extends Stringable
 {
 
    public function SafeTextCollection(): SafeTextCollection;
+   public function __toString(): string;
+
+}
+
+```
+
+### \Darling\RoadyTemplateUtilities\interfaces\paths\PathToDirectoryOfRoadyTemplates
+
+A PathToDirectoryOfRoadyTemplates defines a path to an existing directory
+where Roady Templates are expected to be located.
+
+```
+<?php
+
+namespace \Darling\RoadyTemplateUtilities\interfaces\paths;
+
+use \Darling\RoadyTemplateUtilities\interfaces\paths\PathToExistingDirectory;
+use \Stringable;
+
+interface PathToDirectoryOfRoadyTemplates extends Stringable
+{
+
+   public function pathToExistingDirectory(): PathToExistingDirectory;
+
    public function __toString(): string;
 
 }
