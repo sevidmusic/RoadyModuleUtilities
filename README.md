@@ -4,18 +4,22 @@ Provides classes for working with Roady modules.
 
 # Draft/Design Notes
 
-Pseudo code for how this library will be used by Roady in conjunction with the RoadyRoutingUtilities library:
+Pseudo code for how this library will be used by Roady's
+index.php in conjunction with the RoadyRoutingUtilities,
+and RoadyTemplateUtilities libraries:
 
 ```
 <?php
 
-use \Darling\PHPTextTypes\classes\strings\SafeTextCollection;
 use \Darling\PHPTextTypes\classes\strings\SafeText;
+use \Darling\PHPTextTypes\classes\strings\SafeTextCollection;
 use \Darling\PHPTextTypes\classes\strings\Text;
-use \Darling\RoadyModuleUtilities\classes\paths\PathToDirectoryOfRoadyTemplates;
+use \Darling\RoadyModuleUtilities\classes\paths\PathToDirectoryOfRoadyModules;
 use \Darling\RoadyModuleUtilities\classes\paths\PathToExisitingDirectory;
 use \Darling\RoadyRoutingUtilities\classes\request\Request;
 use \Darling\RoadyRoutingUtilities\classes\routing\Router;
+use \Darling\RoadyTemplateUtilities\classes\paths\PathToDirectoryOfRoadyTemplates;
+
 /**
  * The following is a rough draft/approximation of the actual
  * implementation of this file.
@@ -62,6 +66,21 @@ echo '<!-- Powered by [Roady](https://github.com/sevidmusic/Roady) -->
 ## Pseudo Router Definition
 
 ```
+<?php
+
+namespace \Darling\RoadyRoutingUtilities\classes\routing;
+
+use \Darling\RoadyModuleUtilities\classes\paths\PathToDirectoryOfRoadyModules;
+use \Darling\RoadyRoutingUtilities\classes\request\Request;
+use \Darling\RoadyRoutes\classes\collections\RouteCollection;
+
+/**
+ * The following is a rough draft/approximation of the actual
+ * implementation of this file.
+ *
+ * The code in this file is likely to change.
+ */
+
 class Router
 {
 
@@ -350,8 +369,8 @@ Example `routes.json`:
 
 ### \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory
 
-A PathToRoadyModuleDirectory defines a path to an existing Roady
-Module's directory.
+A PathToRoadyModuleDirectory defines a path to an existing
+Roady Module's directory.
 
 ```
 <?php
