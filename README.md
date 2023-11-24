@@ -37,19 +37,6 @@ use \Darling\RoadyTemplateUtilities\classes\paths\PathToDirectoryOfRoadyTemplate
 
 
 $ui = new RoadyUI(
-    new ListingOfDirectoryOfRoadyTemplates(
-        new PathToDirectoryOfRoadyTemplates(
-            new PathToExisitingDirectory(
-                new SafeTextCollection(
-                    new SafeText(new Text('path')),
-                    new SafeText(new Text('to')),
-                    new SafeText(new Text('roady')),
-                    new SafeText(new Text('modules')),
-                    new SafeText(new Text('directory'))
-                )
-            )
-        )
-    ),
     new Router(
         /** @see comment ^ */
         new Request(),
@@ -66,6 +53,17 @@ $ui = new RoadyUI(
                 )
             )
         ),
+    ),
+    new PathToDirectoryOfRoadyTemplates(
+        new PathToExisitingDirectory(
+            new SafeTextCollection(
+                new SafeText(new Text('path')),
+                new SafeText(new Text('to')),
+                new SafeText(new Text('roady')),
+                new SafeText(new Text('tempaltes')),
+                new SafeText(new Text('directory'))
+            )
+        )
     ),
 );
 
@@ -139,9 +137,9 @@ class Router
 
 namespace \Darling\RoadyRoutingUtilities\classes\routing;
 
-use \Darling\RoadyRoutingUtilities\classes\paths\PathToDirectoryOfRoadyModules;
 use \Darling\RoadyRoutingUtilities\classes\routing\Router;
-use \Darling\RoadyTemplateUtilities\classes\paths\PathToDirectoryOfRoadyTemplates;
+use \Darling\RoadyModuleUtilities\classes\directory\listings\ListingOfDirectoryOfRoadyModules;
+use \Darling\RoadyTemplateUtilities\interfaces\paths\PathToDirectoryOfRoadyTemplates;
 
 /**
  * The following is a rough draft/approximation of the actual
@@ -154,13 +152,15 @@ class RoadyUI
 {
 
     public function __construct(
-        private Route $router,
+        private Router $router,
         private PathToDirectoryOfRoadyTemplates $pathToDirectoryOfRoadyTemplates,
-        private PathToDirectoryOfRoadyModules $pathToDirectoryOfRoadyModules,
     ) {}
 
     public function render(): string
     {
+        $pathToRoadyTemplateFile = new PathToRoadyTemplateFile(
+
+        );
 
     }
 
