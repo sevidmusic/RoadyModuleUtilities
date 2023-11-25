@@ -6,25 +6,33 @@
 
 ### RoadyModuleUtilities:
 
-- \Darling\RoadyModuleUtilities\interfaces\collections\PathToRoadyModuleDirectoryCollection
-
-- \Darling\RoadyModuleUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyModules;
-
 - \Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules
 
 - \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory
 
-- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationEditor
+- \Darling\RoadyModuleUtilities\interfaces\collections\PathToRoadyModuleDirectoryCollection
 
-- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationReader
+- \Darling\RoadyModuleUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyModules;
 
 - \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationWriter
 
-- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationEditor
+- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationReader
+
+- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationEditor
+
+- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationWriter
 
 - \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationReader
 
-- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationWriter
+- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationEditor
+
+- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleCSSRouteDeterminator;
+
+- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleJSRouteDeterminator;
+
+- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleOutputRouteDeterminator;
+
+
 
 ### RoadyTemplateUtilities:
 
@@ -810,3 +818,66 @@ interface PathToRoadyHtmlFileTemplateFileCollection
 }
 
 ```
+
+### \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleCSSRouteDeterminator;
+
+```
+<?php
+
+namespace \Darling\RoadyModuleUtilities\interfaces\utilities;
+
+use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
+use \Darling\RoadyRoutingUtilties\interfaces\collections\RouteCollection;
+
+interface ModuleCSSRouteDeterminator
+{
+
+    public function pathToRoadyModuleDirectory(): PathToRoadyModuleDirectory;
+
+    public function routeCollection(): RouteCollection
+
+}
+
+```
+
+### \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleJSRouteDeterminator;
+
+```
+<?php
+
+namespace \Darling\RoadyModuleUtilities\interfaces\utilities;
+
+use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
+use \Darling\RoadyRoutingUtilties\interfaces\collections\RouteCollection;
+
+interface ModuleJSRouteDeterminator
+{
+
+    public function pathToRoadyModuleDirectory(): PathToRoadyModuleDirectory;
+
+    public function routeCollection(): RouteCollection
+
+}
+
+```
+
+### \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleOutputRouteDeterminator;
+
+```
+<?php
+
+namespace \Darling\RoadyModuleUtilities\interfaces\utilities;
+
+use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
+use \Darling\RoadyRoutingUtilties\interfaces\collections\RouteCollection;
+
+interface ModuleOutputRouteDeterminator
+{
+
+    public function pathToRoadyModuleDirectory(): PathToRoadyModuleDirectory;
+
+    public function routeCollection(): RouteCollection
+
+}
+```
+
