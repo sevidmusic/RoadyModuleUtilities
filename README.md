@@ -485,13 +485,21 @@ interface ModuleRoutesJsonConfigurationReader
 }
 
 ```
+
 Example `routes.json`:
 
 ```
 [
-    [['name', 'name2'], [['named-psition-1', 1.7], ['named-position-2', 0.001]], 'relative/path'],
-    [['name', 'name2'], [['named-psition-1', 1.7], ['named-position-2', 0.001]], 'relative/path'],
-    [['name2'], [['named-position-2', 0.001]], 'relative/path'],
+    [
+        'module-name' => 'ModuleName',
+        'route-names' => [
+            'hello-world',
+        ],
+        'route-named-positions' => [
+            ['hello-world', 0.001],
+        ],
+        'relative-path' => 'relative/path/to/output/file/HelloWorld.php'
+    ],
 ]
 
 ```
@@ -526,9 +534,16 @@ Example `routes.json`:
 
 ```
 [
-    [['name', 'name2'], [['named-psition-1', 1.7], ['named-position-2', 0.001]], 'relative/path'],
-    [['name', 'name2'], [['named-psition-1', 1.7], ['named-position-2', 0.001]], 'relative/path'],
-    [['name2'], [['named-position-2', 0.001]], 'relative/path'],
+    [
+        'module-name' => 'ModuleName',
+        'route-names' => [
+            'hello-world',
+        ],
+        'route-named-positions' => [
+            ['hello-world', 0.001],
+        ],
+        'relative-path' => 'relative/path/to/output/file/HelloWorld.php'
+    ],
 ]
 
 ```
@@ -578,9 +593,16 @@ Example `routes.json`:
 
 ```
 [
-    [['name', 'name2'], [['named-psition-1', 1.7], ['named-position-2', 0.001]], 'relative/path'],
-    [['name', 'name2'], [['named-psition-1', 1.7], ['named-position-2', 0.001]], 'relative/path'],
-    [['name2'], [['named-position-2', 0.001]], 'relative/path'],
+    [
+        'module-name' => 'ModuleName',
+        'route-names' => [
+            'hello-world',
+        ],
+        'route-named-positions' => [
+            ['hello-world', 0.001],
+        ],
+        'relative-path' => 'relative/path/to/output/file/HelloWorld.php'
+    ],
 ]
 
 ```
