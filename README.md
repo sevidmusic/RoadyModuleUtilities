@@ -124,7 +124,7 @@ echo '<!-- Powered by [Roady](https://github.com/sevidmusic/Roady) -->
 
 ```
 
-## Pseudo Router Definition
+### Pseudo Router Definition
 
 ```
 <?php
@@ -214,7 +214,7 @@ class Router
 
 ```
 
-## Pseudo RoadyUI Definition
+### Pseudo RoadyUI Definition
 
 ```
 <?php
