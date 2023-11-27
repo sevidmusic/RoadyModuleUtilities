@@ -1,135 +1,110 @@
 # Summary:
 
-1. **PHPFilesystemPaths Namespace:**
-   - `\Darling\PHPFilesystemPaths\interfaces\paths\PathToExistingDirectory`: Defines a path to an existing directory.
+# PHPFilesystemPaths Library:
 
-2. **RoadyModuleUtilities Namespace:**
-   - `\Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules`:
-     Defines a path to a directory of Roady Modules.
+### `\Darling\PHPFilesystemPaths\interfaces\paths\PathToExistingDirectory`:
 
-   - `\Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory`:
-     Defines a path to an existing Roady Module's directory.
+Defines a path to an existing directory.
 
-   - `\Darling\RoadyModuleUtilities\interfaces\collections\PathToRoadyModuleDirectoryCollection`:
-     Defines a collection of `PathToRoadyModuleDirectory` instances.
+# RoadyModuleUtilities Library:
 
-   - `\Darling\RoadyModuleUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyModules`:
-     Defines a directory listing of a specified `PathToDirectoryOfRoadyModules` in the form of a `PathToRoadyModuleDirectoryCollection`
+### `\Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules`:
 
-   - `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationReader`:
-     Reads AuthorityCollection from a module's `authorities.json`.
+Defines a path to a directory of Roady Modules.
 
-   - `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationWriter`:
-     Writes AuthorityCollection to a module's `authorities.json`.
+### `\Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory`:
 
-   - `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationEditor`:
-     Edits Authorities in a module's `authorities.json`.
+Defines a path to an existing Roady Module's directory.
 
-   - `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationReader`:
-     Reads RouteCollection from a module's `routes.json`.
+### `\Darling\RoadyModuleUtilities\interfaces\collections\PathToRoadyModuleDirectoryCollection`:
 
-   - `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationWriter`:
-     Writes RouteCollection to a module's `routes.json`.
+Defines a collection of `PathToRoadyModuleDirectory` instances.
 
-   - `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationEditor`:
-     Edits Routes in a module's `routes.json`.
+### `\Darling\RoadyModuleUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyModules`:
 
-   - `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleCSSRouteDeterminator`:
-     Determines CSS routes for a module.
+Defines a directory listing of a specified `PathToDirectoryOfRoadyModules` in the form of a `PathToRoadyModuleDirectoryCollection`
 
-   - `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleJSRouteDeterminator`:
-     Determines JS routes for a module.
+### `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationReader`:
 
-   - `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleOutputRouteDeterminator`:
-     Determines output routes for a module.
+Reads AuthorityCollection from a module's `authorities.json`.
 
+### `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationWriter`:
 
-3. **RoadyTemplateUtilities Namespace:**
-   - `\Darling\RoadyTemplateUtilities\interfaces\paths\PathToDirectoryOfRoadyHtmlFileTemplates`:
-     Defines a path to a directory of Roady HTML templates.
+Writes AuthorityCollection to a module's `authorities.json`.
 
-   - `\Darling\RoadyTemplateUtilities\interfaces\paths\PathToRoadyHtmlFileTemplateFile`:
-     Defines a path to an existing Roady HTML template file.
+### `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationEditor`:
 
-   - `\Darling\RoadyTemplateUtilities\interfaces\collections\PathToRoadyHtmlFileTemplateFileCollection`:
-     Defines a collection of `PathToRoadyHtmlFileTemplateFile` instances.
+Edits Authorities in a module's `authorities.json`.
 
-   - `\Darling\RoadyTemplateUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyHtmlFileTemplates`:
-     Defines a collection of `PathToRoadyHtmlFileTemplateFile` instances for template files.
+### `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationReader`:
 
+Reads RouteCollection from a module's `routes.json`.
 
-4. **RoadyRoutingUtilities Namespace:**
-   - `\Darling\RoadyRoutingUtilities\interfaces\routing\Request`:
-     Interface representing an HTTP request.
+### `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationWriter`:
 
-   - `\Darling\RoadyRoutingUtilities\interfaces\routing\Response`:
-     Interface representing an HTTP response.
+Writes RouteCollection to a module's `routes.json`.
 
-   - `\Darling\RoadyRoutingUtilities\interfaces\routing\Router`:
-     Interface for routing requests.
+### `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationEditor`:
+
+Edits Routes in a module's `routes.json`.
+
+### `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleCSSRouteDeterminator`:
+
+Determines CSS routes for a module.
+
+### `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleJSRouteDeterminator`:
+
+Determines JS routes for a module.
+
+### `\Darling\RoadyModuleUtilities\interfaces\utilities\ModuleOutputRouteDeterminator`:
+
+Determines output routes for a module.
 
 
-5. **RoadyUIUtilities Namespace:**
-   - `\Darling\RoadyUIUtilities\interfaces\ui\RoadyUI`:
-     Interface representing the user interface of Roady.
+# RoadyTemplateUtilities Library:
 
-# TODO
+### `\Darling\RoadyTemplateUtilities\interfaces\paths\PathToDirectoryOfRoadyHtmlFileTemplates`:
 
-### PHPFilesystemPaths:
+Defines a path to a directory of Roady HTML templates.
 
-- \Darling\PHPFilesystemPaths\interfaces\paths\PathToExistingDirectory
+### `\Darling\RoadyTemplateUtilities\interfaces\paths\PathToRoadyHtmlFileTemplateFile`:
 
-### RoadyModuleUtilities:
+Defines a path to an existing Roady HTML template file.
 
-- \Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules
+### `\Darling\RoadyTemplateUtilities\interfaces\collections\PathToRoadyHtmlFileTemplateFileCollection`:
 
-- \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory
+Defines a collection of `PathToRoadyHtmlFileTemplateFile` instances.
 
-- \Darling\RoadyModuleUtilities\interfaces\collections\PathToRoadyModuleDirectoryCollection
+### `\Darling\RoadyTemplateUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyHtmlFileTemplates`:
 
-- \Darling\RoadyModuleUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyModules;
-
-- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationWriter
-
-- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationReader
-
-- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleAuthoritiesJsonConfigurationEditor
-
-- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationWriter
-
-- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationReader
-
-- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleRoutesJsonConfigurationEditor
-
-- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleCSSRouteDeterminator;
-
-- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleJSRouteDeterminator;
-
-- \Darling\RoadyModuleUtilities\interfaces\utilities\ModuleOutputRouteDeterminator;
+Defines a directory listing of a specified `PathToDirectoryOfRoadyHtmlFileTemplates` in the form of a `PathToRoadyHtmlFileTemplateFileCollection`
 
 
+# RoadyRoutingUtilities Library:
 
-### RoadyTemplateUtilities:
+### `\Darling\RoadyRoutingUtilities\interfaces\routing\Request`:
 
-- \Darling\RoadyTemplateUtilities\interfaces\collections\PathToRoadyHtmlFileTemplateFileCollection
+Interface representing an HTTP request.
 
-- \Darling\RoadyTemplateUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyHtmlFileTemplates;
+### `\Darling\RoadyRoutingUtilities\interfaces\routing\Response`:
 
-- \Darling\RoadyTemplateUtilities\interfaces\paths\PathToDirectoryOfRoadyHtmlFileTemplates
+Interface representing an HTTP response.
 
-- \Darling\RoadyTemplateUtilities\interfaces\paths\PathToRoadyHtmlFileTemplateFile
+### `\Darling\RoadyRoutingUtilities\interfaces\routing\Router`:
 
-### RoadyRoutingUtilities:
+Interface for routing requests.
 
-- \Darling\RoadyRoutingUtilities\interfaces\routing\Request;
 
-- \Darling\RoadyRoutingUtilities\interfaces\routing\Response;
+# RoadyUIUtilities Library:
 
-- \Darling\RoadyRoutingUtilities\interfaces\routing\Router;
+### `\Darling\RoadyUIUtilities\interfaces\ui\RoadyUI`:
 
-### RoadyUIUtilities:
+Interface representing the user interface of Roady.
 
-- \Darling\ROadyUIUtilities\interfaces\ui\RoadyUI;
+######################################################################
+############################ Roady 2.0 ###############################
+######################################################################
+
 
 # RoadyModuleUtilities
 
@@ -141,7 +116,8 @@ by other libraries so I can organize my thoughts.
 
 This file will change alot before the first release of this library.
 
-Provides classes for working with Roady modules.
+The RoadyModuleUtilities library will provide classes for working with
+Roady modules.
 
 # Draft/Design Notes
 
@@ -151,6 +127,8 @@ and RoadyTemplateUtilities libraries:
 
 ```
 <?php
+
+# Roady's index.php
 
 use \Darling\PHPFilesystemPaths\classes\paths\PathToExistingDirectory;
 use \Darling\PHPTextTypes\classes\strings\SafeText;
@@ -168,7 +146,6 @@ use \Darling\RoadyTemplateUtilities\classes\paths\PathToDirectoryOfRoadyHtmlFile
  *
  * The code in this file is likely to change.
  */
-
 
 $ui = new RoadyUI(
     new Router(
