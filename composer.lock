@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c04c06003713e2e3c3137f4ee6565ee",
+    "content-hash": "a02694224857b45967a3749e179c9fdd",
     "packages": [
         {
             "name": "darling/php-darling-dev-tools",
@@ -49,6 +49,101 @@
                 "source": "https://github.com/sevidmusic/PHPDarlingDevTools/tree/v1.0.8"
             },
             "time": "2023-10-25T23:39:53+00:00"
+        },
+        {
+            "name": "darling/php-file-system-paths",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sevidmusic/PHPFileSystemPaths.git",
+                "reference": "5a2ce4e9a9a85b3557b54bd332817a8c83542992"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sevidmusic/PHPFileSystemPaths/zipball/5a2ce4e9a9a85b3557b54bd332817a8c83542992",
+                "reference": "5a2ce4e9a9a85b3557b54bd332817a8c83542992",
+                "shasum": ""
+            },
+            "require": {
+                "darling/php-darling-dev-tools": "^1.0",
+                "darling/php-text-types": "^1.1",
+                "darling/php-unit-test-utilities": "^1.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Darling\\PHPFileSystemPaths\\": "src/",
+                    "Darling\\PHPFileSystemPaths\\tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "sevidmusic",
+                    "email": "sdmwebsdm@gmail.com"
+                }
+            ],
+            "description": "Defines classes for working with a file system in php.",
+            "support": {
+                "issues": "https://github.com/sevidmusic/PHPFileSystemPaths/issues",
+                "source": "https://github.com/sevidmusic/PHPFileSystemPaths/tree/v1.0.0"
+            },
+            "time": "2023-12-07T22:50:17+00:00"
+        },
+        {
+            "name": "darling/php-text-types",
+            "version": "v1.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sevidmusic/PHPTextTypes.git",
+                "reference": "6f21569f56424f26297a39d36fbed34a8e959f5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sevidmusic/PHPTextTypes/zipball/6f21569f56424f26297a39d36fbed34a8e959f5d",
+                "reference": "6f21569f56424f26297a39d36fbed34a8e959f5d",
+                "shasum": ""
+            },
+            "require": {
+                "darling/php-darling-dev-tools": "^1.0",
+                "darling/php-unit-test-utilities": "^1.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Darling\\PHPTextTypes\\": "src/",
+                    "Darling\\PHPTextTypes\\tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "sevidmusic",
+                    "email": "sdmwebsdm@gmail.com"
+                }
+            ],
+            "description": "A collection of classes that represent various types of text.",
+            "support": {
+                "issues": "https://github.com/sevidmusic/PHPTextTypes/issues",
+                "source": "https://github.com/sevidmusic/PHPTextTypes/tree/v1.1.6"
+            },
+            "time": "2023-11-07T20:04:05+00:00"
         },
         {
             "name": "darling/php-unit-test-utilities",
@@ -325,16 +420,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.44",
+            "version": "1.10.46",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "bf84367c53a23f759513985c54ffe0d0c249825b"
+                "reference": "90d3d25c5b98b8068916bbf08ce42d5cb6c54e70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/bf84367c53a23f759513985c54ffe0d0c249825b",
-                "reference": "bf84367c53a23f759513985c54ffe0d0c249825b",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/90d3d25c5b98b8068916bbf08ce42d5cb6c54e70",
+                "reference": "90d3d25c5b98b8068916bbf08ce42d5cb6c54e70",
                 "shasum": ""
             },
             "require": {
@@ -383,7 +478,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-21T16:30:46+00:00"
+            "time": "2023-11-28T14:57:26+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
