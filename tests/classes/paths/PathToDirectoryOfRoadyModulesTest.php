@@ -26,6 +26,10 @@ class PathToDirectoryOfRoadyModulesTest extends RoadyModuleUtilitiesTest
         $pathToExistingDirectory = new PathToExistingDirectory(
             $this->safeTextCollectionThatMapsToTheRoadyModuleUtilitiesLibrarysTestsDirectory()
         );
+        $pathToNonExistingDirectory = new PathToExistingDirectory(
+            $this->safeTextCollectionThatMapsToADirectoryThatDoesNotExist()
+        );
+        $testDirectory = (rand(0, 1) ? $pathToExistingDirectory : $pathToNonExistingDirectory);
         $this->setExpectedPathToExistingDirectory($pathToExistingDirectory);
         $this->setPathToDirectoryOfRoadyModulesTestInstance(
             new PathToDirectoryOfRoadyModules($pathToExistingDirectory)
