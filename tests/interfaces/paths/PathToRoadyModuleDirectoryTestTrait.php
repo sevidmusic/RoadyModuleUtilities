@@ -50,6 +50,16 @@ trait PathToRoadyModuleDirectoryTestTrait
      * implementation instance to be tested via the
      * setPathToRoadyModuleDirectoryTestInstance() method.
      *
+     * This method must also set the PathToDirectoryOfRoadyModules
+     * instance that is expected to be returned by the
+     * PathToRoadyModuleDirectory instance being tested's
+     * pathToDirectoryOfRoadyModules() method via the
+     * setExpectedPathToDirectoryOfRoadyModules() method.
+     *
+     * This method must also set the Name instance that is expected
+     * to be returned by the PathToDirectoryOfRoadyModules instance
+     * being tested's name() method via the setExpectedName() method.
+     *
      * This method may also be used to perform any additional setup
      * required by the implementation being tested.
      *
@@ -58,6 +68,28 @@ trait PathToRoadyModuleDirectoryTestTrait
      * @example
      *
      * ```
+     * public function setUp(): void
+     * {
+     *     $pathToExistingDirectory = new PathToExistingDirectory(
+     *         $this->safeTextCollectionThatMapsToTheRoadyModuleUtilitiesLibrarysTestsDirectory()
+     *     );
+     *     $pathToNonExistingDirectory = new PathToExistingDirectory(
+     *         $this->safeTextCollectionThatMapsToADirectoryThatDoesNotExist()
+     *     );
+     *     $testDirectory = (rand(0, 1) ? $pathToExistingDirectory : $pathToNonExistingDirectory);
+     *     $pathToDirectoryOfRoadyModules = new PathToDirectoryOfRoadyModules(
+     *             $testDirectory
+     *     );
+     *     $this->setExpectedPathToDirectoryOfRoadyModules($pathToDirectoryOfRoadyModules);
+     *     $name = new Name(new Text(rand(0, 1) ? 'interfaces' : $this->randomChars()));
+     *     $this->setExpectedName($name);
+     *     $this->setPathToRoadyModuleDirectoryTestInstance(
+     *         new PathToRoadyModuleDirectory(
+     *             $pathToDirectoryOfRoadyModules,
+     *             $name
+     *         )
+     *     );
+     * }
      *
      * ```
      *
@@ -164,14 +196,13 @@ trait PathToRoadyModuleDirectoryTestTrait
      * expected to be returned by the PathToRoadyModuleDirectory
      * instance being tested's pathToExistingDirectory() method.
      *
-     * If the path formed by combining the path defined by the
-     * expectedPathToDirectoryOfRoadyModules() and expectedName()
-     * is a path to an existing directory then the
-     * PathToExistingDirectory will define a path to that directory.
+     * If a path to an existing directory can be formed by combining
+     * the path defined by the expectedPathToDirectoryOfRoadyModules()
+     * and expectedName() then the PathToExistingDirectory will define
+     * a path to that directory.
      *
      * Otherwise, it will define a path to the system's temporary
-     * directory. This will be the path returned by php's
-     * sys_get_temp_dir() function.
+     * directory.
      *
      * @return PathToExistingDirectory
      *
@@ -278,7 +309,34 @@ trait PathToRoadyModuleDirectoryTestTrait
             $this->testFailedMessage(
                 $this->pathToRoadyModuleDirectoryTestInstance(),
                 'pathToExistingDirectory',
-                'return the expected PathToExistingDirectory',
+                'return the same string returned by the expected ' .
+                'PathToExistingDirectory instance\'s __toString() ' .
+                'method',
+            ),
+        );
+    }
+
+    /**
+     * Test __toString() returns the same path returned by the
+     * assigned PathToExistingDirectory instances __toString()
+     * method.
+     *
+     * @return void
+     *
+     * @covers PathToRoadyModuleDirectory->__toString()
+     *
+     */
+    public function test___toString_returns_the_same_path_returned_by_the_assigned_PathToExistingDirectory_instances___toString_method(): void
+    {
+        $this->assertEquals(
+            $this->pathToRoadyModuleDirectoryTestInstance()->pathToExistingDirectory()->__toString(),
+            $this->pathToRoadyModuleDirectoryTestInstance()->__toString(),
+            $this->testFailedMessage(
+                $this->pathToRoadyModuleDirectoryTestInstance(),
+                'pathToExistingDirectory',
+                'return the same string returned by the assigned ' .
+                'PathToExistingDirectory instance\'s __toString() ' .
+                'method',
             ),
         );
     }
