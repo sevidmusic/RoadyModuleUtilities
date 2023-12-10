@@ -4,11 +4,11 @@ namespace Darling\RoadyModuleUtilities\tests\classes\paths;
 
 use Darling\PHPFileSystemPaths\classes\paths\PathToExistingDirectory;
 use Darling\RoadyModuleUtilities\classes\paths\PathToDirectoryOfRoadyModules;
+use \Darling\PHPTextTypes\classes\strings\Name;
+use \Darling\PHPTextTypes\classes\strings\Text;
 use \Darling\RoadyModuleUtilities\classes\paths\PathToRoadyModuleDirectory;
 use \Darling\RoadyModuleUtilities\tests\RoadyModuleUtilitiesTest;
 use \Darling\RoadyModuleUtilities\tests\interfaces\paths\PathToRoadyModuleDirectoryTestTrait;
-use \Darling\PHPTextTypes\classes\strings\Name;
-use \Darling\PHPTextTypes\classes\strings\Text;
 
 class PathToRoadyModuleDirectoryTest extends RoadyModuleUtilitiesTest
 {

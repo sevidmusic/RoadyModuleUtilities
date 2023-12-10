@@ -2,13 +2,13 @@
 
 namespace Darling\RoadyModuleUtilities\tests\interfaces\paths;
 
-use Darling\PHPTextTypes\classes\collections\SafeTextCollection;
-use \Darling\PHPFileSystemPaths\interfaces\paths\PathToExistingDirectory;
 use \Darling\PHPFileSystemPaths\classes\paths\PathToExistingDirectory as PathToExistingDirectoryInstance;
-use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
-use \Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules;
-use \Darling\PHPTextTypes\interfaces\strings\Name;
+use \Darling\PHPFileSystemPaths\interfaces\paths\PathToExistingDirectory;
+use \Darling\PHPTextTypes\classes\collections\SafeTextCollection;
 use \Darling\PHPTextTypes\classes\strings\SafeText;
+use \Darling\PHPTextTypes\interfaces\strings\Name;
+use \Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules;
+use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
 
 /**
  * The PathToRoadyModuleDirectoryTestTrait defines common tests for

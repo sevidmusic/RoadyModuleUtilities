@@ -12,7 +12,6 @@ use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory as
 class PathToRoadyModuleDirectory implements PathToRoadyModuleDirectoryInterface
 {
 
-
     /**
      * Instantiate a new PathToRoadyModuleDirectory instance using
      * the specified PathToDirectoryOfRoadyModules and Name.
@@ -20,7 +19,7 @@ class PathToRoadyModuleDirectory implements PathToRoadyModuleDirectoryInterface
      * Note: If the PathToDirectoryOfRoadyModules and Name can not
      * be used to define a path to an existing directory then the
      * path defined by this PathToRoadyModuleDirectory instance will
-     * be the path returned by php's sys_get_temp_dir() function.
+     * be the path to the systems temporary directory.
      *
      * @param PathToDirectoryOfRoadyModules $pathToDirectoryOfRoadyModules
      *                                   An instance of a
@@ -48,19 +47,6 @@ class PathToRoadyModuleDirectory implements PathToRoadyModuleDirectoryInterface
         return $this->pathToDirectoryOfRoadyModules;
     }
 
-    /**
-     * Return an instance of a PathToExistingDirectory
-     * If the combination of the pathToDirectoryOfRoadyModules() and
-     * name() form a path to an existing directory then the
-     * PathToExistingDirectory will define a path to that directory.
-     *
-     * Otherwise, it will define a path to the system's temporary
-     * directory. This will be the path returned by php's
-     * sys_get_temp_dir() function.
-     *
-     * @return PathToExistingDirectory
-     *
-     */
     public function pathToExistingDirectory(): PathToExistingDirectory
     {
         $pathParts = $this->pathToDirectoryOfRoadyModules()

@@ -8,6 +8,16 @@ use \Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules
 class PathToDirectoryOfRoadyModules implements PathToDirectoryOfRoadyModulesInterface
 {
 
+    /**
+     * Instantiate a new PathToDirectoryOfRoadyModules instance.
+     *
+     * @param PathToExistingDirectory $pathToExistingDirectory
+     *                        An instance of a PathToExistingDirectory
+     *                        that will determine the complete path to
+     *                        the directory of Roady modules.
+     *
+     *
+     */
     public function __construct(
         private PathToExistingDirectory $pathToExistingDirectory
     ) {}

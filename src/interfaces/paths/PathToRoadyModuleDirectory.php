@@ -14,8 +14,8 @@ use \Stringable;
  * PathToDirectoryOfRoadyModules.
  *
  * If the module's root directory does not exist in the relevant
- * directory then the path will default to the path returned by
- * php's sys_get_temp_dir() function.
+ * directory then the path will default to the path to the system's
+ * temporary directory.
  *
  */
 interface PathToRoadyModuleDirectory extends Stringable
@@ -45,7 +45,7 @@ interface PathToRoadyModuleDirectory extends Stringable
      * if the module exists.
      *
      * If the module does not exist then return an instance of a
-     * PathToExistingDirectory that defines a path to the systems
+     * PathToExistingDirectory that defines a path to the system's
      * temporary directory.
      *
      * @return PathToExistingDirectory
@@ -55,7 +55,7 @@ interface PathToRoadyModuleDirectory extends Stringable
 
     /**
      * Return the complete path to the Roady module's root directory,
-     * or to the systems temporary directory if the module does not
+     * or to the system's temporary directory if the module does not
      * exist at the path defined by the PathToDirectoryOfRoadyModules
      * instance returned by the pathToDirectoryOfRoadyModules() method.
      *
