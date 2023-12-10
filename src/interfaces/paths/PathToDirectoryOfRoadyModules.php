@@ -6,18 +6,16 @@ use \Darling\PHPFileSystemPaths\interfaces\paths\PathToExistingDirectory;
 use \Stringable;
 
 /**
- * A PathToDirectoryOfRoadyModules defines a PathToExistingDirectory
- * where Roady modules are expected to be located.
- *
- * The path can be obtained via the __toString() method.
+ * A PathToDirectoryOfRoadyModules can be used to define a path to
+ * a directory where Roady modules are expected to be located.
  *
  */
 interface PathToDirectoryOfRoadyModules extends Stringable
 {
 
     /**
-     * Return the assigned PathToExistingDirectory which will
-     * determine the actual path to the directory of Roady modules.
+     * Return an instance of a PathToExistingDirectory that will
+     * determine the path to the directory of Roady modules.
      *
      * @return PathToExistingDirectory
      *
@@ -26,6 +24,9 @@ interface PathToDirectoryOfRoadyModules extends Stringable
 
     /**
      * Return the path to the directory of Roady modules.
+     *
+     * The complete path is determined by the PathToExistingDirectory
+     * instance returned by the pathToExistingDirectory() method.
      *
      * @return string
      *

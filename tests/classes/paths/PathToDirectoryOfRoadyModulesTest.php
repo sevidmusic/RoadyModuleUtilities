@@ -11,8 +11,8 @@ class PathToDirectoryOfRoadyModulesTest extends RoadyModuleUtilitiesTest
 {
 
     /**
-     * The PathToDirectoryOfRoadyModulesTestTrait defines
-     * common tests for implementations of the
+     * The PathToDirectoryOfRoadyModulesTestTrait defines common tests
+     * for implementations of the
      * Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules
      * interface.
      *
@@ -26,10 +26,15 @@ class PathToDirectoryOfRoadyModulesTest extends RoadyModuleUtilitiesTest
         $pathToExistingDirectory = new PathToExistingDirectory(
             $this->safeTextCollectionThatMapsToTheRoadyModuleUtilitiesLibrarysTestsDirectory()
         );
-        $this->setExpectedPathToExistingDirectory($pathToExistingDirectory);
+        $pathToNonExistingDirectory = new PathToExistingDirectory(
+            $this->safeTextCollectionThatMapsToADirectoryThatDoesNotExist()
+        );
+        $testDirectory = (rand(0, 1) ? $pathToExistingDirectory : $pathToNonExistingDirectory);
+        $this->setExpectedPathToExistingDirectory($testDirectory);
         $this->setPathToDirectoryOfRoadyModulesTestInstance(
-            new PathToDirectoryOfRoadyModules($pathToExistingDirectory)
+            new PathToDirectoryOfRoadyModules($testDirectory)
         );
     }
+
 }
 

@@ -15,8 +15,7 @@ use \PHPUnit\Framework\TestCase;
  * Defines common methods that may be useful to all
  * RoadyModuleUtilities test classes.
  *
- * All RoadyModuleUtilities test classes must extend from
- * this class.
+ * All RoadyModuleUtilities test classes must extend from this class.
  *
  */
 class RoadyModuleUtilitiesTest extends TestCase
