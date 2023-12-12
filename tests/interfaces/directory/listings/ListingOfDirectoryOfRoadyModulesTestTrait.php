@@ -27,7 +27,6 @@ trait ListingOfDirectoryOfRoadyModulesTestTrait
      */
     protected ListingOfDirectoryOfRoadyModules $listingOfDirectoryOfRoadyModules;
 
-
     /**
      * The PathToDirectoryOfRoadyModules instance that is expected
      * to be returned by the ListingOfDirectoryOfRoadyModules being
@@ -43,6 +42,12 @@ trait ListingOfDirectoryOfRoadyModulesTestTrait
      * implementation instance to be tested via the
      * setListingOfDirectoryOfRoadyModulesTestInstance() method.
      *
+     * This method must also set the PathToDirectoryOfRoadyModules
+     * implementation instance that is expected to be returned by
+     * the ListingOfDirectoryOfRoadyModules being tested's
+     * pathToDirectoryOfRoadyModules() method via the
+     * setExpectedPathToDirectoryOfRoadyModules() method.
+     *
      * This method may also be used to perform any additional setup
      * required by the implementation being tested.
      *
@@ -51,6 +56,20 @@ trait ListingOfDirectoryOfRoadyModulesTestTrait
      * @example
      *
      * ```
+     * public function setUp(): void
+     * {
+     *     $pathToDirectoryOfRoadyModules = new PathToDirectoryOfRoadyModules(
+     *         new PathToExistingDirectory(
+     *             $this->safeTextCollectionThatMapsToTheRoadyModuleUtilitiesLibrarysTestsDirectory()
+     *         ),
+     *     );
+     *     $this->setExpectedPathToDirectoryOfRoadyModules($pathToDirectoryOfRoadyModules);
+     *     $this->setListingOfDirectoryOfRoadyModulesTestInstance(
+     *         new ListingOfDirectoryOfRoadyModules(
+     *             $pathToDirectoryOfRoadyModules
+     *         )
+     *     );
+     * }
      *
      * ```
      *
@@ -124,6 +143,38 @@ trait ListingOfDirectoryOfRoadyModulesTestTrait
     }
 
     /**
+     * Return the PathToRoadyModuleDirectoryCollection
+     * instance that is expected to be returned by the
+     * ListingOfDirectoryOfRoadyModules being tested's
+     * pathToRoadyModuleDirectoryCollection() method.
+     *
+     * @return PathToRoadyModuleDirectoryCollection
+     *
+     */
+    private function expectedPathToRoadyModuleDirectoryCollection(): PathToRoadyModuleDirectoryCollection
+    {
+        $directoryIterator = new \DirectoryIterator(
+            $this->expectedPathToDirectoryOfRoadyModules()->__toString()
+        );
+        $expectedPathToRoadyModuleDirectoryInstances = [];
+        foreach($directoryIterator as $fileInfo) {
+            if($fileInfo->isDot()) {
+                continue;
+            }
+            if(is_dir($fileInfo->getRealPath())) {
+                $expectedPathToRoadyModuleDirectoryInstances[] =
+                    new PathToRoadyModuleDirectory(
+                        $this->expectedPathToDirectoryOfRoadyModules(),
+                        new Name(new Text($fileInfo->getFilename())),
+                    );
+            }
+        }
+        return new PathToRoadyModuleDirectoryCollection(
+            ...$expectedPathToRoadyModuleDirectoryInstances
+        );
+    }
+
+    /**
      * Test pathToDirectoryOfRoadyModules() returns the expected
      * PathToDirectoryOfRoadyModules.
      *
@@ -141,53 +192,37 @@ trait ListingOfDirectoryOfRoadyModulesTestTrait
             $this->testFailedMessage(
                 $this->listingOfDirectoryOfRoadyModulesTestInstance(),
                 'pathToDirectoryOfRoadyModules',
-                'Returnt the expected PathToDirectoryOfRoadyModules instance',
+                'return the expected PathToDirectoryOfRoadyModules',
             ),
         );
     }
 
     /**
-     * Test pathToDirectoryOfRoadyModules() returns the expected
-     * PathToDirectoryOfRoadyModules.
+     * Test pathToRoadyModuleDirectoryCollection() returns the expected
+     * PathToRoadyModuleDirectoryCollection.
      *
      * @return void
      *
-     * @covers ListingOfDirectoryOfRoadyModules->pathToDirectoryOfRoadyModules()
+     * @covers ListingOfDirectoryOfRoadyModules->pathToRoadyModuleDirectoryCollection()
      *
      */
-    public function test_PathToRoadyModuleDirectoryCollection_returns_the_expected_PathToRoadyModuleDirectoryCollection(): void
+    public function test_pathToRoadyModuleDirectoryCollection_returns_the_expected_PathToRoadyModuleDirectoryCollection(): void
     {
-        $directoryIterator = new \DirectoryIterator($this->expectedPathToDirectoryOfRoadyModules()->__toString());
-        $expectedPathToRoadyModuleDirectoryInstances = [];
-        foreach($directoryIterator as $fileInfo) {
-            if($fileInfo->isDot()) {
-                continue;
-            }
-            if(is_dir($fileInfo->getRealPath())) {
-                $expectedPathToRoadyModuleDirectoryInstances[] = new PathToRoadyModuleDirectory(
-                    $this->expectedPathToDirectoryOfRoadyModules(),
-                    new Name(new Text($fileInfo->getFilename())),
-                );
-            }
-        }
-        $expectedPathToRoadyModuleDirectoryCollection = new PathToRoadyModuleDirectoryCollection(
-            ...$expectedPathToRoadyModuleDirectoryInstances
-        );
         $this->assertEquals(
-            $expectedPathToRoadyModuleDirectoryCollection,
+            $this->expectedPathToRoadyModuleDirectoryCollection(),
             $this->listingOfDirectoryOfRoadyModulesTestInstance()
                  ->pathToRoadyModuleDirectoryCollection(),
             $this->testFailedMessage(
                 $this->listingOfDirectoryOfRoadyModulesTestInstance(),
                 'pathToRoadyModuleDirectoryCollection',
-                'Returnt the expected PathToRoadyModuleDirectoryCollection',
+                'return the expected PathToRoadyModuleDirectoryCollection',
             ),
         );
     }
 
     abstract protected function testFailedMessage(object $testedInstance, string $testedMethod, string $expectation): string;
-    abstract public static function assertSame(mixed $expected, mixed $actual, string $message = ''): void;
     abstract public static function assertEquals(mixed $expected, mixed $actual, string $message = ''): void;
+    abstract public static function assertSame(mixed $expected, mixed $actual, string $message = ''): void;
 
 }
 

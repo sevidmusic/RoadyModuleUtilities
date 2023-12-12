@@ -12,8 +12,8 @@ class ListingOfDirectoryOfRoadyModulesTest extends RoadyModuleUtilitiesTest
 {
 
     /**
-     * The ListingOfDirectoryOfRoadyModulesTestTrait defines
-     * common tests for implementations of the
+     * The ListingOfDirectoryOfRoadyModulesTestTrait defines common
+     * tests for implementations of the
      * Darling\RoadyModuleUtilities\interfaces\directory\listings\ListingOfDirectoryOfRoadyModules
      * interface.
      *

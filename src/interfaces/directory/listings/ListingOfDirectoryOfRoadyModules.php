@@ -6,17 +6,15 @@ use Darling\RoadyModuleUtilities\interfaces\collections\PathToRoadyModuleDirecto
 use \Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules;
 
 /**
- * Description of this interface.
+ * A ListingOfDirectoryOfRoadyModules defines a
+ * PathToRoadyModuleDirectoryCollection that
+ * defines a collection of PathToRoadyModuleDirectory
+ * instances for the directories located in the assigned
+ * PathToDirectoryOfRoadyModules.
  *
- * @example
- *
- * ```
- *
- * ```
  */
 interface ListingOfDirectoryOfRoadyModules
 {
-
 
     /**
      * Return the PathToDirectoryOfRoadyModules that will be listed.
@@ -26,6 +24,15 @@ interface ListingOfDirectoryOfRoadyModules
      */
     public function pathToDirectoryOfRoadyModules(): PathToDirectoryOfRoadyModules;
 
+
+    /**
+     * Return the PathToRoadyModuleDirectoryCollection of
+     * PathToRoadyModuleDirectory instances for the directories
+     * located in the assigned PathToDirectoryOfRoadyModules.
+     *
+     * @return PathToRoadyModuleDirectoryCollection
+     *
+     */
     public function pathToRoadyModuleDirectoryCollection(): PathToRoadyModuleDirectoryCollection;
 
 }
