@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a02694224857b45967a3749e179c9fdd",
+    "content-hash": "06e0fe31483f54f21a8331c48512dbb5",
     "packages": [
         {
             "name": "darling/php-darling-dev-tools",
@@ -99,6 +99,102 @@
             "time": "2023-12-07T22:50:17+00:00"
         },
         {
+            "name": "darling/php-mocking-utilities",
+            "version": "v1.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sevidmusic/PHPMockingUtilities.git",
+                "reference": "e859a2c6672d7ebdc090441e6c08b3d24835d0ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sevidmusic/PHPMockingUtilities/zipball/e859a2c6672d7ebdc090441e6c08b3d24835d0ec",
+                "reference": "e859a2c6672d7ebdc090441e6c08b3d24835d0ec",
+                "shasum": ""
+            },
+            "require": {
+                "darling/php-darling-dev-tools": "^1.0",
+                "darling/php-reflection-utilities": "^1.0",
+                "darling/php-text-types": "^1.0",
+                "darling/php-unit-test-utilities": "^1.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Darling\\PHPMockingUtilities\\": "src/",
+                    "Darling\\PHPMockingUtilities\\tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sevi Donnelly Foreman",
+                    "email": "sdmwebsdm@gmail.com"
+                }
+            ],
+            "description": "The PHPMockingUtilities library provides classes that can be used to mock various types of values.",
+            "support": {
+                "issues": "https://github.com/sevidmusic/PHPMockingUtilities/issues",
+                "source": "https://github.com/sevidmusic/PHPMockingUtilities/tree/v1.0.9"
+            },
+            "time": "2023-10-25T19:00:20+00:00"
+        },
+        {
+            "name": "darling/php-reflection-utilities",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sevidmusic/PHPReflectionUtilities.git",
+                "reference": "114df8a0c81def7f9979f6d95df9b62a5367775e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sevidmusic/PHPReflectionUtilities/zipball/114df8a0c81def7f9979f6d95df9b62a5367775e",
+                "reference": "114df8a0c81def7f9979f6d95df9b62a5367775e",
+                "shasum": ""
+            },
+            "require": {
+                "darling/php-text-types": "^1.0",
+                "darling/php-unit-test-utilities": "^1.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Darling\\PHPReflectionUtilities\\": "src/",
+                    "Darling\\PHPReflectionUtilities\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "sevidmusic",
+                    "email": "sdmwebsdm@gmail.com"
+                }
+            ],
+            "description": "A collection of php classes that can be used to aide in reflection with PHP",
+            "support": {
+                "issues": "https://github.com/sevidmusic/PHPReflectionUtilities/issues",
+                "source": "https://github.com/sevidmusic/PHPReflectionUtilities/tree/v1.1.2"
+            },
+            "time": "2023-11-22T22:27:56+00:00"
+        },
+        {
             "name": "darling/php-text-types",
             "version": "v1.1.6",
             "source": {
@@ -189,6 +285,104 @@
                 "source": "https://github.com/sevidmusic/PHPUnitTestUtilities/tree/v1.0.8"
             },
             "time": "2023-10-25T23:40:22+00:00"
+        },
+        {
+            "name": "darling/php-web-paths",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sevidmusic/PHPWebPaths.git",
+                "reference": "73d4e8972cc295bdc47e7434cd7a7e31c6edaf85"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sevidmusic/PHPWebPaths/zipball/73d4e8972cc295bdc47e7434cd7a7e31c6edaf85",
+                "reference": "73d4e8972cc295bdc47e7434cd7a7e31c6edaf85",
+                "shasum": ""
+            },
+            "require": {
+                "darling/php-darling-dev-tools": "^1.0",
+                "darling/php-text-types": "^1.1",
+                "darling/php-unit-test-utilities": "^1.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Darling\\PHPWebPaths\\": "src/",
+                    "Darling\\PHPWebPaths\\tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "sevidmusic",
+                    "email": "sdmwebsdm@gmail.com"
+                }
+            ],
+            "description": "The PHPWebPaths library provides classes for working with web paths such as a Url.",
+            "support": {
+                "issues": "https://github.com/sevidmusic/PHPWebPaths/issues",
+                "source": "https://github.com/sevidmusic/PHPWebPaths/tree/v1.0.0"
+            },
+            "time": "2023-11-10T17:31:03+00:00"
+        },
+        {
+            "name": "darling/roady-routes",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sevidmusic/RoadyRoutes.git",
+                "reference": "30721f1fb67bcfbfe34961a87216850766b562ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sevidmusic/RoadyRoutes/zipball/30721f1fb67bcfbfe34961a87216850766b562ec",
+                "reference": "30721f1fb67bcfbfe34961a87216850766b562ec",
+                "shasum": ""
+            },
+            "require": {
+                "darling/php-darling-dev-tools": "^1.0",
+                "darling/php-mocking-utilities": "^1.0",
+                "darling/php-text-types": "^1.1",
+                "darling/php-unit-test-utilities": "^1.0",
+                "darling/php-web-paths": "^1.0",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Darling\\RoadyRoutes\\": "src/",
+                    "Darling\\RoadyRoutes\\tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "sevidmusic",
+                    "email": "sdmwebsdm@gmail.com"
+                }
+            ],
+            "description": "Defines a roady Route and related classes",
+            "support": {
+                "issues": "https://github.com/sevidmusic/RoadyRoutes/issues",
+                "source": "https://github.com/sevidmusic/RoadyRoutes/tree/v1.0.0"
+            },
+            "time": "2023-11-22T06:34:20+00:00"
         }
     ],
     "packages-dev": [
