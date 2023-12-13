@@ -67,38 +67,4 @@ class RoadyModuleUtilitiesTest extends TestCase
         );
     }
 
-    /**
-     * Return the name of a file that exists in the RoadyModuleUtilities
-     * library's tests directory.
-     *
-     * @return Name
-     *
-     */
-    public function nameOfFileThatExistsRoadyModuleUtilitiesTestsDirectory(): Name
-    {
-        return new Name(new Text(basename(__FILE__)));
-    }
-
-    /**
-     * Return a SafeTextCollection that maps to the systems temporary
-     * directory.
-     *
-     * @return SafeTextCollection
-     *
-     */
-    public function safeTextCollectionForPathToTmpDirectory(): SafeTextCollection
-    {
-        return new SafeTextCollection(
-            new SafeText(
-                new Text(
-                    str_replace(
-                        DIRECTORY_SEPARATOR,
-                        '',
-                        sys_get_temp_dir()
-                    )
-                )
-            )
-        );
-    }
-
 }
