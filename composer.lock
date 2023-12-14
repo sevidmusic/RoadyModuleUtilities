@@ -196,16 +196,16 @@
         },
         {
             "name": "darling/php-text-types",
-            "version": "v1.1.6",
+            "version": "v1.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sevidmusic/PHPTextTypes.git",
-                "reference": "6f21569f56424f26297a39d36fbed34a8e959f5d"
+                "reference": "abf021d349fe017839cd742afcab1c8c0e365147"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sevidmusic/PHPTextTypes/zipball/6f21569f56424f26297a39d36fbed34a8e959f5d",
-                "reference": "6f21569f56424f26297a39d36fbed34a8e959f5d",
+                "url": "https://api.github.com/repos/sevidmusic/PHPTextTypes/zipball/abf021d349fe017839cd742afcab1c8c0e365147",
+                "reference": "abf021d349fe017839cd742afcab1c8c0e365147",
                 "shasum": ""
             },
             "require": {
@@ -237,9 +237,9 @@
             "description": "A collection of classes that represent various types of text.",
             "support": {
                 "issues": "https://github.com/sevidmusic/PHPTextTypes/issues",
-                "source": "https://github.com/sevidmusic/PHPTextTypes/tree/v1.1.6"
+                "source": "https://github.com/sevidmusic/PHPTextTypes/tree/v1.1.7"
             },
-            "time": "2023-11-07T20:04:05+00:00"
+            "time": "2023-12-14T17:14:47+00:00"
         },
         {
             "name": "darling/php-unit-test-utilities",
@@ -336,16 +336,16 @@
         },
         {
             "name": "darling/roady-routes",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sevidmusic/RoadyRoutes.git",
-                "reference": "30721f1fb67bcfbfe34961a87216850766b562ec"
+                "reference": "5a32873cb56c1bf49a530df6fea2833411811ddf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sevidmusic/RoadyRoutes/zipball/30721f1fb67bcfbfe34961a87216850766b562ec",
-                "reference": "30721f1fb67bcfbfe34961a87216850766b562ec",
+                "url": "https://api.github.com/repos/sevidmusic/RoadyRoutes/zipball/5a32873cb56c1bf49a530df6fea2833411811ddf",
+                "reference": "5a32873cb56c1bf49a530df6fea2833411811ddf",
                 "shasum": ""
             },
             "require": {
@@ -380,9 +380,9 @@
             "description": "Defines a roady Route and related classes",
             "support": {
                 "issues": "https://github.com/sevidmusic/RoadyRoutes/issues",
-                "source": "https://github.com/sevidmusic/RoadyRoutes/tree/v1.0.0"
+                "source": "https://github.com/sevidmusic/RoadyRoutes/tree/v1.0.1"
             },
-            "time": "2023-11-22T06:34:20+00:00"
+            "time": "2023-12-05T15:05:23+00:00"
         }
     ],
     "packages-dev": [
