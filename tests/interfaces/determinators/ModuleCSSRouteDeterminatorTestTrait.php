@@ -2,8 +2,8 @@
 
 namespace Darling\RoadyModuleUtilities\tests\interfaces\determinators;
 
-use Darling\PHPFileSystemPaths\interfaces\paths\PathToExistingDirectory;
 use Darling\PHPFileSystemPaths\classes\paths\PathToExistingDirectory as PathToExistingDirectoryInstance;
+use Darling\PHPFileSystemPaths\interfaces\paths\PathToExistingDirectory;
 use Darling\PHPTextTypes\classes\collections\NameCollection;
 use Darling\RoadyRoutes\classes\collections\NamedPositionCollection;
 use Darling\RoadyRoutes\classes\identifiers\NamedPosition;
@@ -11,20 +11,19 @@ use Darling\RoadyRoutes\classes\identifiers\PositionName;
 use Darling\RoadyRoutes\classes\paths\RelativePath;
 use Darling\RoadyRoutes\classes\routes\Route;
 use Darling\RoadyRoutes\classes\settings\Position;
-use DirectoryIterator;
 use \Darling\PHPTextTypes\classes\collections\SafeTextCollection as SafeTextCollectionInstance;
-use \Darling\PHPTextTypes\interfaces\strings\Name;
 use \Darling\PHPTextTypes\classes\strings\Name as NameInstance;
-use \Darling\PHPTextTypes\classes\strings\Text;
 use \Darling\PHPTextTypes\classes\strings\SafeText;
+use \Darling\PHPTextTypes\classes\strings\Text;
+use \Darling\PHPTextTypes\interfaces\strings\Name;
 use \Darling\RoadyModuleUtilities\interfaces\determinators\ModuleCSSRouteDeterminator;
 use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
 use \Darling\RoadyRoutes\classes\collections\RouteCollection as RouteCollectionInstance;
 use \Darling\RoadyRoutes\interfaces\collections\RouteCollection;
 use \RecursiveDirectoryIterator;
 use \RecursiveIteratorIterator;
-use \RegexIterator;
 use \RecursiveRegexIterator;
+use \RegexIterator;
 
 /**
  * The ModuleCSSRouteDeterminatorTestTrait defines common tests for
@@ -102,28 +101,31 @@ trait ModuleCSSRouteDeterminatorTestTrait
 
     private function expectedPositionNameForCSSRoutes(): PositionName
     {
+        /**
+         * "roady-css-stylesheet-links" will always be the name of the
+         * position for routes defined for css stylesheets.
+         *
+         * This position name will correspond to the name of the
+         * position placeholder in the template file used to view
+         * this routes output.
+         */
         return new PositionName(
             new NameInstance(new Text('roady-css-stylesheet-links'))
         );
     }
 
-    private function newRouteToModuleCSSFile(Name $moduleName, Name $requestName, Position $position): Route
+    private function newRouteToModuleCSSFile(Name $moduleName, Name $requestName, Position $position, RelativePath $relativePath): Route
     {
         return new Route(
            $moduleName,
             new NameCollection($requestName),
             new NamedPositionCollection(
                 new NamedPosition(
-                    # "roady-css-stylesheet-links" will always be the
-                    # name of the position for routes defined for css
-                    # stylesheets. This position name will correspond
-                    # to the name of the position placeholder in the
-                    # template file used to view this routes output.
                     $this->expectedPositionNameForCSSRoutes(),
                     $position,
                 ),
             ),
-            new RelativePath(new SafeTextCollectionInstance()),
+            $relativePath,
         );
     }
 
@@ -173,9 +175,33 @@ trait ModuleCSSRouteDeterminatorTestTrait
                     &&
                     file_exists($cssFilePath[0])
                 ) {
-                    $cssFilePath = $cssFilePath[0];
-                    $cssFileName = basename($cssFilePath[0]);
-                    $relativePathToCssFile = str_replace($pathToRoadyModuleDirectory->__toString(), '', $cssFilePath);
+                    // PATH TO CSS FILE
+                    $pathToCssFile = $cssFilePath[0];
+
+                    // REQUEST NAME
+                    $cssFileName = basename($pathToCssFile);
+                    $cssFileNameParts = explode('_', $cssFileName);
+                    $requestName = new NameInstance(
+                        new Text(
+                            $cssFileNameParts[array_key_first($cssFileNameParts)]
+                            ??
+                            str_replace('.css', '', $cssFileName)
+                        )
+                    );
+
+                    // POSITION
+                    $position = new Position(
+                        floatval(
+                            str_replace(
+                                '.css',
+                                '',
+                                strval($cssFileNameParts[array_key_last($cssFileNameParts)] ?? 0)
+                            )
+                        )
+                    );
+
+                    // RELATIVE PATH
+                    $relativePathToCssFile = str_replace($pathToRoadyModuleDirectory->__toString(), '', $pathToCssFile);
                     $relativePathToCssFileParts = explode(DIRECTORY_SEPARATOR, $relativePathToCssFile);
                     $safeTextForRelativePathToCSSFile = [];
                     foreach($relativePathToCssFileParts as $relativePathPart) {
@@ -184,21 +210,15 @@ trait ModuleCSSRouteDeterminatorTestTrait
                         }
                     }
                     $relativePathForRoute = new RelativePath(new SafeTextCollectionInstance(...$safeTextForRelativePathToCSSFile));
-                    var_dump($relativePathForRoute->__toString());
+                    $routes[] = $this->newRouteToModuleCSSFile(
+                        $pathToRoadyModuleDirectory->name(),
+                        $requestName,
+                        $position,
+                        $relativePathForRoute,
+                    );
                 }
             }
         }
-        /*
-        foreach($cssFileNames as $cssFileName) {
-            $nameParts = explode('_', $cssFileName);
-            var_dump($nameParts);
-            $routes[] = $this->newRouteToModuleCSSFile(
-                $this->randomNameOfExisitngTestModule(),
-                new NameInstance(new Text('for-specfic-request')),
-                new Position(rand(PHP_INT_MIN, PHP_INT_MAX)),
-            );
-        }
-        */
         return new RouteCollectionInstance(
            ...$routes
         );
@@ -216,6 +236,9 @@ trait ModuleCSSRouteDeterminatorTestTrait
     public function test_determinePathToFileInModuleDirectory_returns_expected_PathToExistingFile(): void
     {
         $pathToRoadyModuleDirectory = $this->pathToRoadyTestModuleDirectory();
+        foreach($this->expectedCSSRoutes($pathToRoadyModuleDirectory)->collection() as $r) {
+            var_dump([$r->moduleName()->__toString(), $r->relativePath()->__toString()]);
+        }
         $this->assertEquals(
             $this->expectedCSSRoutes($pathToRoadyModuleDirectory),
             $this->moduleCSSRouteDeterminatorTestInstance()->determineCSSRoutes($pathToRoadyModuleDirectory),
