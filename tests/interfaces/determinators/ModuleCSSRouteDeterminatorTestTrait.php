@@ -236,9 +236,6 @@ trait ModuleCSSRouteDeterminatorTestTrait
     public function test_determinePathToFileInModuleDirectory_returns_expected_PathToExistingFile(): void
     {
         $pathToRoadyModuleDirectory = $this->pathToRoadyTestModuleDirectory();
-        foreach($this->expectedCSSRoutes($pathToRoadyModuleDirectory)->collection() as $r) {
-            var_dump([$r->moduleName()->__toString(), $r->relativePath()->__toString()]);
-        }
         $this->assertEquals(
             $this->expectedCSSRoutes($pathToRoadyModuleDirectory),
             $this->moduleCSSRouteDeterminatorTestInstance()->determineCSSRoutes($pathToRoadyModuleDirectory),
