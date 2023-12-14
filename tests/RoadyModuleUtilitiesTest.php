@@ -2,9 +2,11 @@
 
 namespace Darling\RoadyModuleUtilities\tests;
 
+use Darling\RoadyModuleUtilities\classes\directory\listings\ListingOfDirectoryOfRoadyModules;
 use \Darling\PHPFileSystemPaths\classes\paths\PathToExistingDirectory;
 use \Darling\PHPTextTypes\classes\collections\SafeTextCollection;
-use \Darling\PHPTextTypes\classes\strings\Name;
+use \Darling\PHPTextTypes\interfaces\strings\Name;
+use \Darling\PHPTextTypes\classes\strings\Name as NameInstance;
 use \Darling\PHPTextTypes\classes\strings\SafeText;
 use \Darling\PHPTextTypes\classes\strings\Text;
 use \Darling\PHPUnitTestUtilities\traits\PHPUnitConfigurationTests;
@@ -12,7 +14,6 @@ use \Darling\PHPUnitTestUtilities\traits\PHPUnitRandomValues;
 use \Darling\PHPUnitTestUtilities\traits\PHPUnitTestMessages;
 use \Darling\RoadyModuleUtilities\classes\paths\PathToDirectoryOfRoadyModules;
 use \Darling\RoadyModuleUtilities\classes\paths\PathToRoadyModuleDirectory;
-use \DirectoryIterator;
 use \PHPUnit\Framework\TestCase;
 
 /**
@@ -38,9 +39,9 @@ class RoadyModuleUtilitiesTest extends TestCase
     public function safeTextCollectionThatMapsToADirectoryThatDoesNotExist(): SafeTextCollection
     {
         return new SafeTextCollection(
-            new SafeText(new Name(new Text($this->randomChars()))),
-            new SafeText(new Name(new Text($this->randomChars()))),
-            new SafeText(new Name(new Text($this->randomChars()))),
+            new SafeText(new NameInstance(new Text($this->randomChars()))),
+            new SafeText(new NameInstance(new Text($this->randomChars()))),
+            new SafeText(new NameInstance(new Text($this->randomChars()))),
         );
     }
 
@@ -62,7 +63,7 @@ class RoadyModuleUtilitiesTest extends TestCase
             if(!empty($pathPart)) {
                 $safeTextPartsToExistingDirectoryPath[] =
                     new SafeText(
-                        new Name(new Text($pathPart))
+                        new NameInstance(new Text($pathPart))
                     );
             }
         }
@@ -133,14 +134,12 @@ class RoadyModuleUtilitiesTest extends TestCase
      */
     public function randomNameOfExisitngTestModule(): Name
     {
-        $testModuleDirectory = new DirectoryIterator($this->pathToDirectoryOfRoadyTestModules()->__toString());
+        $listingOfDirectoryOfRoadyModules = new ListingOfDirectoryOfRoadyModules($this->pathToDirectoryOfRoadyTestModules());
         $testModuleNames = [];
-        foreach($testModuleDirectory as $fileInfo) {
-            if($fileInfo->isDir() && !$fileInfo->isDot()) {
-                $testModuleNames[] = $fileInfo->getFilename();
-            }
+        foreach($listingOfDirectoryOfRoadyModules->pathToRoadyModuleDirectoryCollection()->collection() as $pathToRoadyModuleDirectory) {
+            $testModuleNames[] = $pathToRoadyModuleDirectory->name();
         }
-        return new Name(new Text($testModuleNames[array_rand($testModuleNames)]));
+        return $testModuleNames[array_rand($testModuleNames)];
     }
 
 }
