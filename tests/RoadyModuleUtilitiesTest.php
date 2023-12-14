@@ -12,8 +12,8 @@ use \Darling\PHPUnitTestUtilities\traits\PHPUnitRandomValues;
 use \Darling\PHPUnitTestUtilities\traits\PHPUnitTestMessages;
 use \Darling\RoadyModuleUtilities\classes\paths\PathToDirectoryOfRoadyModules;
 use \Darling\RoadyModuleUtilities\classes\paths\PathToRoadyModuleDirectory;
-use \PHPUnit\Framework\TestCase;
 use \DirectoryIterator;
+use \PHPUnit\Framework\TestCase;
 
 /**
  * Defines common methods that may be useful to all
@@ -71,7 +71,30 @@ class RoadyModuleUtilitiesTest extends TestCase
         );
     }
 
+    /**
+     * Randomly select and return a path to one of the existing test
+     * modules located in the RoadyModuleUtilities library's directory
+     * of test modules.
+     *
+     * @return PathToRoadyModuleDirectory
+     *
+     */
     public function pathToRoadyTestModuleDirectory(): PathToRoadyModuleDirectory
+    {
+        return new PathToRoadyModuleDirectory(
+            $this->pathToDirectoryOfRoadyTestModules(),
+            $this->randomNameOfExisitngTestModule(),
+        );
+    }
+
+    /**
+     * Return the path to the RoadyModuleUtilities library's
+     * directory of test modules.
+     *
+     * @return PathToDirectoryOfRoadyModules
+     *
+     */
+    public function pathToDirectoryOfRoadyTestModules(): PathToDirectoryOfRoadyModules
     {
         $partsOfPathToRoadyModuleUtilitiesTestsDirectory =
             $this->safeTextCollectionThatMapsToTheRoadyModuleUtilitiesLibrarysTestsDirectory();
@@ -95,20 +118,29 @@ class RoadyModuleUtilitiesTest extends TestCase
             new PathToExistingDirectory(
                 $safeTextCollectionOfPartsOfPathToRoadyModuleUtilitiesTestModulesDirectory
             );
-        $testModuleDirectory = new DirectoryIterator($pathToRoadyModuleUtilitiesTestModulesDirectory->__toString());
+        return new PathToDirectoryOfRoadyModules(
+            $pathToRoadyModuleUtilitiesTestModulesDirectory,
+        );
+    }
+
+
+    /**
+     * Randomly select one of the existing RoadyMduleUtilities
+     * library's test modules and return it's name.
+     *
+     * @return Name
+     *
+     */
+    public function randomNameOfExisitngTestModule(): Name
+    {
+        $testModuleDirectory = new DirectoryIterator($this->pathToDirectoryOfRoadyTestModules()->__toString());
         $testModuleNames = [];
         foreach($testModuleDirectory as $fileInfo) {
             if($fileInfo->isDir() && !$fileInfo->isDot()) {
                 $testModuleNames[] = $fileInfo->getFilename();
             }
         }
-        $targetModuleName = $testModuleNames[array_rand($testModuleNames)];
-        $pathToDirectoryOfRoadyTestModules = new PathToDirectoryOfRoadyModules(
-            $pathToRoadyModuleUtilitiesTestModulesDirectory,
-        );
-        return new PathToRoadyModuleDirectory(
-            $pathToDirectoryOfRoadyTestModules,
-            new Name(new Text($targetModuleName)),
-        );
+        return new Name(new Text($testModuleNames[array_rand($testModuleNames)]));
     }
+
 }
