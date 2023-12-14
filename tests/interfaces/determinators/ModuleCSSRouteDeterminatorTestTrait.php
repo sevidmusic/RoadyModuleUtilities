@@ -44,10 +44,12 @@ trait ModuleCSSRouteDeterminatorTestTrait
     protected ModuleCSSRouteDeterminator $moduleCSSRouteDeterminator;
 
     /**
-     * Set up an instance of a ModuleCSSRouteDeterminator implementation to test.
+     * Set up an instance of a ModuleCSSRouteDeterminator
+     * implementation to test.
      *
-     * This method must also set the ModuleCSSRouteDeterminator implementation instance
-     * to be tested via the setModuleCSSRouteDeterminatorTestInstance() method.
+     * This method must also set the ModuleCSSRouteDeterminator
+     * implementation instance to be tested via the
+     * setModuleCSSRouteDeterminatorTestInstance() method.
      *
      * This method may also be used to perform any additional setup
      * required by the implementation being tested.
@@ -57,10 +59,10 @@ trait ModuleCSSRouteDeterminatorTestTrait
      * @example
      *
      * ```
-     * protected function setUp(): void
+     * public function setUp(): void
      * {
      *     $this->setModuleCSSRouteDeterminatorTestInstance(
-     *         new \Darling\RoadyModuleUtilities\classes\determinators\ModuleCSSRouteDeterminator()
+     *         new ModuleCSSRouteDeterminator()
      *     );
      * }
      *
@@ -70,7 +72,8 @@ trait ModuleCSSRouteDeterminatorTestTrait
     abstract protected function setUp(): void;
 
     /**
-     * Return the ModuleCSSRouteDeterminator implementation instance to test.
+     * Return the ModuleCSSRouteDeterminator implementation
+     * instance to test.
      *
      * @return ModuleCSSRouteDeterminator
      *
@@ -81,7 +84,8 @@ trait ModuleCSSRouteDeterminatorTestTrait
     }
 
     /**
-     * Set the ModuleCSSRouteDeterminator implementation instance to test.
+     * Set the ModuleCSSRouteDeterminator implementation instance
+     * to test.
      *
      * @param ModuleCSSRouteDeterminator $moduleCSSRouteDeterminatorTestInstance
      *                              An instance of an
@@ -99,22 +103,53 @@ trait ModuleCSSRouteDeterminatorTestTrait
         $this->moduleCSSRouteDeterminator = $moduleCSSRouteDeterminatorTestInstance;
     }
 
+    /**
+     * Return the expected PositionName that should be used for all
+     * CSS Routes.
+     *
+     * The PositionName will always be "roady-css-stylesheet-links".
+     *
+     * This position name will correspond to the name of the
+     * position placeholder in the template file used to view
+     * this routes output.
+     *
+     * @return PositionName
+     *
+     */
     private function expectedPositionNameForCSSRoutes(): PositionName
     {
-        /**
-         * "roady-css-stylesheet-links" will always be the name of the
-         * position for routes defined for css stylesheets.
-         *
-         * This position name will correspond to the name of the
-         * position placeholder in the template file used to view
-         * this routes output.
-         */
         return new PositionName(
             new NameInstance(new Text('roady-css-stylesheet-links'))
         );
     }
 
-    private function newRouteToModuleCSSFile(Name $moduleName, Name $requestName, Position $position, RelativePath $relativePath): Route
+    /**
+     * Return a new Route to a CSS file using the specified
+     *
+     * $moduleName, $requestName, $position, and $relativePath.
+     *
+     * @param Name $moduleName The Name of the module the CSS file
+     *                         belongs to.
+     *
+     * @param Name $requestName The Name of the only Request that
+     *                          the Route will be mapped to.
+     *
+     * @param Position $position The Position to assign to the Route.
+     *
+     * @param RelativePath $relativePath The RelativePath to the
+     *                                   CSS file in the module's
+     *                                   directory.
+     *
+     *
+     * @return Route
+     *
+     */
+    private function newRouteToModuleCSSFile(
+        Name $moduleName,
+        Name $requestName,
+        Position $position,
+        RelativePath $relativePath
+    ): Route
     {
         return new Route(
            $moduleName,
@@ -129,6 +164,20 @@ trait ModuleCSSRouteDeterminatorTestTrait
         );
     }
 
+    /**
+     * Return a PathToExistingDirectory instance for the expected path
+     * to the css directory in the directory indicated by the specified
+     * $pathToRoadyModuleDirectory.
+     *
+     * @param PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
+     *                                   The path to the roady module
+     *                                   directory where the css
+     *                                   directory is expected to be
+     *                                   located.
+     *
+     * @return PathToExistingDirectory
+     *
+     */
     private function expectedPathToModulesCSSDirectory(
         PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
     ): PathToExistingDirectory
@@ -151,7 +200,7 @@ trait ModuleCSSRouteDeterminatorTestTrait
      * @return RouteCollection
      *
      */
-    public function expectedCSSRoutes(
+    public function expectedRouteCollection(
         PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
     ): RouteCollection
     {
@@ -225,19 +274,18 @@ trait ModuleCSSRouteDeterminatorTestTrait
     }
 
     /**
-     * Test that the determinePathToFileInModuleDirectory method
-     * returns expected PathToExistingFile.
+     * Test determineCSSRoutes returns the expected RouteCollection.
      *
      * @return void
      *
-     * @covers RoadyModuleFileSystemPathDeterminator->determinePathToFileInModuleDirectory()
+     * @covers ModuleCSSDeterminator->determineCSSRoutes()
      *
      */
-    public function test_determinePathToFileInModuleDirectory_returns_expected_PathToExistingFile(): void
+    public function test_determineCSSRoutes_returns_the_expected_RouteCollection(): void
     {
         $pathToRoadyModuleDirectory = $this->pathToRoadyTestModuleDirectory();
         $this->assertEquals(
-            $this->expectedCSSRoutes($pathToRoadyModuleDirectory),
+            $this->expectedRouteCollection($pathToRoadyModuleDirectory),
             $this->moduleCSSRouteDeterminatorTestInstance()->determineCSSRoutes($pathToRoadyModuleDirectory),
             message: $this->testFailedMessage(
                 $this->moduleCSSRouteDeterminatorTestInstance(),
