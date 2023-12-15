@@ -2,13 +2,18 @@
 
 namespace Darling\RoadyModuleUtilities\tests;
 
+use Darling\RoadyModuleUtilities\classes\directory\listings\ListingOfDirectoryOfRoadyModules;
+use \Darling\PHPFileSystemPaths\classes\paths\PathToExistingDirectory;
 use \Darling\PHPTextTypes\classes\collections\SafeTextCollection;
-use \Darling\PHPTextTypes\classes\strings\Name;
+use \Darling\PHPTextTypes\interfaces\strings\Name;
+use \Darling\PHPTextTypes\classes\strings\Name as NameInstance;
 use \Darling\PHPTextTypes\classes\strings\SafeText;
 use \Darling\PHPTextTypes\classes\strings\Text;
 use \Darling\PHPUnitTestUtilities\traits\PHPUnitConfigurationTests;
 use \Darling\PHPUnitTestUtilities\traits\PHPUnitRandomValues;
 use \Darling\PHPUnitTestUtilities\traits\PHPUnitTestMessages;
+use \Darling\RoadyModuleUtilities\classes\paths\PathToDirectoryOfRoadyModules;
+use \Darling\RoadyModuleUtilities\classes\paths\PathToRoadyModuleDirectory;
 use \PHPUnit\Framework\TestCase;
 
 /**
@@ -34,9 +39,9 @@ class RoadyModuleUtilitiesTest extends TestCase
     public function safeTextCollectionThatMapsToADirectoryThatDoesNotExist(): SafeTextCollection
     {
         return new SafeTextCollection(
-            new SafeText(new Name(new Text($this->randomChars()))),
-            new SafeText(new Name(new Text($this->randomChars()))),
-            new SafeText(new Name(new Text($this->randomChars()))),
+            new SafeText(new NameInstance(new Text($this->randomChars()))),
+            new SafeText(new NameInstance(new Text($this->randomChars()))),
+            new SafeText(new NameInstance(new Text($this->randomChars()))),
         );
     }
 
@@ -58,7 +63,7 @@ class RoadyModuleUtilitiesTest extends TestCase
             if(!empty($pathPart)) {
                 $safeTextPartsToExistingDirectoryPath[] =
                     new SafeText(
-                        new Name(new Text($pathPart))
+                        new NameInstance(new Text($pathPart))
                     );
             }
         }
@@ -68,37 +73,73 @@ class RoadyModuleUtilitiesTest extends TestCase
     }
 
     /**
-     * Return the name of a file that exists in the RoadyModuleUtilities
-     * library's tests directory.
+     * Randomly select and return a path to one of the existing test
+     * modules located in the RoadyModuleUtilities library's directory
+     * of test modules.
+     *
+     * @return PathToRoadyModuleDirectory
+     *
+     */
+    public function pathToRoadyTestModuleDirectory(): PathToRoadyModuleDirectory
+    {
+        return new PathToRoadyModuleDirectory(
+            $this->pathToDirectoryOfRoadyTestModules(),
+            $this->randomNameOfExisitngTestModule(),
+        );
+    }
+
+    /**
+     * Return the path to the RoadyModuleUtilities library's
+     * directory of test modules.
+     *
+     * @return PathToDirectoryOfRoadyModules
+     *
+     */
+    public function pathToDirectoryOfRoadyTestModules(): PathToDirectoryOfRoadyModules
+    {
+        $partsOfPathToRoadyModuleUtilitiesTestsDirectory =
+            $this->safeTextCollectionThatMapsToTheRoadyModuleUtilitiesLibrarysTestsDirectory();
+        $partsOfPathToRoadyModuleUtilitiesTestModulesDirectory = [];
+        foreach(
+            $partsOfPathToRoadyModuleUtilitiesTestsDirectory->collection()
+            as
+            $part
+        )
+        {
+            $partsOfPathToRoadyModuleUtilitiesTestModulesDirectory[] =
+                $part;
+        }
+        $partsOfPathToRoadyModuleUtilitiesTestModulesDirectory[] =
+            new SafeText(new Text('modules'));
+        $safeTextCollectionOfPartsOfPathToRoadyModuleUtilitiesTestModulesDirectory =
+            new SafeTextCollection(
+                ...$partsOfPathToRoadyModuleUtilitiesTestModulesDirectory
+            );
+        $pathToRoadyModuleUtilitiesTestModulesDirectory =
+            new PathToExistingDirectory(
+                $safeTextCollectionOfPartsOfPathToRoadyModuleUtilitiesTestModulesDirectory
+            );
+        return new PathToDirectoryOfRoadyModules(
+            $pathToRoadyModuleUtilitiesTestModulesDirectory,
+        );
+    }
+
+
+    /**
+     * Randomly select one of the existing RoadyMduleUtilities
+     * library's test modules and return it's name.
      *
      * @return Name
      *
      */
-    public function nameOfFileThatExistsRoadyModuleUtilitiesTestsDirectory(): Name
+    public function randomNameOfExisitngTestModule(): Name
     {
-        return new Name(new Text(basename(__FILE__)));
-    }
-
-    /**
-     * Return a SafeTextCollection that maps to the systems temporary
-     * directory.
-     *
-     * @return SafeTextCollection
-     *
-     */
-    public function safeTextCollectionForPathToTmpDirectory(): SafeTextCollection
-    {
-        return new SafeTextCollection(
-            new SafeText(
-                new Text(
-                    str_replace(
-                        DIRECTORY_SEPARATOR,
-                        '',
-                        sys_get_temp_dir()
-                    )
-                )
-            )
-        );
+        $listingOfDirectoryOfRoadyModules = new ListingOfDirectoryOfRoadyModules($this->pathToDirectoryOfRoadyTestModules());
+        $testModuleNames = [];
+        foreach($listingOfDirectoryOfRoadyModules->pathToRoadyModuleDirectoryCollection()->collection() as $pathToRoadyModuleDirectory) {
+            $testModuleNames[] = $pathToRoadyModuleDirectory->name();
+        }
+        return $testModuleNames[array_rand($testModuleNames)];
     }
 
 }
