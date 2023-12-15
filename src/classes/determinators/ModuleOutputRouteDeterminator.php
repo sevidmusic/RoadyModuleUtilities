@@ -69,7 +69,6 @@ class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInte
                         $outputFileNameParts
                     );
 
-                    // POSITION NAME
                     array_shift($outputFileNameParts);
                     array_pop($outputFileNameParts);
                     $positionNameString = implode('', $outputFileNameParts);
