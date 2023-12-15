@@ -15,7 +15,8 @@
         "darling/php-unit-test-utilities": "^1.0",
         "darling/php-darling-dev-tools": "^1.0",
         "darling/php-file-system-paths": "^1.0",
-        "darling/roady-routes": "^1.0"
+        "darling/roady-routes": "^1.0",
+        "symfony/polyfill-php83": "^1.28"
     },
     "autoload": {
         "psr-4": {
