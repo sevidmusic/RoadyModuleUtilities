@@ -39,9 +39,16 @@ class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
             );
         $routes = [];
         if($pathToModulesCSSDirectory->__toString() !== sys_get_temp_dir()) {
-            $directory = new RecursiveDirectoryIterator($pathToModulesCSSDirectory->__toString());
-            $iterator = new RecursiveIteratorIterator($directory);
-            $cssFilePaths = new RegexIterator($iterator, '/^.+\.css$/i', RecursiveRegexIterator::GET_MATCH);
+            $recursiveDirectoryIterator = new RecursiveDirectoryIterator(
+                $pathToModulesCSSDirectory->__toString()
+            );
+            $recursiveDirectoryIteratorIterator = new RecursiveIteratorIterator(
+                $recursiveDirectoryIterator
+            );
+            $cssFilePaths = new RegexIterator(
+                $recursiveDirectoryIteratorIterator,
+                '/^.+\.css$/i', RecursiveRegexIterator::GET_MATCH
+            );
             foreach($cssFilePaths as $cssFilePath) {
                 if(
                     is_array($cssFilePath)
@@ -52,22 +59,20 @@ class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
                     &&
                     file_exists($cssFilePath[0])
                 ) {
-                    // PATH TO CSS FILE
                     $pathToCssFile = $cssFilePath[0];
-
-                    // REQUEST NAME
                     $cssFileName = basename($pathToCssFile);
                     $cssFileNameParts = explode('_', $cssFileName);
-                    $requestName = new NameInstance(
-                        new Text(
-                            $cssFileNameParts[array_key_first($cssFileNameParts)]
-                            ??
-                            str_replace('.css', '', $cssFileName)
-                        )
+                    $requestName = $this->determineRequestNameFromFileNameParts(
+                        $cssFileNameParts,
+                        $cssFileName,
                     );
-
-                    $position = $this->determinePositionFromFileNameParts($cssFileNameParts);
-                    $relativePathForRoute = $this->determineRelativePath($pathToRoadyModuleDirectory, $pathToCssFile);
+                    $position = $this->determinePositionFromFileNameParts(
+                        $cssFileNameParts
+                    );
+                    $relativePathForRoute = $this->determineRelativePath(
+                        $pathToRoadyModuleDirectory,
+                        $pathToCssFile
+                    );
                     $routes[] = $this->newRouteToModuleCSSFile(
                         $pathToRoadyModuleDirectory->name(),
                         $requestName,
@@ -77,7 +82,6 @@ class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
                 }
             }
         }
-
         return new RouteCollectionInstance(
            ...$routes
         );
@@ -174,7 +178,6 @@ class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
 
     private function determineRelativePath(PathToRoadyModuleDirectory $pathToRoadyModuleDirectory, string $pathToCssFile): RelativePath
     {
-        // RELATIVE PATH
         $relativePathToCssFile = str_replace($pathToRoadyModuleDirectory->__toString(), '', $pathToCssFile);
         $relativePathToCssFileParts = explode(DIRECTORY_SEPARATOR, $relativePathToCssFile);
         $safeTextForRelativePathToCSSFile = [];
@@ -208,5 +211,31 @@ class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
             )
         );
     }
+
+    /**
+     * Determine an appropriate Request Name based on the specified
+     * $fileNameParts. If an appropriate Request Name cannot be
+     * determined default to a Name constructed from the specified
+     * $defaultName.
+     *
+     * @param array<int, string> $fileNameParts
+     *
+     * @return Name
+     *
+     */
+    private function determineRequestNameFromFileNameParts(
+        array $fileNameParts,
+        string $defaultName,
+    ): Name
+    {
+        return new NameInstance(
+            new Text(
+                $fileNameParts[array_key_first($fileNameParts)]
+                ??
+                str_replace('.css', '', $defaultName)
+            )
+        );
+    }
+
 }
 
