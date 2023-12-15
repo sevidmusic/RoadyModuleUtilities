@@ -10,8 +10,8 @@ class ModuleCSSRouteDeterminatorTest extends RoadyModuleUtilitiesTest
 {
 
     /**
-     * The ModuleCSSRouteDeterminatorTestTrait defines
-     * common tests for implementations of the
+     * The ModuleCSSRouteDeterminatorTestTrait defines common tests
+     * for implementations of the
      * Darling\RoadyModuleUtilities\interfaces\determinators\ModuleCSSRouteDeterminator
      * interface.
      *

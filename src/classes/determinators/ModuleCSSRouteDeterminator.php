@@ -27,6 +27,7 @@ use \RegexIterator;
 
 class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
 {
+    private const CSS_ROUTE_POSITION_NAME = 'roady-css-stylesheet-links';
 
     public function determineCSSRoutes(
         PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
@@ -38,7 +39,6 @@ class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
             );
         $routes = [];
         if($pathToModulesCSSDirectory->__toString() !== sys_get_temp_dir()) {
-            $cssFileNames = [];
             $directory = new RecursiveDirectoryIterator($pathToModulesCSSDirectory->__toString());
             $iterator = new RecursiveIteratorIterator($directory);
             $cssFilePaths = new RegexIterator($iterator, '/^.+\.css$/i', RecursiveRegexIterator::GET_MATCH);
@@ -66,27 +66,8 @@ class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
                         )
                     );
 
-                    // POSITION
-                    $position = new Position(
-                        floatval(
-                            str_replace(
-                                '.css',
-                                '',
-                                strval($cssFileNameParts[array_key_last($cssFileNameParts)] ?? 0)
-                            )
-                        )
-                    );
-
-                    // RELATIVE PATH
-                    $relativePathToCssFile = str_replace($pathToRoadyModuleDirectory->__toString(), '', $pathToCssFile);
-                    $relativePathToCssFileParts = explode(DIRECTORY_SEPARATOR, $relativePathToCssFile);
-                    $safeTextForRelativePathToCSSFile = [];
-                    foreach($relativePathToCssFileParts as $relativePathPart) {
-                        if(!empty($relativePathPart)) {
-                            $safeTextForRelativePathToCSSFile[] = new SafeText(new Text($relativePathPart));
-                        }
-                    }
-                    $relativePathForRoute = new RelativePath(new SafeTextCollectionInstance(...$safeTextForRelativePathToCSSFile));
+                    $position = $this->determinePositionFromFileNameParts($cssFileNameParts);
+                    $relativePathForRoute = $this->determineRelativePath($pathToRoadyModuleDirectory, $pathToCssFile);
                     $routes[] = $this->newRouteToModuleCSSFile(
                         $pathToRoadyModuleDirectory->name(),
                         $requestName,
@@ -102,21 +83,53 @@ class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
         );
     }
 
+    /**
+     * Return the PositionName that should be used for all
+     * CSS Routes.
+     *
+     * The PositionName will always be "roady-css-stylesheet-links".
+     *
+     * This position name will correspond to the name of the
+     * position placeholder in the template file used to view
+     * each css Routes output.
+     *
+     * ```
+     * <!-- Place holder will be: -->
+     * <roady-css-stylesheet-links></roady-css-stylesheet-links>
+     *
+     * ```
+     *
+     * @return PositionName
+     *
+     */
     private function positionNameForCSSRoutes(): PositionName
     {
-        /**
-         * "roady-css-stylesheet-links" will always be the name of the
-         * position for routes defined for css stylesheets.
-         *
-         * This position name will correspond to the name of the
-         * position placeholder in the template file used to view
-         * this routes output.
-         */
         return new PositionName(
-            new NameInstance(new Text('roady-css-stylesheet-links'))
+            new NameInstance(new Text(self::CSS_ROUTE_POSITION_NAME))
         );
     }
 
+    /**
+     * Return a new Route to a CSS file using the specified
+     *
+     * $moduleName, $requestName, $position, and $relativePath.
+     *
+     * @param Name $moduleName The Name of the module the CSS file
+     *                         belongs to.
+     *
+     * @param Name $requestName The Name of the only Request that
+     *                          the Route will be mapped to.
+     *
+     * @param Position $position The Position to assign to the Route.
+     *
+     * @param RelativePath $relativePath The RelativePath to the
+     *                                   CSS file in the module's
+     *                                   directory.
+     *
+     *
+     * @return Route
+     *
+     */
     private function newRouteToModuleCSSFile(Name $moduleName, Name $requestName, Position $position, RelativePath $relativePath): Route
     {
         return new Route(
@@ -132,6 +145,20 @@ class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
         );
     }
 
+    /**
+     * Return a PathToExistingDirectory instance for the path
+     * to the css directory in the directory indicated by the
+     * specified $pathToRoadyModuleDirectory.
+     *
+     * @param PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
+     *                                   The path to the roady module
+     *                                   directory where the css
+     *                                   directory is expected to be
+     *                                   located.
+     *
+     * @return PathToExistingDirectory
+     *
+     */
     private function determinePathToModulesCSSDirectory(
         PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
     ): PathToExistingDirectory
@@ -145,5 +172,41 @@ class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
         );
     }
 
+    private function determineRelativePath(PathToRoadyModuleDirectory $pathToRoadyModuleDirectory, string $pathToCssFile): RelativePath
+    {
+        // RELATIVE PATH
+        $relativePathToCssFile = str_replace($pathToRoadyModuleDirectory->__toString(), '', $pathToCssFile);
+        $relativePathToCssFileParts = explode(DIRECTORY_SEPARATOR, $relativePathToCssFile);
+        $safeTextForRelativePathToCSSFile = [];
+        foreach($relativePathToCssFileParts as $relativePathPart) {
+            if(!empty($relativePathPart)) {
+                $safeTextForRelativePathToCSSFile[] = new SafeText(new Text($relativePathPart));
+            }
+        }
+        $relativePathForRoute = new RelativePath(new SafeTextCollectionInstance(...$safeTextForRelativePathToCSSFile));
+        return $relativePathForRoute;
+    }
+
+    /**
+     * Determine an approrpiate Position based on the specified array
+     * of $fileNameParts.
+     *
+     * @param array<int, string> $fileNameParts
+     *
+     * @return Position
+     *
+     */
+    private function determinePositionFromFileNameParts(array $fileNameParts): Position
+    {
+        return new Position(
+            floatval(
+                str_replace(
+                    '.css',
+                    '',
+                    strval($fileNameParts[array_key_last($fileNameParts)] ?? 0)
+                )
+            )
+        );
+    }
 }
 
