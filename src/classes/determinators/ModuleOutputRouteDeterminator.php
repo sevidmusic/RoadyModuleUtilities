@@ -2,15 +2,9 @@
 
 namespace Darling\RoadyModuleUtilities\classes\determinators;
 
-use Darling\PHPFileSystemPaths\classes\paths\PathToExistingDirectory as PathToExistingDirectoryInstance;
-use Darling\PHPFileSystemPaths\interfaces\paths\PathToExistingDirectory;
-use Darling\PHPTextTypes\classes\collections\NameCollection;
-use Darling\RoadyRoutes\classes\collections\NamedPositionCollection;
-use Darling\RoadyRoutes\classes\identifiers\NamedPosition;
-use Darling\RoadyRoutes\classes\identifiers\PositionName;
-use Darling\RoadyRoutes\classes\paths\RelativePath;
-use Darling\RoadyRoutes\classes\routes\Route;
-use Darling\RoadyRoutes\classes\settings\Position;
+use \Darling\PHPFileSystemPaths\classes\paths\PathToExistingDirectory as PathToExistingDirectoryInstance;
+use \Darling\PHPFileSystemPaths\interfaces\paths\PathToExistingDirectory;
+use \Darling\PHPTextTypes\classes\collections\NameCollection;
 use \Darling\PHPTextTypes\classes\collections\SafeTextCollection as SafeTextCollectionInstance;
 use \Darling\PHPTextTypes\classes\strings\Name as NameInstance;
 use \Darling\PHPTextTypes\classes\strings\SafeText;
@@ -18,7 +12,13 @@ use \Darling\PHPTextTypes\classes\strings\Text;
 use \Darling\PHPTextTypes\interfaces\strings\Name;
 use \Darling\RoadyModuleUtilities\interfaces\determinators\ModuleOutputRouteDeterminator as ModuleOutputRouteDeterminatorInterface;
 use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
+use \Darling\RoadyRoutes\classes\collections\NamedPositionCollection;
 use \Darling\RoadyRoutes\classes\collections\RouteCollection as RouteCollectionInstance;
+use \Darling\RoadyRoutes\classes\identifiers\NamedPosition;
+use \Darling\RoadyRoutes\classes\identifiers\PositionName;
+use \Darling\RoadyRoutes\classes\paths\RelativePath;
+use \Darling\RoadyRoutes\classes\routes\Route;
+use \Darling\RoadyRoutes\classes\settings\Position;
 use \Darling\RoadyRoutes\interfaces\collections\RouteCollection;
 use \RecursiveDirectoryIterator;
 use \RecursiveIteratorIterator;
@@ -68,7 +68,6 @@ class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInte
                     $position = $this->determinePositionFromFileNameParts(
                         $outputFileNameParts
                     );
-
                     array_shift($outputFileNameParts);
                     array_pop($outputFileNameParts);
                     $positionNameString = implode('', $outputFileNameParts);
@@ -88,9 +87,7 @@ class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInte
                 }
             }
         }
-        return new RouteCollectionInstance(
-           ...$routes
-        );
+        return new RouteCollectionInstance(...$routes);
     }
 
     /**
@@ -162,22 +159,41 @@ class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInte
         );
     }
 
-    private function determineRelativePath(PathToRoadyModuleDirectory $pathToRoadyModuleDirectory, string $pathToOutputFile): RelativePath
+    /**
+     * Derive a RelativePath to a file in a Roady module directory
+     * based on the specified $pathToFile.
+     *
+     * @param PathToRoadyModuleDirectory $pathToRoadyModuleDirectory,
+     *                                   The path to the modules's
+     *                                   root directory. This path
+     *                                   will be stripped from
+     *                                   the specified $pathToFile.
+     *
+     * @param string $pathToFile The complete path the file in the
+     *                           module's directory.
+     *
+     * @return RelativePath
+     *
+     */
+    private function determineRelativePath(
+        PathToRoadyModuleDirectory $pathToRoadyModuleDirectory,
+        string $pathToFile
+    ): RelativePath
     {
-        $relativePathToOutputFile = str_replace($pathToRoadyModuleDirectory->__toString(), '', $pathToOutputFile);
-        $relativePathToOutputFileParts = explode(DIRECTORY_SEPARATOR, $relativePathToOutputFile);
-        $safeTextForRelativePathToOutputFile = [];
-        foreach($relativePathToOutputFileParts as $relativePathPart) {
+        $relativePathToFile = str_replace($pathToRoadyModuleDirectory->__toString(), '', $pathToFile);
+        $relativePathToFileParts = explode(DIRECTORY_SEPARATOR, $relativePathToFile);
+        $safeTextForRelativePathToFile = [];
+        foreach($relativePathToFileParts as $relativePathPart) {
             if(!empty($relativePathPart)) {
-                $safeTextForRelativePathToOutputFile[] = new SafeText(new Text($relativePathPart));
+                $safeTextForRelativePathToFile[] = new SafeText(new Text($relativePathPart));
             }
         }
-        $relativePathForRoute = new RelativePath(new SafeTextCollectionInstance(...$safeTextForRelativePathToOutputFile));
+        $relativePathForRoute = new RelativePath(new SafeTextCollectionInstance(...$safeTextForRelativePathToFile));
         return $relativePathForRoute;
     }
 
     /**
-     * Determine an approrpiate Position based on the specified array
+     * Determine an appropriate Position based on the specified array
      * of $fileNameParts.
      *
      * @param array<int, string> $fileNameParts
@@ -185,14 +201,20 @@ class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInte
      * @return Position
      *
      */
-    private function determinePositionFromFileNameParts(array $fileNameParts): Position
+    private function determinePositionFromFileNameParts(
+        array $fileNameParts
+    ): Position
     {
         return new Position(
             floatval(
                 str_replace(
                     ['.html', '.php'],
                     '',
-                    strval($fileNameParts[array_key_last($fileNameParts)] ?? 0)
+                    strval(
+                        $fileNameParts[array_key_last($fileNameParts)]
+                        ??
+                        0
+                    )
                 )
             )
         );

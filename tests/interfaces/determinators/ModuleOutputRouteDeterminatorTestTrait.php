@@ -2,15 +2,9 @@
 
 namespace Darling\RoadyModuleUtilities\tests\interfaces\determinators;
 
-use Darling\PHPFileSystemPaths\classes\paths\PathToExistingDirectory as PathToExistingDirectoryInstance;
-use Darling\PHPFileSystemPaths\interfaces\paths\PathToExistingDirectory;
-use Darling\PHPTextTypes\classes\collections\NameCollection;
-use Darling\RoadyRoutes\classes\collections\NamedPositionCollection;
-use Darling\RoadyRoutes\classes\identifiers\NamedPosition;
-use Darling\RoadyRoutes\classes\identifiers\PositionName;
-use Darling\RoadyRoutes\classes\paths\RelativePath;
-use Darling\RoadyRoutes\classes\routes\Route;
-use Darling\RoadyRoutes\classes\settings\Position;
+use \Darling\PHPFileSystemPaths\classes\paths\PathToExistingDirectory as PathToExistingDirectoryInstance;
+use \Darling\PHPFileSystemPaths\interfaces\paths\PathToExistingDirectory;
+use \Darling\PHPTextTypes\classes\collections\NameCollection;
 use \Darling\PHPTextTypes\classes\collections\SafeTextCollection as SafeTextCollectionInstance;
 use \Darling\PHPTextTypes\classes\strings\Name as NameInstance;
 use \Darling\PHPTextTypes\classes\strings\SafeText;
@@ -18,7 +12,13 @@ use \Darling\PHPTextTypes\classes\strings\Text;
 use \Darling\PHPTextTypes\interfaces\strings\Name;
 use \Darling\RoadyModuleUtilities\interfaces\determinators\ModuleOutputRouteDeterminator;
 use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
+use \Darling\RoadyRoutes\classes\collections\NamedPositionCollection;
 use \Darling\RoadyRoutes\classes\collections\RouteCollection as RouteCollectionInstance;
+use \Darling\RoadyRoutes\classes\identifiers\NamedPosition;
+use \Darling\RoadyRoutes\classes\identifiers\PositionName;
+use \Darling\RoadyRoutes\classes\paths\RelativePath;
+use \Darling\RoadyRoutes\classes\routes\Route;
+use \Darling\RoadyRoutes\classes\settings\Position;
 use \Darling\RoadyRoutes\interfaces\collections\RouteCollection;
 use \RecursiveDirectoryIterator;
 use \RecursiveIteratorIterator;
@@ -101,26 +101,6 @@ trait ModuleOutputRouteDeterminatorTestTrait
     ): void
     {
         $this->moduleOutputRouteDeterminator = $moduleOutputRouteDeterminatorTestInstance;
-    }
-
-    /**
-     * Return the expected PositionName that should be used for all
-     * Output Routes.
-     *
-     * The PositionName will always be "roady-output-script-tags".
-     *
-     * This position name will correspond to the name of the
-     * position placeholder in the template file used to view
-     * this routes output.
-     *
-     * @return PositionName
-     *
-     */
-    private function expectedPositionNameForOutputRoutes(): PositionName
-    {
-        return new PositionName(
-            new NameInstance(new Text('roady-output-script-tags'))
-        );
     }
 
     /**
