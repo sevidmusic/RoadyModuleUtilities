@@ -27,7 +27,6 @@ use \RegexIterator;
 
 class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInterface
 {
-    private const Output_ROUTE_POSITION_NAME = 'roady-output-script-tags';
 
     public function determineOutputRoutes(
         PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
@@ -69,6 +68,13 @@ class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInte
                     $position = $this->determinePositionFromFileNameParts(
                         $outputFileNameParts
                     );
+
+                    // POSITION NAME
+                    array_shift($outputFileNameParts);
+                    array_pop($outputFileNameParts);
+                    $positionNameString = implode('', $outputFileNameParts);
+                    $positionName = new PositionName(new NameInstance(new Text((empty($positionNameString) ? 'roady-output' : $positionNameString))));
+
                     $relativePathForRoute = $this->determineRelativePath(
                         $pathToRoadyModuleDirectory,
                         $pathToOutputFile
@@ -76,6 +82,7 @@ class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInte
                     $routes[] = $this->newRouteToModuleOutputFile(
                         $pathToRoadyModuleDirectory->name(),
                         $requestName,
+                        $positionName,
                         $position,
                         $relativePathForRoute,
                     );
@@ -84,32 +91,6 @@ class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInte
         }
         return new RouteCollectionInstance(
            ...$routes
-        );
-    }
-
-    /**
-     * Return the PositionName that should be used for all
-     * Output Routes.
-     *
-     * The PositionName will always be "roady-output-script-tags".
-     *
-     * This position name will correspond to the name of the
-     * position placeholder in the template file used to view
-     * each output Routes output.
-     *
-     * ```
-     * <!-- Place holder will be: -->
-     * <roady-output-script-tags></roady-output-script-tags>
-     *
-     * ```
-     *
-     * @return PositionName
-     *
-     */
-    private function positionNameForOutputRoutes(): PositionName
-    {
-        return new PositionName(
-            new NameInstance(new Text(self::Output_ROUTE_POSITION_NAME))
         );
     }
 
@@ -134,14 +115,20 @@ class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInte
      * @return Route
      *
      */
-    private function newRouteToModuleOutputFile(Name $moduleName, Name $requestName, Position $position, RelativePath $relativePath): Route
+    private function newRouteToModuleOutputFile(
+        Name $moduleName,
+        Name $requestName,
+        PositionName $positionName,
+        Position $position,
+        RelativePath $relativePath
+    ): Route
     {
         return new Route(
            $moduleName,
             new NameCollection($requestName),
             new NamedPositionCollection(
                 new NamedPosition(
-                    $this->positionNameForOutputRoutes(),
+                    $positionName,
                     $position,
                 ),
             ),

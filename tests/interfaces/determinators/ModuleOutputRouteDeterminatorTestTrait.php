@@ -147,6 +147,7 @@ trait ModuleOutputRouteDeterminatorTestTrait
     private function newRouteToModuleOutputFile(
         Name $moduleName,
         Name $requestName,
+        PositionName $positionName,
         Position $position,
         RelativePath $relativePath
     ): Route
@@ -156,7 +157,7 @@ trait ModuleOutputRouteDeterminatorTestTrait
             new NameCollection($requestName),
             new NamedPositionCollection(
                 new NamedPosition(
-                    $this->expectedPositionNameForOutputRoutes(),
+                    $positionName,
                     $position,
                 ),
             ),
@@ -249,6 +250,13 @@ trait ModuleOutputRouteDeterminatorTestTrait
                         )
                     );
 
+                    // POSITION NAME
+                    array_shift($outputFileNameParts);
+                    array_pop($outputFileNameParts);
+                    $positionNameString = implode('', $outputFileNameParts);
+                    $positionName = new PositionName(new NameInstance(new Text((empty($positionNameString) ? 'roady-output' : $positionNameString))));
+
+
                     // RELATIVE PATH
                     $relativePathToOutputFile = str_replace($pathToRoadyModuleDirectory->__toString(), '', $pathToOutputFile);
                     $relativePathToOutputFileParts = explode(DIRECTORY_SEPARATOR, $relativePathToOutputFile);
@@ -262,6 +270,7 @@ trait ModuleOutputRouteDeterminatorTestTrait
                     $routes[] = $this->newRouteToModuleOutputFile(
                         $pathToRoadyModuleDirectory->name(),
                         $requestName,
+                        $positionName,
                         $position,
                         $relativePathForRoute,
                     );
