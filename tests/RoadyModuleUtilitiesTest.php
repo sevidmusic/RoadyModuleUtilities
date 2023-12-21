@@ -2,16 +2,16 @@
 
 namespace Darling\RoadyModuleUtilities\tests;
 
-use Darling\RoadyModuleUtilities\classes\directory\listings\ListingOfDirectoryOfRoadyModules;
 use \Darling\PHPFileSystemPaths\classes\paths\PathToExistingDirectory;
 use \Darling\PHPTextTypes\classes\collections\SafeTextCollection;
-use \Darling\PHPTextTypes\interfaces\strings\Name;
 use \Darling\PHPTextTypes\classes\strings\Name as NameInstance;
 use \Darling\PHPTextTypes\classes\strings\SafeText;
 use \Darling\PHPTextTypes\classes\strings\Text;
+use \Darling\PHPTextTypes\interfaces\strings\Name;
 use \Darling\PHPUnitTestUtilities\traits\PHPUnitConfigurationTests;
 use \Darling\PHPUnitTestUtilities\traits\PHPUnitRandomValues;
 use \Darling\PHPUnitTestUtilities\traits\PHPUnitTestMessages;
+use \Darling\RoadyModuleUtilities\classes\directory\listings\ListingOfDirectoryOfRoadyModules;
 use \Darling\RoadyModuleUtilities\classes\paths\PathToDirectoryOfRoadyModules;
 use \Darling\RoadyModuleUtilities\classes\paths\PathToRoadyModuleDirectory;
 use \PHPUnit\Framework\TestCase;
