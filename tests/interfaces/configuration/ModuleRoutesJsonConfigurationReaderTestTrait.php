@@ -538,24 +538,27 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
     public function test_determineConfiguredRoutes_returns_all_of_the_defined_Routes_if_the_module_defines_a_valid_routes_json_configuration_file_that_only_defines_routes(): void
     {
         $pathToRoadyModuleDirectory = $this->determinePathToRoadyModuleDirectory(
-            new NameInstance(new Text('empty-module'))
+            new NameInstance(new Text('module-defines-valid-routes-json-configuration-file-that-only-defines-routes'))
         );
+        $roadyModuleFileSystemPathDeterminator =
+            new RoadyModuleFileSystemPathDeterminatorInstance();
         $expectedRoutes = $this->determineExpectedRoutes(
             $pathToRoadyModuleDirectory,
-            new RoadyModuleFileSystemPathDeterminatorInstance()
+            $roadyModuleFileSystemPathDeterminator
         );
         $this->assertEquals(
             $expectedRoutes,
             $this->moduleRoutesJsonConfigurationReaderTestInstance()
                 ->determineConfiguredRoutes(
                     $pathToRoadyModuleDirectory,
-                    new RoadyModuleFileSystemPathDeterminatorInstance()
+                    $roadyModuleFileSystemPathDeterminator
                 ),
             $this->testFailedMessage(
                 $this->moduleRoutesJsonConfigurationReaderTestInstance(),
                 'collection',
                 'return all of the defined Routes if the module ' .
-                'TODO: FINISH CORRECTLY IMPLEMENTING THIS TEST'
+                'defines a valid routes json configuration file ' .
+                'that only defines routes'
             ),
         );
     }
