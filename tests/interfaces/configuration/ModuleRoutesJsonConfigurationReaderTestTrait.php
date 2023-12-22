@@ -49,6 +49,8 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
 
     private string $respondsTo = 'responds-to';
 
+    private string $emptyString = '';
+
     /**
      * @var ModuleRoutesJsonConfigurationReader $moduleRoutesJsonConfigurationReader
      *                            An instance of a
@@ -204,7 +206,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
                                 strval(
                                     $namedPositionArray[$this->positionName]
                                     ??
-                                    ''
+                                    $this->emptyString
                                 )
                             )
                         )
@@ -273,9 +275,13 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
     {
         $routes = [];
         $pathToRoutesJsonConfigurationFile =
-            $pathToRoadyModuleDirectory->__toString() .
-            DIRECTORY_SEPARATOR .
-            $this->expectedRoutesJsonConfigurationFileName()->__toString();
+        $roadyModuleFileSystemPathDeterminator->determinePathToFileInModuleDirectory(
+            $pathToRoadyModuleDirectory,
+            $this->stringToRelativePath(
+                $this->expectedRoutesJsonConfigurationFileName()
+                     ->__toString()
+            ),
+        );
         if(file_exists($pathToRoutesJsonConfigurationFile)) {
             $json = strval(
                 file_get_contents($pathToRoutesJsonConfigurationFile)
@@ -288,21 +294,35 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
                         if($this->arrayDefinesARoute($array)) {
                             $moduleName = $this->determineModuleName(
                                 $pathToRoadyModuleDirectory,
-                                ($array[$this->moduleName] ?? '')
+                                (
+                                    $array[$this->moduleName]
+                                    ??
+                                    $this->emptyString
+                                )
                             );
                             $nameCollection =
                                 $this->arrayToNameCollection(
                                     array_filter(
-                                        ($array[$this->respondsTo] ?? []),
+                                        (
+                                            $array[$this->respondsTo]
+                                            ??
+                                            []
+                                        ),
                                         'is_string'
                                     )
                                 );
                             $namedPositionCollection =
                                 $this->arrayToNamedPositionCollection(
-                                    array_filter($array[$this->namedPositions], 'is_array')
+                                    array_filter(
+                                        $array[$this->namedPositions],
+                                        'is_array'
+                                    )
                                 );
-                            #
-                            $relativePath = $this->stringToRelativePath($array[$this->relativePath] ?? '');
+                            $relativePath = $this->stringToRelativePath(
+                                $array[$this->relativePath]
+                                ??
+                                $this->emptyString
+                            );
                             if(
                                 file_exists(
                                     $roadyModuleFileSystemPathDeterminator->determinePathToFileInModuleDirectory(
