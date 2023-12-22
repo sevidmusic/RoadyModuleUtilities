@@ -29,17 +29,17 @@ use \Darling\RoadyRoutes\interfaces\paths\RelativePath;
 class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurationReaderInterface
 {
 
-    private string $moduleName = 'module-name';
+    private string $moduleNameIndex = 'module-name';
 
     private string $namedPositions = 'named-positions';
 
-    private string $position = 'position';
+    private string $positionIndex = 'position';
 
-    private string $positionName = 'position-name';
+    private string $positionNameIndex = 'position-name';
 
-    private string $relativePath = 'relative-path';
+    private string $relativePathIndex = 'relative-path';
 
-    private string $respondsTo = 'responds-to';
+    private string $respondsToIndex = 'responds-to';
 
     private string $emptyString = '';
 
@@ -79,7 +79,7 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
                             $moduleName = $this->determineModuleName(
                                 $pathToRoadyModuleDirectory,
                                 (
-                                    $array[$this->moduleName]
+                                    $array[$this->moduleNameIndex]
                                     ??
                                     $this->emptyString
                                 )
@@ -88,7 +88,7 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
                                 $this->arrayToNameCollection(
                                     array_filter(
                                         (
-                                            $array[$this->respondsTo]
+                                            $array[$this->respondsToIndex]
                                             ??
                                             []
                                         ),
@@ -103,7 +103,7 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
                                     )
                                 );
                             $relativePath = $this->stringToRelativePath(
-                                $array[$this->relativePath]
+                                $array[$this->relativePathIndex]
                                 ??
                                 $this->emptyString
                             );
@@ -156,17 +156,17 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
     {
         return
             // No need to check for module-name, if it is not specified the modules name will be the name of the module that defines the routes.json
-            isset($array[$this->respondsTo])
+            isset($array[$this->respondsToIndex])
             &&
-            is_array($array[$this->respondsTo])
+            is_array($array[$this->respondsToIndex])
             &&
             isset($array[$this->namedPositions])
             &&
             is_array($array[$this->namedPositions])
             &&
-            isset($array[$this->relativePath])
+            isset($array[$this->relativePathIndex])
             &&
-            is_string($array[$this->relativePath]);
+            is_string($array[$this->relativePathIndex]);
     }
 
     /**
@@ -181,13 +181,13 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
      */
     private function namedPositionArrayIsValid(array $namedPosition): bool
     {
-        return isset($namedPosition[$this->positionName])
+        return isset($namedPosition[$this->positionNameIndex])
             &&
-            is_string($namedPosition[$this->positionName])
+            is_string($namedPosition[$this->positionNameIndex])
             &&
-            isset($namedPosition[$this->position])
+            isset($namedPosition[$this->positionIndex])
             &&
-            (is_float($namedPosition[$this->position]) || is_int($namedPosition[$this->position]));
+            (is_float($namedPosition[$this->positionIndex]) || is_int($namedPosition[$this->positionIndex]));
     }
 
     /**
@@ -208,7 +208,7 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
                         new NameInstance(
                             new Text(
                                 strval(
-                                    $namedPositionArray[$this->positionName]
+                                    $namedPositionArray[$this->positionNameIndex]
                                     ??
                                     $this->emptyString
                                 )
@@ -217,7 +217,7 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
                     ),
                     new PositionInstance(
                         floatval(
-                            $namedPositionArray[$this->position]
+                            $namedPositionArray[$this->positionIndex]
                             ??
                             0
                         )
