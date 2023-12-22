@@ -2,10 +2,6 @@
 
 namespace Darling\RoadyModuleUtilities\tests\interfaces\configuration;
 
-use Darling\RoadyRoutes\interfaces\paths\RelativePath;
-use \Darling\RoadyModuleUtilities\classes\determinators\RoadyModuleFileSystemPathDeterminator;
-use \Darling\RoadyRoutes\interfaces\collections\RouteCollection;
-use \Darling\RoadyRoutes\classes\collections\RouteCollection as RouteCollectionInstance;
 use \Darling\PHPTextTypes\classes\collections\NameCollection as NameCollectionInstance;
 use \Darling\PHPTextTypes\classes\collections\SafeTextCollection as SafeTextCollectionInstance;
 use \Darling\PHPTextTypes\classes\strings\Name as NameInstance;
@@ -13,17 +9,22 @@ use \Darling\PHPTextTypes\classes\strings\SafeText as SafeTextInstance;
 use \Darling\PHPTextTypes\classes\strings\Text;
 use \Darling\PHPTextTypes\interfaces\collections\NameCollection;
 use \Darling\PHPTextTypes\interfaces\strings\Name;
+use \Darling\RoadyModuleUtilities\classes\determinators\RoadyModuleFileSystemPathDeterminator as RoadyModuleFileSystemPathDeterminatorInstance;
 use \Darling\RoadyModuleUtilities\classes\paths\PathToRoadyModuleDirectory as PathToRoadyModuleDirectoryInstance;
 use \Darling\RoadyModuleUtilities\interfaces\configuration\ModuleRoutesJsonConfigurationReader;
+use \Darling\RoadyModuleUtilities\interfaces\determinators\RoadyModuleFileSystemPathDeterminator;
 use \Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules;
 use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
-use \Darling\RoadyRoutes\interfaces\collections\NamedPositionCollection;
 use \Darling\RoadyRoutes\classes\collections\NamedPositionCollection as NamedPositionCollectionInstance;
+use \Darling\RoadyRoutes\classes\collections\RouteCollection as RouteCollectionInstance;
 use \Darling\RoadyRoutes\classes\identifiers\NamedPosition as NamedPositionInstance;
 use \Darling\RoadyRoutes\classes\identifiers\PositionName as PositionNameInstance;
 use \Darling\RoadyRoutes\classes\paths\RelativePath as RelativePathInstance;
 use \Darling\RoadyRoutes\classes\routes\Route as RouteInstance;
 use \Darling\RoadyRoutes\classes\settings\Position as PositionInstance;
+use \Darling\RoadyRoutes\interfaces\collections\NamedPositionCollection;
+use \Darling\RoadyRoutes\interfaces\collections\RouteCollection;
+use \Darling\RoadyRoutes\interfaces\paths\RelativePath;
 
 /**
  * The ModuleRoutesJsonConfigurationReaderTestTrait defines common
@@ -265,7 +266,10 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
      * @return RouteCollection
      *
      */
-    private function determineExpectedRoutes(PathToRoadyModuleDirectory $pathToRoadyModuleDirectory): RouteCollection
+    private function determineExpectedRoutes(
+        PathToRoadyModuleDirectory $pathToRoadyModuleDirectory,
+        RoadyModuleFileSystemPathDeterminator $roadyModuleFileSystemPathDeterminator
+    ): RouteCollection
     {
         $routes = [];
         $pathToRoutesJsonConfigurationFile =
@@ -299,17 +303,12 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
                                 );
                             #
                             $relativePath = $this->stringToRelativePath($array[$this->relativePath] ?? '');
-                            $roadyModuleFileSystemPathDeterminator =
-                                # Consider making part of implementation via method roadyModuleFileSystemPathDeterminator(). The RoadyModuleFileSystemPathDeterminator would be injected on instantiation of a ModuleRoutesJosnConfigurationReader
-                                new RoadyModuleFileSystemPathDeterminator();
-                            $pathToOutputFile =
-                                $roadyModuleFileSystemPathDeterminator->determinePathToFileInModuleDirectory(
-                                    $pathToRoadyModuleDirectory,
-                                    $relativePath
-                                );
                             if(
                                 file_exists(
-                                    $pathToOutputFile->__toString()
+                                    $roadyModuleFileSystemPathDeterminator->determinePathToFileInModuleDirectory(
+                                        $pathToRoadyModuleDirectory,
+                                        $relativePath
+                                    )
                                 )
                             )
                             {
@@ -365,7 +364,8 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
         $this->assertEmpty(
             $this->moduleRoutesJsonConfigurationReaderTestInstance()
                 ->determineConfiguredRoutes(
-                    $pathToRoadyModuleDirectory
+                    $pathToRoadyModuleDirectory,
+                    new RoadyModuleFileSystemPathDeterminatorInstance()
                 )->collection(),
             $this->testFailedMessage(
                 $this->moduleRoutesJsonConfigurationReaderTestInstance(),
@@ -394,7 +394,8 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
         $this->assertEmpty(
             $this->moduleRoutesJsonConfigurationReaderTestInstance()
                 ->determineConfiguredRoutes(
-                    $pathToRoadyModuleDirectory
+                    $pathToRoadyModuleDirectory,
+                    new RoadyModuleFileSystemPathDeterminatorInstance()
                 )->collection(),
             $this->testFailedMessage(
                 $this->moduleRoutesJsonConfigurationReaderTestInstance(),
@@ -423,7 +424,8 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
         $this->assertEmpty(
             $this->moduleRoutesJsonConfigurationReaderTestInstance()
                 ->determineConfiguredRoutes(
-                    $pathToRoadyModuleDirectory
+                    $pathToRoadyModuleDirectory,
+                    new RoadyModuleFileSystemPathDeterminatorInstance()
                 )->collection(),
             $this->testFailedMessage(
                 $this->moduleRoutesJsonConfigurationReaderTestInstance(),
@@ -452,7 +454,8 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
         $this->assertEmpty(
             $this->moduleRoutesJsonConfigurationReaderTestInstance()
                 ->determineConfiguredRoutes(
-                    $pathToRoadyModuleDirectory
+                    $pathToRoadyModuleDirectory,
+                    new RoadyModuleFileSystemPathDeterminatorInstance()
                 )->collection(),
             $this->testFailedMessage(
                 $this->moduleRoutesJsonConfigurationReaderTestInstance(),
@@ -479,15 +482,19 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
         $pathToRoadyModuleDirectory = $this->determinePathToRoadyModuleDirectory(
             new NameInstance(new Text('module-defines-valid-routes-json-configuration-file-that-defines-routes-and-other-types-of-values'))
         );
+        $roadyModuleFileSystemPathDeterminator =
+            new RoadyModuleFileSystemPathDeterminatorInstance();
         $expectedRoutes = $this->determineExpectedRoutes(
-            $pathToRoadyModuleDirectory
+            $pathToRoadyModuleDirectory,
+            $roadyModuleFileSystemPathDeterminator
         );
-        $this->assertSame(
-            $expectedRoutes->collection(),
+        $this->assertEquals(
+            $expectedRoutes,
             $this->moduleRoutesJsonConfigurationReaderTestInstance()
                 ->determineConfiguredRoutes(
-                    $pathToRoadyModuleDirectory
-                )->collection(),
+                    $pathToRoadyModuleDirectory,
+                    $roadyModuleFileSystemPathDeterminator
+                ),
             $this->testFailedMessage(
                 $this->moduleRoutesJsonConfigurationReaderTestInstance(),
                 'collection',
@@ -510,7 +517,27 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
      */
     public function test_determineConfiguredRoutes_returns_all_of_the_defined_Routes_if_the_module_defines_a_valid_routes_json_configuration_file_that_only_defines_routes(): void
     {
-
+        $pathToRoadyModuleDirectory = $this->determinePathToRoadyModuleDirectory(
+            new NameInstance(new Text('empty-module'))
+        );
+        $expectedRoutes = $this->determineExpectedRoutes(
+            $pathToRoadyModuleDirectory,
+            new RoadyModuleFileSystemPathDeterminatorInstance()
+        );
+        $this->assertEquals(
+            $expectedRoutes,
+            $this->moduleRoutesJsonConfigurationReaderTestInstance()
+                ->determineConfiguredRoutes(
+                    $pathToRoadyModuleDirectory,
+                    new RoadyModuleFileSystemPathDeterminatorInstance()
+                ),
+            $this->testFailedMessage(
+                $this->moduleRoutesJsonConfigurationReaderTestInstance(),
+                'collection',
+                'return all of the defined Routes if the module ' .
+                'TODO: FINISH CORRECTLY IMPLEMENTING THIS TEST'
+            ),
+        );
     }
 
     abstract protected function testFailedMessage(object $testedInstance, string $testedMethod, string $expectation): string;

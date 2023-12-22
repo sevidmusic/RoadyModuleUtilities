@@ -2,6 +2,7 @@
 
 namespace Darling\RoadyModuleUtilities\classes\configuration;
 
+use \Darling\RoadyModuleUtilities\interfaces\determinators\RoadyModuleFileSystemPathDeterminator;
 use \Darling\RoadyModuleUtilities\interfaces\configuration\ModuleRoutesJsonConfigurationReader as ModuleRoutesJsonConfigurationReaderInterface;
 use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
 use \Darling\RoadyRoutes\interfaces\collections\RouteCollection;
@@ -11,7 +12,8 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
 {
 
     public function determineConfiguredRoutes(
-        PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
+        PathToRoadyModuleDirectory $pathToRoadyModuleDirectory,
+        RoadyModuleFileSystemPathDeterminator $roadyModuleFileSystemPathDeterminator
     ): RouteCollection
     {
         return new RouteCollectionInstance();
