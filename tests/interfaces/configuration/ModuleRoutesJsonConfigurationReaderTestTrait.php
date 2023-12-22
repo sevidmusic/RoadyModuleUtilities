@@ -37,17 +37,17 @@ use \Darling\RoadyRoutes\interfaces\paths\RelativePath;
 trait ModuleRoutesJsonConfigurationReaderTestTrait
 {
 
-    private string $moduleName = 'module-name';
+    private string $moduleNameIndex = 'module-name';
 
-    private string $namedPositions = 'named-positions';
+    private string $namedPositionsIndex = 'named-positions';
 
-    private string $position = 'position';
+    private string $positionIndex = 'position';
 
-    private string $positionName = 'position-name';
+    private string $positionNameIndex = 'position-name';
 
-    private string $relativePath = 'relative-path';
+    private string $relativePathIndex = 'relative-path';
 
-    private string $respondsTo = 'responds-to';
+    private string $respondsToIndex = 'responds-to';
 
     private string $emptyString = '';
 
@@ -152,17 +152,17 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
     {
         return
             // No need to check for module-name, if it is not specified the modules name will be the name of the module that defines the routes.json
-            isset($array[$this->respondsTo])
+            isset($array[$this->respondsToIndex])
             &&
-            is_array($array[$this->respondsTo])
+            is_array($array[$this->respondsToIndex])
             &&
-            isset($array[$this->namedPositions])
+            isset($array[$this->namedPositionsIndex])
             &&
-            is_array($array[$this->namedPositions])
+            is_array($array[$this->namedPositionsIndex])
             &&
-            isset($array[$this->relativePath])
+            isset($array[$this->relativePathIndex])
             &&
-            is_string($array[$this->relativePath]);
+            is_string($array[$this->relativePathIndex]);
     }
 
     /**
@@ -177,13 +177,13 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
      */
     private function namedPositionArrayIsValid(array $namedPosition): bool
     {
-        return isset($namedPosition[$this->positionName])
+        return isset($namedPosition[$this->positionNameIndex])
             &&
-            is_string($namedPosition[$this->positionName])
+            is_string($namedPosition[$this->positionNameIndex])
             &&
-            isset($namedPosition[$this->position])
+            isset($namedPosition[$this->positionIndex])
             &&
-            (is_float($namedPosition[$this->position]) || is_int($namedPosition[$this->position]));
+            (is_float($namedPosition[$this->positionIndex]) || is_int($namedPosition[$this->positionIndex]));
     }
 
     /**
@@ -204,7 +204,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
                         new NameInstance(
                             new Text(
                                 strval(
-                                    $namedPositionArray[$this->positionName]
+                                    $namedPositionArray[$this->positionNameIndex]
                                     ??
                                     $this->emptyString
                                 )
@@ -213,7 +213,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
                     ),
                     new PositionInstance(
                         floatval(
-                            $namedPositionArray[$this->position]
+                            $namedPositionArray[$this->positionIndex]
                             ??
                             0
                         )
@@ -295,7 +295,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
                             $moduleName = $this->determineModuleName(
                                 $pathToRoadyModuleDirectory,
                                 (
-                                    $array[$this->moduleName]
+                                    $array[$this->moduleNameIndex]
                                     ??
                                     $this->emptyString
                                 )
@@ -304,7 +304,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
                                 $this->arrayToNameCollection(
                                     array_filter(
                                         (
-                                            $array[$this->respondsTo]
+                                            $array[$this->respondsToIndex]
                                             ??
                                             []
                                         ),
@@ -314,12 +314,12 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
                             $namedPositionCollection =
                                 $this->arrayToNamedPositionCollection(
                                     array_filter(
-                                        $array[$this->namedPositions],
+                                        $array[$this->namedPositionsIndex],
                                         'is_array'
                                     )
                                 );
                             $relativePath = $this->stringToRelativePath(
-                                $array[$this->relativePath]
+                                $array[$this->relativePathIndex]
                                 ??
                                 $this->emptyString
                             );
