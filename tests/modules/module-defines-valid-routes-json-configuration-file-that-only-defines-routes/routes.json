@@ -1,1 +1,1 @@
-[{"responds-to":["a-request-name","another-request-name"],"named-positions":[{"position-name":"name-of-position-for-this-routes-output","position":0},{"position-name":"name-of-another-position-for-this-routes-output","position":420.17}],"0":"path\/to\/output-file.html"},{"responds-to":["a-request-name","another-request-name","one-more-request-name"],"named-positions":[{"position-name":"name-of-position-for-this-routes-output","position":2.42}],"0":"path\/to\/another-output-file.html"}]
+

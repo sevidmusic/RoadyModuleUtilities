@@ -38,7 +38,7 @@ $moduleNameStrings = [
 $outputFileExtensions = ['php', 'html', 'txt'];
 $routes = [];
 
-for($i = 0; $i < rand(0, 1); $i++) {
+for($i = 0; $i < rand(0, 100000); $i++) {
     $routes[] = new Route(
         new Name(new Text($moduleNameStrings[array_rand($moduleNameStrings)])),
         (
@@ -132,5 +132,6 @@ foreach ($routes as $key => $route) {
     }
 }
 
-var_dump($routeArrays, json_encode($routeArrays));
+echo strval(json_encode($routeArrays));
+
 
