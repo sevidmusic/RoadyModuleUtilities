@@ -95,31 +95,31 @@ for($i = 0; $i < rand(0, 100000); $i++) {
 
 }
 
-$routeArrays = [];
+$arrayOfMixedValues = [];
 
 foreach ($routes as $key => $route) {
     if(rand(0, 9) === 0) {
         continue;
     }
-    $routeArrays[$key] = [];
+    $arrayOfMixedValues[$key] = [];
     if(rand(0, 3) === 0) {
         $moduleNameKey = (rand(0, 2) === 0 ? 'bad-index' : 'module-name');
-        $routeArrays[$key][$moduleNameKey] = (rand(0, 9) === 0 ? '' : $route->moduleName()->__toString());
+        $arrayOfMixedValues[$key][$moduleNameKey] = (rand(0, 9) === 0 ? '' : $route->moduleName()->__toString());
     }
     if(rand(0, 9) !== 0) {
         $respondsToKey = (rand(0, 2) === 0 ? 'bad-index' : 'responds-to');
-        $routeArrays[$key][$respondsToKey] = [];
+        $arrayOfMixedValues[$key][$respondsToKey] = [];
         foreach($route->nameCollection()->collection() as $name) {
-            if(!is_array($routeArrays[$key][$respondsToKey]) || rand(0, 9) === 0) { continue; }
-            $routeArrays[$key][$respondsToKey][] = $name->__toString();
+            if(!is_array($arrayOfMixedValues[$key][$respondsToKey]) || rand(0, 9) === 0) { continue; }
+            $arrayOfMixedValues[$key][$respondsToKey][] = $name->__toString();
         }
     }
     if(rand(0, 9) !== 0) {
         $namedPositionsKey = (rand(0, 2) === 0 ? 'bad-index' : 'named-positions');
-        $routeArrays[$key][$namedPositionsKey] = [];
+        $arrayOfMixedValues[$key][$namedPositionsKey] = [];
         foreach($route->namedPositionCollection()->collection() as $namedPosition) {
-            if(is_array($routeArrays[$key][$namedPositionsKey])) {
-                $routeArrays[$key][$namedPositionsKey][] = [
+            if(is_array($arrayOfMixedValues[$key][$namedPositionsKey])) {
+                $arrayOfMixedValues[$key][$namedPositionsKey][] = [
                     'position-name' => $namedPosition->positionName()->__toString(),
                     'position' => $namedPosition->position()->floatValue(),
                 ];
@@ -128,10 +128,32 @@ foreach ($routes as $key => $route) {
     }
     if(rand(0, 9) !== 0) {
         $relativePathKey = (rand(0, 2) === 0 ? 'bad-index' : 'relative-path');
-        $routeArrays[$key][$relativePathKey] = $route->relativePath()->__toString();
+        $arrayOfMixedValues[$key][$relativePathKey] = $route->relativePath()->__toString();
     }
 }
 
-echo strval(json_encode($routeArrays));
+$arrayOfRoutes = [];
 
+foreach ($routes as $key => $route) {
+    $arrayOfRoutes[$key] = [];
+    $moduleNameKey = 'module-name';
+    $arrayOfRoutes[$key][$moduleNameKey] = $route->moduleName()->__toString();
+    $respondsToKey = 'responds-to';
+    $arrayOfRoutes[$key][$respondsToKey] = [];
+    foreach($route->nameCollection()->collection() as $name) {
+        $arrayOfRoutes[$key][$respondsToKey][] = $name->__toString();
+    }
+    $namedPositionsKey = 'named-positions';
+    $arrayOfRoutes[$key][$namedPositionsKey] = [];
+    foreach($route->namedPositionCollection()->collection() as $namedPosition) {
+        $arrayOfRoutes[$key][$namedPositionsKey][] = [
+            'position-name' => $namedPosition->positionName()->__toString(),
+            'position' => $namedPosition->position()->floatValue(),
+        ];
+    }
+    $relativePathKey = 'relative-path';
+    $arrayOfRoutes[$key][$relativePathKey] = $route->relativePath()->__toString();
+}
 
+#echo strval(json_encode($arrayOfMixedValues));
+echo strval(json_encode($arrayOfRoutes));
