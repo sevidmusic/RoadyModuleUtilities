@@ -37,18 +37,61 @@ use \Darling\RoadyRoutes\interfaces\paths\RelativePath;
 trait ModuleRoutesJsonConfigurationReaderTestTrait
 {
 
+    /**
+     * @var string $moduleName The index that is expected to be used
+     *                         for the value configured for a Route's
+     *                         module Name in a module's
+     *                         routes.json configuration file.
+     */
     private string $moduleNameIndex = 'module-name';
 
+    /**
+     * @var string $namedPositionsIndex The index that is expected to
+     *                                  be used for the value
+     *                                  configured for a Route's
+     *                                  NamedPositions in a module's
+     *                                  routes.json configuration
+     *                                  file.
+     */
     private string $namedPositionsIndex = 'named-positions';
 
+    /**
+     * @var string $positionIndex The index that is expected to be
+     *                            used for the value configured for
+     *                            a Position in a module's
+     *                            routes.json configuration file.
+     */
     private string $positionIndex = 'position';
 
+    /**
+     * @var string $positionNameIndex The index that is expected to
+     *                                be used for the value configured
+     *                                for a PositionName in a module's
+     *                                routes.json configuration file.
+     */
     private string $positionNameIndex = 'position-name';
 
+    /**
+     * @var string $relativePathIndex The index that is expected
+     *                                to be used for the value
+     *                                configured for a Route's
+     *                                RelativePath in a module's
+     *                                routes.json configuration file.
+     */
     private string $relativePathIndex = 'relative-path';
 
+    /**
+     * @var string $respondsToIndex The index that is expected to be
+     *                              used for the value configured for
+     *                              the Names of the Requests that a
+     *                              Route responds to in a module's
+     *                              routes.json configuration file.
+     */
     private string $respondsToIndex = 'responds-to';
 
+    /**
+     * @var string $emptyString An empty string.
+     */
     private string $emptyString = '';
 
     /**
@@ -60,8 +103,8 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
     protected ModuleRoutesJsonConfigurationReader $moduleRoutesJsonConfigurationReader;
 
     /**
-     * Set up an instance of a
-     * ModuleRoutesJsonConfigurationReader implementation to test.
+     * Set up an instance of a ModuleRoutesJsonConfigurationReader
+     * implementation to test.
      *
      * This method must also set the ModuleRoutesJsonConfigurationReader
      * implementation instance to be tested via the
@@ -104,10 +147,9 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
      * instance to test.
      *
      * @param ModuleRoutesJsonConfigurationReader $moduleRoutesJsonConfigurationReaderTestInstance
-     *                              An instance of an
-     *                              implementation of
-     *                              the ModuleRoutesJsonConfigurationReader
-     *                              interface to test.
+     *                     An instance of an implementation
+     *                     of the ModuleRoutesJsonConfigurationReader
+     *                     interface to test.
      *
      * @return void
      *
@@ -119,7 +161,16 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
         $this->moduleRoutesJsonConfigurationReader = $moduleRoutesJsonConfigurationReaderTestInstance;
     }
 
-    private function determinePathToRoadyModuleDirectory(Name $moduleNameInstance): PathToRoadyModuleDirectory
+    /**
+     * Return a PathToRoadyModuleDirectory instance for the specified
+     * Roady module in the test modules directory.
+     *
+     * @return PathToRoadyModuleDirectory
+     *
+     */
+    private function determinePathToRoadyModuleDirectory(
+        Name $moduleNameInstance
+    ): PathToRoadyModuleDirectory
     {
         return new PathToRoadyModuleDirectoryInstance(
             $this->pathToDirectoryOfRoadyTestModules(),
@@ -151,7 +202,15 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
     private function arrayDefinesARoute(array $array): bool
     {
         return
-            // No need to check for module-name, if it is not specified the modules name will be the name of the module that defines the routes.json
+            /**
+             * No need to check for module-name, if it is not
+             * specified the modules name will be assumed to be
+             * the name of the module that define the routes.json
+             * configuration file being read.
+             *
+             * @see ModuleRoutesJsonConfigurationReaderTestTrait::determineModuleName()
+             *
+             */
             isset($array[$this->respondsToIndex])
             &&
             is_array($array[$this->respondsToIndex])
@@ -226,7 +285,21 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
         );
     }
 
-    private function determineModuleName(PathToRoadyModuleDirectory $pathToRoadyModuleDirectory, string $moduleName): Name
+    /**
+     * Return a Name for a module based on the specified
+     * PathToRoadyModuleDirectory and $moduleName.
+     *
+     * If the $moduleName is not an empty string then it
+     * will be used to construct the Name, otherwise the
+     * PathToRoadyModuleDirectory's Name will be returned.
+     *
+     * @return Name
+     *
+     */
+    private function determineModuleName(
+        PathToRoadyModuleDirectory $pathToRoadyModuleDirectory,
+        string $moduleName
+    ): Name
     {
         return match(
             !empty($moduleName)
@@ -239,17 +312,25 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
         };
     }
 
-    private function stringToRelativePath(string $relativePath): RelativePath
+    /**
+     * Convert a string into a RelativePath.
+     *
+     * @param string $string The string to convert into a RelativePath.
+     *
+     * @return RelativePath
+     *
+     */
+    private function stringToRelativePath(string $string): RelativePath
     {
-        $relativePathParts = explode(
+        $stringParts = explode(
             DIRECTORY_SEPARATOR,
-            $relativePath
+            $string
         );
         $relativePathSafeText = [];
-        foreach($relativePathParts as $relativePathPart) {
+        foreach($stringParts as $stringPart) {
             $relativePathSafeText[] =
                 new SafeTextInstance(
-                    new Text($relativePathPart)
+                    new Text($stringPart)
                 );
         }
         return new RelativePathInstance(
@@ -378,9 +459,10 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
      */
     public function test_determineConfiguredRoutes_returns_an_empty_RouteCollection_if_the_module_does_not_define_a_json_configuration_file(): void
     {
-        $pathToRoadyModuleDirectory = $this->determinePathToRoadyModuleDirectory(
-            new NameInstance(new Text('empty-module'))
-        );
+        $pathToRoadyModuleDirectory =
+            $this->determinePathToRoadyModuleDirectory(
+                new NameInstance(new Text('empty-module'))
+            );
         $this->assertEmpty(
             $this->moduleRoutesJsonConfigurationReaderTestInstance()
                 ->determineConfiguredRoutes(
@@ -468,9 +550,14 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
      */
     public function test_determineConfiguredRoutes_returns_an_empty_RouteCollection_if_the_module_defines_a_valid_routes_json_configuration_file_that_does_not_define_any_routes(): void
     {
-        $pathToRoadyModuleDirectory = $this->determinePathToRoadyModuleDirectory(
-            new NameInstance(new Text('module-defines-valid-routes-json-configuration-file-that-does-not-define-any-routes'))
-        );
+        $pathToRoadyModuleDirectory =
+            $this->determinePathToRoadyModuleDirectory(
+                new NameInstance(
+                    new Text(
+                        'module-defines-valid-routes-json-configuration-file-that-does-not-define-any-routes'
+                    )
+                )
+            );
         $this->assertEmpty(
             $this->moduleRoutesJsonConfigurationReaderTestInstance()
                 ->determineConfiguredRoutes(
@@ -499,9 +586,14 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
      */
     public function test_determineConfiguredRoutes_returns_all_of_the_defined_Routes_if_the_module_defines_a_valid_routes_json_configuration_file_that_defines_routes_and_other_types_of_values(): void
     {
-        $pathToRoadyModuleDirectory = $this->determinePathToRoadyModuleDirectory(
-            new NameInstance(new Text('module-defines-valid-routes-json-configuration-file-that-defines-routes-and-other-types-of-values'))
-        );
+        $pathToRoadyModuleDirectory =
+            $this->determinePathToRoadyModuleDirectory(
+                new NameInstance(
+                    new Text(
+                        'module-defines-valid-routes-json-configuration-file-that-defines-routes-and-other-types-of-values'
+                    )
+                )
+            );
         $roadyModuleFileSystemPathDeterminator =
             new RoadyModuleFileSystemPathDeterminatorInstance();
         $expectedRoutes = $this->determineExpectedRoutes(

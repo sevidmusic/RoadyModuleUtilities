@@ -9,11 +9,8 @@ use \Darling\PHPTextTypes\classes\strings\SafeText as SafeTextInstance;
 use \Darling\PHPTextTypes\classes\strings\Text;
 use \Darling\PHPTextTypes\interfaces\collections\NameCollection;
 use \Darling\PHPTextTypes\interfaces\strings\Name;
-use \Darling\RoadyModuleUtilities\classes\determinators\RoadyModuleFileSystemPathDeterminator as RoadyModuleFileSystemPathDeterminatorInstance;
-use \Darling\RoadyModuleUtilities\classes\paths\PathToRoadyModuleDirectory as PathToRoadyModuleDirectoryInstance;
 use \Darling\RoadyModuleUtilities\interfaces\configuration\ModuleRoutesJsonConfigurationReader as ModuleRoutesJsonConfigurationReaderInterface;
 use \Darling\RoadyModuleUtilities\interfaces\determinators\RoadyModuleFileSystemPathDeterminator;
-use \Darling\RoadyModuleUtilities\interfaces\paths\PathToDirectoryOfRoadyModules;
 use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
 use \Darling\RoadyRoutes\classes\collections\NamedPositionCollection as NamedPositionCollectionInstance;
 use \Darling\RoadyRoutes\classes\collections\RouteCollection as RouteCollectionInstance;
@@ -29,18 +26,61 @@ use \Darling\RoadyRoutes\interfaces\paths\RelativePath;
 class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurationReaderInterface
 {
 
+    /**
+     * @var string $moduleName The index that is expected to be used
+     *                         for the value configured for a Route's
+     *                         module Name in a module's
+     *                         routes.json configuration file.
+     */
     private string $moduleNameIndex = 'module-name';
 
-    private string $namedPositions = 'named-positions';
+    /**
+     * @var string $namedPositionsIndex The index that is expected to
+     *                                  be used for the value
+     *                                  configured for a Route's
+     *                                  NamedPositions in a module's
+     *                                  routes.json configuration
+     *                                  file.
+     */
+    private string $namedPositionsIndex = 'named-positions';
 
+    /**
+     * @var string $positionIndex The index that is expected to be
+     *                            used for the value configured for
+     *                            a Position in a module's
+     *                            routes.json configuration file.
+     */
     private string $positionIndex = 'position';
 
+    /**
+     * @var string $positionNameIndex The index that is expected to
+     *                                be used for the value configured
+     *                                for a PositionName in a module's
+     *                                routes.json configuration file.
+     */
     private string $positionNameIndex = 'position-name';
 
+    /**
+     * @var string $relativePathIndex The index that is expected
+     *                                to be used for the value
+     *                                configured for a Route's
+     *                                RelativePath in a module's
+     *                                routes.json configuration file.
+     */
     private string $relativePathIndex = 'relative-path';
 
+    /**
+     * @var string $respondsToIndex The index that is expected to be
+     *                              used for the value configured for
+     *                              the Names of the Requests that a
+     *                              Route responds to in a module's
+     *                              routes.json configuration file.
+     */
     private string $respondsToIndex = 'responds-to';
 
+    /**
+     * @var string $emptyString An empty string.
+     */
     private string $emptyString = '';
 
     /**
@@ -98,7 +138,7 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
                             $namedPositionCollection =
                                 $this->arrayToNamedPositionCollection(
                                     array_filter(
-                                        $array[$this->namedPositions],
+                                        $array[$this->namedPositionsIndex],
                                         'is_array'
                                     )
                                 );
@@ -160,9 +200,9 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
             &&
             is_array($array[$this->respondsToIndex])
             &&
-            isset($array[$this->namedPositions])
+            isset($array[$this->namedPositionsIndex])
             &&
-            is_array($array[$this->namedPositions])
+            is_array($array[$this->namedPositionsIndex])
             &&
             isset($array[$this->relativePathIndex])
             &&
@@ -230,6 +270,17 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
         );
     }
 
+    /**
+     * Return a Name for a module based on the specified
+     * PathToRoadyModuleDirectory and $moduleName.
+     *
+     * If the $moduleName is not an empty string then it
+     * will be used to construct the Name, otherwise the
+     * PathToRoadyModuleDirectory's Name will be returned.
+     *
+     * @return Name
+     *
+     */
     private function determineModuleName(PathToRoadyModuleDirectory $pathToRoadyModuleDirectory, string $moduleName): Name
     {
         return match(
@@ -243,17 +294,25 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
         };
     }
 
-    private function stringToRelativePath(string $relativePath): RelativePath
+    /**
+     * Convert a string into a RelativePath.
+     *
+     * @param string $string The string to convert into a RelativePath.
+     *
+     * @return RelativePath
+     *
+     */
+    private function stringToRelativePath(string $string): RelativePath
     {
-        $relativePathParts = explode(
+        $stringParts = explode(
             DIRECTORY_SEPARATOR,
-            $relativePath
+            $string
         );
         $relativePathSafeText = [];
-        foreach($relativePathParts as $relativePathPart) {
+        foreach($stringParts as $stringPart) {
             $relativePathSafeText[] =
                 new SafeTextInstance(
-                    new Text($relativePathPart)
+                    new Text($stringPart)
                 );
         }
         return new RelativePathInstance(
@@ -281,5 +340,6 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
         }
         return new NameCollectionInstance(...$names);
     }
+
 }
 
