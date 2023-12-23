@@ -195,7 +195,6 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
     private function arrayDefinesARoute(array $array): bool
     {
         return
-            // No need to check for module-name, if it is not specified the modules name will be the name of the module that defines the routes.json
             isset($array[$this->respondsToIndex])
             &&
             is_array($array[$this->respondsToIndex])
@@ -227,7 +226,11 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
             &&
             isset($namedPosition[$this->positionIndex])
             &&
-            (is_float($namedPosition[$this->positionIndex]) || is_int($namedPosition[$this->positionIndex]));
+            (
+                is_float($namedPosition[$this->positionIndex])
+                ||
+                is_int($namedPosition[$this->positionIndex])
+            );
     }
 
     /**
@@ -281,7 +284,10 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
      * @return Name
      *
      */
-    private function determineModuleName(PathToRoadyModuleDirectory $pathToRoadyModuleDirectory, string $moduleName): Name
+    private function determineModuleName(
+        PathToRoadyModuleDirectory $pathToRoadyModuleDirectory,
+        string $moduleName
+    ): Name
     {
         return match(
             !empty($moduleName)

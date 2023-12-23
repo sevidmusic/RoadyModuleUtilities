@@ -158,7 +158,8 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
         ModuleRoutesJsonConfigurationReader $moduleRoutesJsonConfigurationReaderTestInstance
     ): void
     {
-        $this->moduleRoutesJsonConfigurationReader = $moduleRoutesJsonConfigurationReaderTestInstance;
+        $this->moduleRoutesJsonConfigurationReader =
+            $moduleRoutesJsonConfigurationReaderTestInstance;
     }
 
     /**
@@ -242,7 +243,11 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
             &&
             isset($namedPosition[$this->positionIndex])
             &&
-            (is_float($namedPosition[$this->positionIndex]) || is_int($namedPosition[$this->positionIndex]));
+            (
+                is_float($namedPosition[$this->positionIndex])
+                ||
+                is_int($namedPosition[$this->positionIndex])
+            );
     }
 
     /**
