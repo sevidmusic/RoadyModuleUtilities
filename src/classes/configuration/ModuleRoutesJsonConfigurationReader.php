@@ -84,10 +84,22 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
     private string $emptyString = '';
 
     /**
-     * Determine the Routes that are expected to be defined based
-     * on the provided json string.
+     * Determine the Routes that are expected to be defined
+     * based the content of the routes.json file found in the
+     * specified PathToRoadyModuleDirectory.
      *
      * @param PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
+     *                                  The PathToRoadyModuleDirectory
+     *                                  instance that defines the
+     *                                  path to the module whose
+     *                                  routes.json configuration
+     *                                  file is to be read.
+     *
+     * @param RoadyModuleFileSystemPathDeterminator $roadyModuleFileSystemPathDeterminator
+     *                        A RoadyModuleFileSystemPathDeterminator
+     *                        instance that will be used to locate
+     *                        the module's routes.json configuration
+     *                        file.
      *
      * @return RouteCollection
      *
@@ -127,11 +139,7 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
                             $nameCollection =
                                 $this->arrayToNameCollection(
                                     array_filter(
-                                        (
-                                            $array[$this->respondsToIndex]
-                                            ??
-                                            []
-                                        ),
+                                        $array[$this->respondsToIndex],
                                         'is_string'
                                     )
                                 );
@@ -144,8 +152,6 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
                                 );
                             $relativePath = $this->stringToRelativePath(
                                 $array[$this->relativePathIndex]
-                                ??
-                                $this->emptyString
                             );
                             if(
                                 file_exists(
@@ -236,7 +242,7 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
     /**
      * Convert an array of arrays of string float pairs to a NamedPositionCollection.
      *
-     * @param array<array<string|float>> $array
+     * @param array<array<string|float>> $array The array to convert.
      *
      * @return NamedPositionCollection
      *
@@ -280,6 +286,19 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
      * If the $moduleName is not an empty string then it
      * will be used to construct the Name, otherwise the
      * PathToRoadyModuleDirectory's Name will be returned.
+     *
+     * @param PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
+     *                                  The PathToRoadyModuleDirectory
+     *                                  instance that defines the
+     *                                  path to the module.
+     *
+     * @param string $moduleName A string to use to consturct the
+     *                           module's Name.
+     *
+     *                           Note: If the $moduleName is an empty
+     *                           string then the Name assigned to the
+     *                           specified PathToRoadyModuleDirectory
+     *                           instance will be returned.
      *
      * @return Name
      *
@@ -331,7 +350,8 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
     /**
      * Convert an array of strings to a NameCollection.
      *
-     * @param array<int, string> $array
+     * @param array<int, string> $array An array of strings to
+     *                                  convert into a NameCollection.
      *
      * @return NameCollection
      *
