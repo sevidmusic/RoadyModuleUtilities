@@ -9,7 +9,7 @@ use \Darling\PHPTextTypes\classes\collections\SafeTextCollection;
 use \Darling\PHPTextTypes\classes\strings\Name;
 use \Darling\PHPTextTypes\classes\strings\SafeText;
 use \Darling\PHPTextTypes\classes\strings\Text;
-use \Darling\RoadyModuleUtilities\classes\paths\PathToRoadyModuleDirectory;
+use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
 use \Darling\RoadyModuleUtilities\interfaces\determinators\RoadyModuleFileSystemPathDeterminator as RoadyModuleFileSystemPathDeterminatorInterface;
 use \Darling\RoadyRoutes\interfaces\paths\RelativePath;
 
