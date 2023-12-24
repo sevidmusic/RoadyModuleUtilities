@@ -298,6 +298,19 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
      * will be used to construct the Name, otherwise the
      * PathToRoadyModuleDirectory's Name will be returned.
      *
+     * @param PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
+     *                                  The PathToRoadyModuleDirectory
+     *                                  instance that defines the
+     *                                  path to the module.
+     *
+     * @param string $moduleName A string to use to consturct the
+     *                           module's Name.
+     *
+     *                           Note: If the $moduleName is an empty
+     *                           string then the Name assigned to the
+     *                           specified PathToRoadyModuleDirectory
+     *                           instance will be returned.
+     *
      * @return Name
      *
      */
@@ -346,10 +359,22 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
     }
 
     /**
-     * Determine the Routes that are expected to be defined based
-     * on the provided json string.
+     * Determine the Routes that are expected to be defined
+     * based the content of the routes.json file found in the
+     * specified PathToRoadyModuleDirectory.
      *
      * @param PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
+     *                                  The PathToRoadyModuleDirectory
+     *                                  instance that defines the
+     *                                  path to the module whose
+     *                                  routes.json configuration
+     *                                  file is to be read.
+     *
+     * @param RoadyModuleFileSystemPathDeterminator $roadyModuleFileSystemPathDeterminator
+     *                        A RoadyModuleFileSystemPathDeterminator
+     *                        instance that will be used to locate
+     *                        the module's routes.json configuration
+     *                        file.
      *
      * @return RouteCollection
      *
