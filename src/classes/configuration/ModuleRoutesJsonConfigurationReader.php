@@ -2,6 +2,7 @@
 
 namespace Darling\RoadyModuleUtilities\classes\configuration;
 
+use \Darling\PHPWebPaths\interfaces\paths\parts\url\Authority;
 use \Darling\PHPTextTypes\classes\collections\NameCollection as NameCollectionInstance;
 use \Darling\PHPTextTypes\classes\collections\SafeTextCollection as SafeTextCollectionInstance;
 use \Darling\PHPTextTypes\classes\strings\Name as NameInstance;
@@ -83,28 +84,8 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
      */
     private string $emptyString = '';
 
-    /**
-     * Determine the Routes that are expected to be defined
-     * based the content of the routes.json file found in the
-     * specified PathToRoadyModuleDirectory.
-     *
-     * @param PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
-     *                                  The PathToRoadyModuleDirectory
-     *                                  instance that defines the
-     *                                  path to the module whose
-     *                                  routes.json configuration
-     *                                  file is to be read.
-     *
-     * @param RoadyModuleFileSystemPathDeterminator $roadyModuleFileSystemPathDeterminator
-     *                        A RoadyModuleFileSystemPathDeterminator
-     *                        instance that will be used to locate
-     *                        the module's routes.json configuration
-     *                        file.
-     *
-     * @return RouteCollection
-     *
-     */
     public function determineConfiguredRoutes(
+        Authority $authority,
         PathToRoadyModuleDirectory $pathToRoadyModuleDirectory,
         RoadyModuleFileSystemPathDeterminator $roadyModuleFileSystemPathDeterminator
     ): RouteCollection
@@ -114,7 +95,7 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
         $roadyModuleFileSystemPathDeterminator->determinePathToFileInModuleDirectory(
             $pathToRoadyModuleDirectory,
             $this->stringToRelativePath(
-                $this->expectedRoutesJsonConfigurationFileName()
+                $this->expectedRoutesJsonConfigurationFileName($authority)
                      ->__toString()
             ),
         );
@@ -184,9 +165,9 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
      * @return Name
      *
      */
-    private function expectedRoutesJsonConfigurationFileName(): Name
+    private function expectedRoutesJsonConfigurationFileName(Authority $authority): Name
     {
-        return new NameInstance(new Text('routes.json'));
+        return new NameInstance(new Text($authority->__toString() . '.json'));
     }
 
     /**

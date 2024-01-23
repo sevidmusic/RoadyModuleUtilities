@@ -2,6 +2,7 @@
 
 namespace Darling\RoadyModuleUtilities\interfaces\configuration;
 
+use \Darling\PHPWebPaths\interfaces\paths\parts\url\Authority;
 use \Darling\RoadyModuleUtilities\interfaces\determinators\RoadyModuleFileSystemPathDeterminator;
 use \Darling\RoadyModuleUtilities\interfaces\paths\PathToRoadyModuleDirectory;
 use \Darling\RoadyRoutes\interfaces\collections\RouteCollection;
@@ -15,9 +16,16 @@ use \Darling\RoadyRoutes\interfaces\collections\RouteCollection;
 interface ModuleRoutesJsonConfigurationReader
 {
     /**
-     * Read the module's `routes.json` configuration file and return
-     * a RouteCollection that contains all of the Routes defined
-     * in the `routes.json` configuration file.
+     * Read Routes configuration file and return a RouteCollection
+     * that contains all of the Routes defined in the Routes
+     * configuration file.
+     *
+     * The name of the file to read is determined by the specified
+     * Authority.
+     *
+     * @param Authority $authority The Authority that corresponds to
+     *                             the name of the configuration file
+     *                             to read.
      *
      * @param PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
      *                                   The PathToRoadyModuleDirectory
@@ -34,6 +42,7 @@ interface ModuleRoutesJsonConfigurationReader
      *
      */
     public function determineConfiguredRoutes(
+        Authority $authority,
         PathToRoadyModuleDirectory $pathToRoadyModuleDirectory,
         RoadyModuleFileSystemPathDeterminator $roadyModuleFileSystemPathDeterminator
     ): RouteCollection;
