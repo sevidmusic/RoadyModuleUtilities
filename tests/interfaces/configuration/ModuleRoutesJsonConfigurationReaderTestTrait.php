@@ -6,9 +6,13 @@ use \Darling\PHPTextTypes\classes\collections\NameCollection as NameCollectionIn
 use \Darling\PHPTextTypes\classes\collections\SafeTextCollection as SafeTextCollectionInstance;
 use \Darling\PHPTextTypes\classes\strings\Name as NameInstance;
 use \Darling\PHPTextTypes\classes\strings\SafeText as SafeTextInstance;
-use \Darling\PHPTextTypes\classes\strings\Text;
+use \Darling\PHPTextTypes\classes\strings\Text as TextInstance;
 use \Darling\PHPTextTypes\interfaces\collections\NameCollection;
 use \Darling\PHPTextTypes\interfaces\strings\Name;
+use \Darling\PHPWebPaths\classes\paths\parts\url\Authority as AuthorityInstance;
+use \Darling\PHPWebPaths\classes\paths\parts\url\DomainName as DomainNameInstance;
+use \Darling\PHPWebPaths\classes\paths\parts\url\Host as HostInstance;
+use \Darling\PHPWebPaths\interfaces\paths\parts\url\Authority;
 use \Darling\RoadyModuleUtilities\classes\determinators\RoadyModuleFileSystemPathDeterminator as RoadyModuleFileSystemPathDeterminatorInstance;
 use \Darling\RoadyModuleUtilities\classes\paths\PathToRoadyModuleDirectory as PathToRoadyModuleDirectoryInstance;
 use \Darling\RoadyModuleUtilities\interfaces\configuration\ModuleRoutesJsonConfigurationReader;
@@ -188,7 +192,11 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
      */
     private function expectedRoutesJsonConfigurationFileName(): Name
     {
-        return new NameInstance(new Text('routes.json'));
+        return new NameInstance(
+            new TextInstance(
+                $this->testAuthorityInstance()->__toString() . '.json'
+            )
+        );
     }
 
     /**
@@ -266,7 +274,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
                 $namedPositionInstances[] = new NamedPositionInstance(
                     new PositionNameInstance(
                         new NameInstance(
-                            new Text(
+                            new TextInstance(
                                 strval(
                                     $namedPositionArray[$this->positionNameIndex]
                                     ??
@@ -323,7 +331,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
             !empty($moduleName)
         ) {
             true => new NameInstance(
-                new Text($moduleName)
+                new TextInstance($moduleName)
             ),
             default =>
                 $pathToRoadyModuleDirectory->name(),
@@ -348,7 +356,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
         foreach($stringParts as $stringPart) {
             $relativePathSafeText[] =
                 new SafeTextInstance(
-                    new Text($stringPart)
+                    new TextInstance($stringPart)
                 );
         }
         return new RelativePathInstance(
@@ -471,12 +479,20 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
         $names = [];
         foreach($array as $value) {
             if(is_string($value)) {
-                $names[] = new NameInstance(new Text($value));
+                $names[] = new NameInstance(new TextInstance($value));
             }
         }
         return new NameCollectionInstance(...$names);
     }
 
+    private function testAuthorityInstance(): Authority
+    {
+        return new AuthorityInstance(
+            new HostInstance(
+                new DomainNameInstance(new NameInstance(new TextInstance('routes')))
+            )
+        );
+    }
     /**
      * Test determineConfiguredRoutes returns an empty
      * RouteCollection if the module does not define a json
@@ -491,11 +507,12 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
     {
         $pathToRoadyModuleDirectory =
             $this->determinePathToRoadyModuleDirectory(
-                new NameInstance(new Text('empty-module'))
+                new NameInstance(new TextInstance('empty-module'))
             );
         $this->assertEmpty(
             $this->moduleRoutesJsonConfigurationReaderTestInstance()
                 ->determineConfiguredRoutes(
+                    $this->testAuthorityInstance(),
                     $pathToRoadyModuleDirectory,
                     new RoadyModuleFileSystemPathDeterminatorInstance()
                 )->collection(),
@@ -521,11 +538,12 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
     public function test_determineConfiguredRoutes_returns_an_empty_RouteCollection_if_the_module_defines_empty_routes_json_configuration_file(): void
     {
         $pathToRoadyModuleDirectory = $this->determinePathToRoadyModuleDirectory(
-            new NameInstance(new Text('module-defines-empty-routes-json-configuration-file'))
+            new NameInstance(new TextInstance('module-defines-empty-routes-json-configuration-file'))
         );
         $this->assertEmpty(
             $this->moduleRoutesJsonConfigurationReaderTestInstance()
                 ->determineConfiguredRoutes(
+                    $this->testAuthorityInstance(),
                     $pathToRoadyModuleDirectory,
                     new RoadyModuleFileSystemPathDeterminatorInstance()
                 )->collection(),
@@ -551,11 +569,12 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
     public function test_determineConfiguredRoutes_returns_an_empty_RouteCollection_if_the_module_defines_an_invalid_routes_json_configuration_file(): void
     {
         $pathToRoadyModuleDirectory = $this->determinePathToRoadyModuleDirectory(
-            new NameInstance(new Text('module-defines-invalid-routes-json-configuration-file'))
+            new NameInstance(new TextInstance('module-defines-invalid-routes-json-configuration-file'))
         );
         $this->assertEmpty(
             $this->moduleRoutesJsonConfigurationReaderTestInstance()
                 ->determineConfiguredRoutes(
+                    $this->testAuthorityInstance(),
                     $pathToRoadyModuleDirectory,
                     new RoadyModuleFileSystemPathDeterminatorInstance()
                 )->collection(),
@@ -583,7 +602,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
         $pathToRoadyModuleDirectory =
             $this->determinePathToRoadyModuleDirectory(
                 new NameInstance(
-                    new Text(
+                    new TextInstance(
                         'module-defines-valid-routes-json-configuration-file-that-does-not-define-any-routes'
                     )
                 )
@@ -591,6 +610,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
         $this->assertEmpty(
             $this->moduleRoutesJsonConfigurationReaderTestInstance()
                 ->determineConfiguredRoutes(
+                    $this->testAuthorityInstance(),
                     $pathToRoadyModuleDirectory,
                     new RoadyModuleFileSystemPathDeterminatorInstance()
                 )->collection(),
@@ -619,7 +639,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
         $pathToRoadyModuleDirectory =
             $this->determinePathToRoadyModuleDirectory(
                 new NameInstance(
-                    new Text(
+                    new TextInstance(
                         'module-defines-valid-routes-json-configuration-file-that-defines-routes-and-other-types-of-values'
                     )
                 )
@@ -634,6 +654,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
             $expectedRoutes,
             $this->moduleRoutesJsonConfigurationReaderTestInstance()
                 ->determineConfiguredRoutes(
+                    $this->testAuthorityInstance(),
                     $pathToRoadyModuleDirectory,
                     $roadyModuleFileSystemPathDeterminator
                 ),
@@ -660,7 +681,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
     public function test_determineConfiguredRoutes_returns_all_of_the_defined_Routes_if_the_module_defines_a_valid_routes_json_configuration_file_that_only_defines_routes(): void
     {
         $pathToRoadyModuleDirectory = $this->determinePathToRoadyModuleDirectory(
-            new NameInstance(new Text('module-defines-valid-routes-json-configuration-file-that-only-defines-routes'))
+            new NameInstance(new TextInstance('module-defines-valid-routes-json-configuration-file-that-only-defines-routes'))
         );
         $roadyModuleFileSystemPathDeterminator =
             new RoadyModuleFileSystemPathDeterminatorInstance();
@@ -672,6 +693,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
             $expectedRoutes,
             $this->moduleRoutesJsonConfigurationReaderTestInstance()
                 ->determineConfiguredRoutes(
+                    $this->testAuthorityInstance(),
                     $pathToRoadyModuleDirectory,
                     $roadyModuleFileSystemPathDeterminator
                 ),
