@@ -192,11 +192,7 @@ trait ModuleRoutesJsonConfigurationReaderTestTrait
      */
     private function expectedRoutesJsonConfigurationFileName(): Name
     {
-        return new NameInstance(
-            new TextInstance(
-                $this->testAuthorityInstance()->__toString() . '.json'
-            )
-        );
+        return new NameInstance(new TextInstance(str_replace(':', '.', $this->testAuthorityInstance()->__toString()) . '.json'));
     }
 
     /**
