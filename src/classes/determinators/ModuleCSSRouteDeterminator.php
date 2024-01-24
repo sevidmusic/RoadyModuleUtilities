@@ -63,7 +63,7 @@ class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
                     $cssFileName = basename($pathToCssFile);
                     $cssFileNameParts = explode('_', $cssFileName);
                     $requestName = $this->determineRequestNameFromFileNameParts(
-                        $cssFileNameParts,
+                        str_replace('.css', '', $cssFileNameParts),
                         $cssFileName,
                     );
                     $position = $this->determinePositionFromFileNameParts(

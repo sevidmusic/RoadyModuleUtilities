@@ -232,9 +232,7 @@ trait ModuleCSSRouteDeterminatorTestTrait
                     $cssFileNameParts = explode('_', $cssFileName);
                     $requestName = new NameInstance(
                         new Text(
-                            $cssFileNameParts[array_key_first($cssFileNameParts)]
-                            ??
-                            str_replace('.css', '', $cssFileName)
+                            str_replace('.css', '', $cssFileNameParts[array_key_first($cssFileNameParts)])
                         )
                     );
 
