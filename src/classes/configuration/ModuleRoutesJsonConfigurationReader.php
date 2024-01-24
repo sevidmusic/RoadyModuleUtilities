@@ -167,7 +167,7 @@ class ModuleRoutesJsonConfigurationReader implements ModuleRoutesJsonConfigurati
      */
     private function expectedRoutesJsonConfigurationFileName(Authority $authority): Name
     {
-        return new NameInstance(new Text($authority->__toString() . '.json'));
+        return new NameInstance(new Text(str_replace(':', '.', $authority->__toString()) . '.json'));
     }
 
     /**
