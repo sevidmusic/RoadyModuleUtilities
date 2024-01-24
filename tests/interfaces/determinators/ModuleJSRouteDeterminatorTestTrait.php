@@ -119,7 +119,7 @@ trait ModuleJSRouteDeterminatorTestTrait
     private function expectedPositionNameForJSRoutes(): PositionName
     {
         return new PositionName(
-            new NameInstance(new Text('roady-js-script-tags'))
+            new NameInstance(new Text('roady-ui-js-script-tags-for-html-head'))
         );
     }
 

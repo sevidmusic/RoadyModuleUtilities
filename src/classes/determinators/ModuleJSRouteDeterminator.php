@@ -27,7 +27,7 @@ use \RegexIterator;
 
 class ModuleJSRouteDeterminator implements ModuleJSRouteDeterminatorInterface
 {
-    private const JS_ROUTE_POSITION_NAME = 'roady-js-script-tags';
+    private const JS_ROUTE_POSITION_NAME = 'roady-ui-js-script-tags-for-html-head';
 
     public function determineJSRoutes(
         PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
