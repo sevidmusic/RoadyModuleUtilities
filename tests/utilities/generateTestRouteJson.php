@@ -38,7 +38,7 @@ $moduleNameStrings = [
 $outputFileExtensions = ['php', 'html', 'txt'];
 $routes = [];
 
-for($i = 0; $i < rand(0, 10000); $i++) {
+for($i = 0; $i < (isset($argv[1]) ? intval($argv[1]) : rand(0, 100000)); $i++) {
     $routes[] = new Route(
         new Name(new Text($moduleNameStrings[array_rand($moduleNameStrings)])),
         (
