@@ -59,7 +59,7 @@ class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInte
                     file_exists($outputFilePath[0])
                 ) {
                     $pathToOutputFile = $outputFilePath[0];
-                    $outputFileName = basename($pathToOutputFile);
+                    $outputFileName = str_replace(['.php', '.html'], '', basename($pathToOutputFile));
                     $outputFileNameParts = explode('_', $outputFileName);
                     $requestName = $this->determineRequestNameFromFileNameParts(
                         $outputFileNameParts,
@@ -207,14 +207,10 @@ class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInte
     {
         return new Position(
             floatval(
-                str_replace(
-                    ['.html', '.php'],
-                    '',
-                    strval(
-                        $fileNameParts[array_key_last($fileNameParts)]
-                        ??
-                        0
-                    )
+                strval(
+                    $fileNameParts[array_key_last($fileNameParts)]
+                    ??
+                    0
                 )
             )
         );
@@ -240,7 +236,7 @@ class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInte
             new Text(
                 $fileNameParts[array_key_first($fileNameParts)]
                 ??
-                str_replace(['.html', '.php'], '', $defaultName)
+                $defaultName
             )
         );
     }

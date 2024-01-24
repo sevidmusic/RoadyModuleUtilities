@@ -228,22 +228,18 @@ trait ModuleCSSRouteDeterminatorTestTrait
                     $pathToCssFile = $cssFilePath[0];
 
                     // REQUEST NAME
-                    $cssFileName = basename($pathToCssFile);
+                    $cssFileName = str_replace('.css', '', basename($pathToCssFile));
                     $cssFileNameParts = explode('_', $cssFileName);
                     $requestName = new NameInstance(
                         new Text(
-                            str_replace('.css', '', $cssFileNameParts[array_key_first($cssFileNameParts)])
+                            $cssFileNameParts[array_key_first($cssFileNameParts)]
                         )
                     );
 
                     // POSITION
                     $position = new Position(
                         floatval(
-                            str_replace(
-                                '.css',
-                                '',
-                                strval($cssFileNameParts[array_key_last($cssFileNameParts)] ?? 0)
-                            )
+                            strval($cssFileNameParts[array_key_last($cssFileNameParts)] ?? 0)
                         )
                     );
 
