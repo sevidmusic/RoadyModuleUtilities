@@ -37,6 +37,7 @@ $moduleNameStrings = [
 
 $outputFileExtensions = ['php', 'html', 'txt'];
 $routes = [];
+$argv = ($argv ?? []);
 
 for($i = 0; $i < (isset($argv[1]) ? intval($argv[1]) : rand(0, 100000)); $i++) {
     $routes[] = new Route(
@@ -155,5 +156,4 @@ foreach ($routes as $key => $route) {
     $arrayOfRoutes[$key][$relativePathKey] = $route->relativePath()->__toString();
 }
 
-#echo strval(json_encode($arrayOfMixedValues));
-echo strval(json_encode($arrayOfRoutes, JSON_PRESERVE_ZERO_FRACTION));
+echo strval(json_encode($arrayOfRoutes, JSON_PRESERVE_ZERO_FRACTION|JSON_PRETTY_PRINT));
