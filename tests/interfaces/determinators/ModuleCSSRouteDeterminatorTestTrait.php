@@ -119,7 +119,7 @@ trait ModuleCSSRouteDeterminatorTestTrait
     private function expectedPositionNameForCSSRoutes(): PositionName
     {
         return new PositionName(
-            new NameInstance(new Text('roady-css-stylesheet-links'))
+            new NameInstance(new Text('roady-ui-css-stylesheet-link-tags'))
         );
     }
 

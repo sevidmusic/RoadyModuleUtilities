@@ -27,7 +27,7 @@ use \RegexIterator;
 
 class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
 {
-    private const CSS_ROUTE_POSITION_NAME = 'roady-css-stylesheet-links';
+    private const CSS_ROUTE_POSITION_NAME = 'roady-ui-css-stylesheet-link-tags';
 
     public function determineCSSRoutes(
         PathToRoadyModuleDirectory $pathToRoadyModuleDirectory
