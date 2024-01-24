@@ -209,24 +209,20 @@ trait ModuleOutputRouteDeterminatorTestTrait
                     $pathToOutputFile = $outputFilePath[0];
 
                     // REQUEST NAME
-                    $outputFileName = basename($pathToOutputFile);
+                    $outputFileName = str_replace(['.php', '.html'], '', basename($pathToOutputFile));
                     $outputFileNameParts = explode('_', $outputFileName);
                     $requestName = new NameInstance(
                         new Text(
                             $outputFileNameParts[array_key_first($outputFileNameParts)]
                             ??
-                            str_replace(['.html', '.php'], '', $outputFileName)
+                            $outputFileName
                         )
                     );
 
                     // POSITION
                     $position = new Position(
                         floatval(
-                            str_replace(
-                                ['.html', '.php'],
-                                '',
-                                strval($outputFileNameParts[array_key_last($outputFileNameParts)] ?? 0)
-                            )
+                            strval($outputFileNameParts[array_key_last($outputFileNameParts)] ?? 0)
                         )
                     );
 
