@@ -60,10 +60,10 @@ class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
                     file_exists($cssFilePath[0])
                 ) {
                     $pathToCssFile = $cssFilePath[0];
-                    $cssFileName = basename($pathToCssFile);
+                    $cssFileName = str_replace('.css', '', basename($pathToCssFile));
                     $cssFileNameParts = explode('_', $cssFileName);
                     $requestName = $this->determineRequestNameFromFileNameParts(
-                        str_replace('.css', '', $cssFileNameParts),
+                        $cssFileNameParts,
                         $cssFileName,
                     );
                     $position = $this->determinePositionFromFileNameParts(
@@ -203,11 +203,7 @@ class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
     {
         return new Position(
             floatval(
-                str_replace(
-                    '.css',
-                    '',
-                    strval($fileNameParts[array_key_last($fileNameParts)] ?? 0)
-                )
+                strval($fileNameParts[array_key_last($fileNameParts)] ?? 0)
             )
         );
     }
@@ -232,7 +228,7 @@ class ModuleCSSRouteDeterminator implements ModuleCSSRouteDeterminatorInterface
             new Text(
                 $fileNameParts[array_key_first($fileNameParts)]
                 ??
-                str_replace('.css', '', $defaultName)
+                $defaultName
             )
         );
     }

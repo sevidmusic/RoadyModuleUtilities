@@ -60,7 +60,7 @@ class ModuleJSRouteDeterminator implements ModuleJSRouteDeterminatorInterface
                     file_exists($jsFilePath[0])
                 ) {
                     $pathToJSFile = $jsFilePath[0];
-                    $jsFileName = basename($pathToJSFile);
+                    $jsFileName = str_replace('.js', '', basename($pathToJSFile));
                     $jsFileNameParts = explode('_', $jsFileName);
                     $requestName = $this->determineRequestNameFromFileNameParts(
                         $jsFileNameParts,
@@ -203,11 +203,7 @@ class ModuleJSRouteDeterminator implements ModuleJSRouteDeterminatorInterface
     {
         return new Position(
             floatval(
-                str_replace(
-                    '.js',
-                    '',
-                    strval($fileNameParts[array_key_last($fileNameParts)] ?? 0)
-                )
+                strval($fileNameParts[array_key_last($fileNameParts)] ?? 0)
             )
         );
     }
@@ -232,7 +228,7 @@ class ModuleJSRouteDeterminator implements ModuleJSRouteDeterminatorInterface
             new Text(
                 $fileNameParts[array_key_first($fileNameParts)]
                 ??
-                str_replace('.js', '', $defaultName)
+                $defaultName
             )
         );
     }

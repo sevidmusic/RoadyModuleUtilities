@@ -228,24 +228,20 @@ trait ModuleJSRouteDeterminatorTestTrait
                     $pathToJSFile = $jsFilePath[0];
 
                     // REQUEST NAME
-                    $jsFileName = basename($pathToJSFile);
+                    $jsFileName = str_replace('.js', '', basename($pathToJSFile));
                     $jsFileNameParts = explode('_', $jsFileName);
                     $requestName = new NameInstance(
                         new Text(
                             $jsFileNameParts[array_key_first($jsFileNameParts)]
                             ??
-                            str_replace('.js', '', $jsFileName)
+                            $jsFileName
                         )
                     );
 
                     // POSITION
                     $position = new Position(
                         floatval(
-                            str_replace(
-                                '.js',
-                                '',
-                                strval($jsFileNameParts[array_key_last($jsFileNameParts)] ?? 0)
-                            )
+                            strval($jsFileNameParts[array_key_last($jsFileNameParts)] ?? 0)
                         )
                     );
 
