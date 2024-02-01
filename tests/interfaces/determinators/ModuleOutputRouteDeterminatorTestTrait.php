@@ -230,7 +230,7 @@ trait ModuleOutputRouteDeterminatorTestTrait
                     array_shift($outputFileNameParts);
                     array_pop($outputFileNameParts);
                     $positionNameString = implode('', $outputFileNameParts);
-                    $positionName = new PositionName(new NameInstance(new Text((empty($positionNameString) ? 'roady-ui-named-position-c' : $positionNameString))));
+                    $positionName = new PositionName(new NameInstance(new Text((empty($positionNameString) ? 'roady-ui-main-content' : $positionNameString))));
 
                     // RELATIVE PATH
                     $relativePathToOutputFile = str_replace($pathToRoadyModuleDirectory->__toString(), '', $pathToOutputFile);
