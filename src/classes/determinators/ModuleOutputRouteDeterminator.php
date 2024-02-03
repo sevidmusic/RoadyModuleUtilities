@@ -68,11 +68,18 @@ class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInte
                     $position = $this->determinePositionFromFileNameParts(
                         $outputFileNameParts
                     );
-                    array_shift($outputFileNameParts);
-                    array_pop($outputFileNameParts);
-                    $positionNameString = implode('', $outputFileNameParts);
-                    $positionName = new PositionName(new NameInstance(new Text((empty($positionNameString) ? 'roady-ui-main-content' : $positionNameString))));
-
+                    $positionNameString = match(count($outputFileNameParts)) {
+                            3 => $outputFileNameParts[1],
+                            2 => match(is_numeric($outputFileNameParts[1])) {
+                                true => 'roady-ui-main-content',
+                                false => $outputFileNameParts[1],
+                            },
+                        default => match(count($outputFileNameParts) === 1) {
+                            true => 'roady-ui-main-content',
+                            false => $this->deriveNameFromCenterElements($outputFileNameParts),
+                        },
+                    };
+                    $positionName = new PositionName(new NameInstance(new Text($positionNameString)));
                     $relativePathForRoute = $this->determineRelativePath(
                         $pathToRoadyModuleDirectory,
                         $pathToOutputFile
@@ -88,6 +95,22 @@ class ModuleOutputRouteDeterminator implements ModuleOutputRouteDeterminatorInte
             }
         }
         return new RouteCollectionInstance(...$routes);
+    }
+
+    /**
+     * Return a string constructed from the center elements of an
+     * array of strings.
+     *
+     * @param array<int, string> $array The array of strings.
+     *
+     * @return string
+     *
+     */
+    private function deriveNameFromCenterElements(array $array): string
+    {
+        array_shift($array);
+        array_pop($array);
+        return trim(implode('-', $array));
     }
 
     /**
