@@ -1,0 +1,8 @@
+
+.roady-ui-header,
+.roady-ui-main-content,
+.roady-ui-footer
+{
+    background-color: var(--background-color-alt-1, black);
+}
+
