@@ -1,6 +1,5 @@
 vendor
 .todos
 vimfilelist
-.gitignore
 .phpactor.json
 .phpunit.cache
